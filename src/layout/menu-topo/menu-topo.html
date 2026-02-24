@@ -1,0 +1,74 @@
+<nav ng-controller="MenuTopoController as vm" ng-if="logado" class="navbar horizontal-layout col-lg-12 col-12 p-0">
+
+  <div class="nav-top flex-grow-1">
+    <div class="container d-flex flex-row h-100">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top">
+        <a class="navbar-brand brand-logo" href="/painel-inicial"><img src="src/layout/img/logo-sme/logo-sme-branco.svg"
+            alt="logo"></a>
+        <a class="navbar-brand brand-logo-mini" href="/painel-inicial"><img src="src/layout/img/brasao.svg" alt="logo"></a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav navbar-nav-right mr-0">
+
+          <li class="nav-item nav-profile border-right d-none d-md-block" ng-if="usuario.usuarioOrigem.codigo === 'ue'">
+            <span class="nav-top-ue" ng-bind="usuario.unidadeEscolar.descricao"></span>
+            <small class="d-block mt-1">
+              {{ usuario.unidadeEscolar.tipo }} - {{ usuario.unidadeEscolar.codigo }}
+            </small>
+          </li>
+          <li class="nav-item nav-profile border-right">
+            <span class="d-block text-bold uppercase" ng-bind="vm.nomeUsuarioLogado"></span>
+            <small class="d-block mt-1" ng-if="usuario.usuarioOrigem.codigo !== 'sme'">
+              {{ usuario.usuarioCargo.descricao }}
+            </small>
+            <small class="d-block mt-1" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+              {{ usuario.usuarioOrigem.descricao }}
+            </small>
+          </li>
+          <li class="nav-item nav-profile mr-1 p-0 pl-2" title="Alterar Senha">
+            <button class="btn btn-success" ng-click="vm.abrirModalAlterarSenha()">
+              <i class="icon-lock"></i>
+            </button>
+          </li>
+          <li class="nav-item nav-profile ml-0 p-0" title="{{logado ? 'Sair do sistema' : 'Acessar sistema'}}">
+            <button class="btn btn-success" ng-click="vm.logout()">
+              <i ng-class="logado ? 'icon-logout' : 'icon-login'"></i>
+            </button>
+          </li>
+        </ul>
+        <button class="navbar-toggler align-self-center" type="button" ng-click="vm.abrirMenuMobile()"
+          data-toggle="minimize">
+          <span class="icon-menu text-white"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" ng-class="{'header-toggled': vm.isMenuMobileOpen}">
+    <div class="container">
+
+      <ul class="nav page-navigation" style="justify-content: flex-start;">
+
+        <li class="nav-item pl-2 pr-2" ng-repeat="menu in vm.menuList"
+          ng-class="{'active': vm.menuActive == menu.link, 'mega-menu active show-submenu': (vm.submenuMobileActive == $index && vm.isMenuMobileOpen)}"
+          ng-click="vm.abrirSubmenuMobile($index, menu)">
+          <a href="{{menu.itemList ? '#' : menu.link}}" class="nav-link">
+            <i class="link-icon" ng-class="menu.icone"></i>
+            <span class="menu-title" ng-bind="menu.nome"></span>
+            <i class="menu-arrow" ng-if="menu.itemList"></i>
+          </a>
+          <div class="submenu" ng-if="menu.itemList">
+            <ul class="submenu-item">
+              <li class="nav-item" ng-repeat="item in menu.itemList" ng-class="{'active': vm.menuActive == item.link}">
+                <a class="nav-link" href="{{item.link}}" ng-bind="item.nome"></a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+</nav>

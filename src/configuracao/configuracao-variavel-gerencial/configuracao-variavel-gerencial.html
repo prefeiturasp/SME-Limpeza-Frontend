@@ -1,0 +1,126 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off"
+  autocapitalize="off" spellcheck="false">
+
+  <div class="card">
+    <div class="card-body">
+
+      <h4 class="card-title">CONFIGURAÇÃO DE VARIÁVEL GERENCIAL</h4>
+
+      <hr>
+
+      <div class="row mt-4">
+        <div class="col-sm-12 col-md-6 col-lg-5">
+          <div class="form-group">
+            <label for="descricao" class="dois-pontos">Descrição</label>
+            <p class="h3 text-bold text-black" ng-bind="vm.ocorrenciaTipo.descricao"></p>
+            <!-- <input type="text" id="descricao" name="descricao" class="form-control" ng-model="vm.ocorrenciaTipo.descricao" 
+							ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" disabled required> -->
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm-12 col-md-3 col-lg-2">
+          <div class="form-group">
+            <label for="peso" class="dois-pontos">Peso</label>
+            <p class="h3 text-bold text-black" ng-bind="vm.ocorrenciaTipo.peso"></p>
+            <!-- <input type="text" id="peso" name="peso" class="form-control" ng-model="vm.ocorrenciaTipo.peso"
+							ng-class="{'is-invalid': (formulario.peso.$dirty && formulario.peso.$invalid)}" ui-number-mask="0" min="1" max="100" disabled required> -->
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+
+          <div class="form-group mb-0">
+            <label for="ck" class="dois-pontos">Apenas Monitoramento</label>
+            <p class="h3 text-bold text-success" ng-if="vm.ocorrenciaTipo.flagApenasMonitoramento">SIM</p>
+            <p class="h3 text-bold text-danger" ng-if="!vm.ocorrenciaTipo.flagApenasMonitoramento">NÃO</p>
+          </div>
+          <!-- <div class="icheck-success">
+						<input type="checkbox" id="checkbox" ng-model="vm.ocorrenciaTipo.flagApenasMonitoramento" disabled>
+						<label class="sem-dois-pontos font-weight-normal small" for="checkbox"
+							ng-bind="vm.ocorrenciaTipo.flagApenasMonitoramento ? 'Sim' : 'Não'">
+						</label>
+					</div> -->
+
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12 p-0 d-flex justify-content-end">
+          <!-- <a href="#" class="btn btn-link btn-fw" ng-click="vm.abrirModalOcorrencia()">Adicionar Nivel de Serviço</a> -->
+        </div>
+        <div class="col-12">
+
+          <div class="card mb-3">
+
+            <div class="card-body p-0">
+              <div class="tb-responsive">
+                <table class="table">
+                  <thead>
+                    <tr class="bg-light text-center">
+                      <th class="text-left" style="width: 25%">Descrição</th>
+                      <th class="text-left" style="width: 15%" ng-if="vm.ocorrenciaTipo.contratoModelo === 1">
+                        Conforme
+                      </th>
+                      <th class="text-left" style="width: 15%" ng-if="vm.ocorrenciaTipo.contratoModelo === 1">
+                        Com Ressalva
+                      </th>
+                      <th class="text-left" style="width: 15%" ng-if="vm.ocorrenciaTipo.contratoModelo === 1">
+                        Não Conforme
+                      </th>
+                      <th class="text-right" style="width: 10%">Peso</th>
+                      <th class="text-right" style="width: 10%" ng-if="vm.ocorrenciaTipo.contratoModelo === 2">
+                        Quantidade Máxima</th>
+                      <!-- <th class="text-right">Ações</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="text-center" ng-repeat="ov in vm.ocorrenciaTipo.variaveis">
+                      <td class="text-left">
+                        <h6 class="mb-2 font-weight-normal" ng-bind="ov.descricao"></h6>
+                        <small ng-if="ov.flagEquipeAlocada" class="text-bold text-info">
+                          REGRA: EQUIPE_ALOCADA
+                        </small>
+                      </td>
+                      <td class="text-left" ng-bind="ov.descricaoConforme"
+                        ng-if="vm.ocorrenciaTipo.contratoModelo === 1"></td>
+                      <td class="text-left" ng-bind="ov.descricaoConformeComRessalva"
+                        ng-if="vm.ocorrenciaTipo.contratoModelo === 1"></td>
+                      <td class="text-left" ng-bind="ov.descricaoNaoConforme"
+                        ng-if="vm.ocorrenciaTipo.contratoModelo === 1"></td>
+                      <td class="text-right" ng-bind="ov.peso | finance:false:0"></td>
+                      <td class="text-right" ng-bind="ov.quantidadeMaxima | finance:false:0"
+                        ng-if="vm.ocorrenciaTipo.contratoModelo === 2"></td>
+                      <!-- <td class="text-right">
+												<button class="mr-1 btn btn-outline-primary btn-sm" ng-click="vm.abrirModalOcorrencia($index, ov)">
+													<i class="icon-pencil"></i>
+												</button>
+												<button class="btn btn-outline-danger btn-sm" ng-click="vm.removerOcorrencia($index)">
+													<i class="icon-trash"></i>
+												</button>
+											</td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <div>
+        <button type="button" class="btn btn-outline-dark" ng-click="vm.redirecionarConfiguracao()">
+          <i class="icon-arrow-left-circle mr-1"></i>Voltar
+        </button>
+        <!-- <button type="button" class="btn btn-outline-danger ml-2" ng-click="vm.remover()">
+					<i class="icon-trash mr-1"></i>Remover
+				</button> -->
+      </div>
+      <div>
+        <!-- <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar Variável</button> -->
+      </div>
+    </div>
+  </div>
+
+</form>

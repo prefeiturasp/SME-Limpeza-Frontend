@@ -1,0 +1,102 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+    <div class="modal-header">
+        <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR NÃO CONFORMIDADE</h5>
+        <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR NÃO CONFORMIDADE</h5>
+        <button type="button" class="close" ng-click="vm.fecharModal()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Dados gerais</h4>
+                        <p class="text-muted font-weight-light">Informações gerais da não conformidade.   
+                        
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="descricao" class="obrigatorio">Descrição</label>
+                                    <input type="text" id="descricao" name="descricao" class="form-control" ng-model="vm.modal.model.descricao" 
+                                        ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <label for="flagAcaoImediata" class="form-check-label">
+                                        <input type="checkbox" id="flagAcaoImediata" name="flagAcaoImediata" class="form-check-input" 
+                                            ng-change="vm.evtChangeFlagAcaoImediata()" ng-model="vm.modal.model.flagAcaoImediata">
+                                            Exigir ação imediata
+                                            <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="prazo" class="obrigatorio">Prazo para realizar ação</label>
+                                    <input type="number" id="prazo" name="prazo" class="form-control" ng-model="vm.modal.model.prazoAcaoCorretiva" 
+                                        ng-class="{'is-invalid': (formulario.prazo.$dirty && formulario.prazo.$invalid)}" ng-disabled="!vm.modal.model.flagAcaoImediata" 
+                                        placeholder="Dias" ng-required="vm.modal.model.flagAcaoImediata" min="1" step="1" pattern="\d*">
+                                        <p class="text-muted font-weight-light">Quantidade em dias para cumprimento da ação corretiva.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ação Corretiva</h4>
+                        <p class="text-muted font-weight-light">Lista de ações corretivas disponíveis para esta não conformidade.</p>
+                        <div class="table-responsive">
+                            <p class="card-description text-center text-danger p-4 pt-5" ng-if="!vm.modal.model.acaoCorretivaLista || vm.modal.model.acaoCorretivaLista.length == 0">
+                                {{ vm.modal.model.flagAcaoImediata 
+                                    ? 'Nenhuma ação corretiva cadastrada para esta não conformidade.' 
+                                    : 'Ações corretivas desabilitadas para esta não conformidade.' 
+                                }}
+                            </p>
+                            <table class="table" ng-if="!vm.modal.model.acaoCorretivaLista.length == 0">
+                                <thead>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th class="text-right" style="width: 10%">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="acaoCorretiva in vm.modal.model.acaoCorretivaLista">
+                                        <td class="py-1 pl-0" ng-bind="acaoCorretiva.descricao"></td>
+                                        <td class="text-right pr-0">
+                                            <a class="mr-1 btn btn-outline-primary btn-sm" href="#" ng-click="vm.abrirModalAcaoCorretiva($index, acaoCorretiva)"><i class="icon-pencil"></i></a>
+                                            <a class="btn btn-outline-secondary btn-sm" href="#" ng-click="vm.removerAcaoCorretiva($index)"><i class="icon-trash"></i></a>'
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary btn-block mt-3" ng-click="vm.abrirModalAcaoCorretiva()" ng-disabled="!vm.modal.model.flagAcaoImediata">Cadastrar Ação Corretiva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" ng-disabled="!vm.verificarFormulario(formulario)">Salvar</button>
+    </div>
+
+</form>

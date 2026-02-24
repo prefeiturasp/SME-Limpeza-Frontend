@@ -1,0 +1,11 @@
+<div class="modal-body p-0">
+  <div class="row">
+    <div class="col text-center">
+      <qr-scanner ng-if="vm.modalLeitura" width="100%" ng-success="vm.onSuccess(data)" ng-error="vm.onError(error)"
+        ng-error="vm.onVideoError(error)"></qr-scanner>
+      <h5 class="text-bold my-3">ESCANEIE O QRCODE DO AMBIENTE</h5>
+      <button type="button" class="btn btn-outline-danger my-3"
+        ng-click="vm.fecharModalLeituraQrCode()">Cancelar</button>
+    </div>
+  </div>
+</div>

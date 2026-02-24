@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-body p-0">
+
+    <h4 class="card-title m-4">DECLARAÇÕES
+      <div class="text-right">
+        <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModal()" ng-if="usuario.flagFiscal">
+          Adicionar
+          <i class="icon-plus ml-1"></i>
+        </button>
+      </div>
+    </h4>
+
+    <uib-accordion class="accordion accordion-solid-header accordion-custom">
+      <div uib-accordion-group is-open="vm.isFilterOpen">
+        <uib-accordion-heading>
+          Filtros de busca
+        </uib-accordion-heading>
+        <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+              <div class="form-control">
+                <label for="dataInicial" class="dois-pontos">Data Inicial</label>
+                <input type="text" class="form-control lh-18" id="dataInicial" ng-model="vm.filtros.dataInicial"
+                  uib-datepicker-popup="dd/MM/yyyy" datepicker-options="vm.optionsDatePickerFiltro" is-open="focus1"
+                  ng-focus="focus1=true">
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+              <div class="form-control">
+                <label for="dataFinal" class="dois-pontos">Data Final</label>
+                <input type="text" class="form-control lh-18" id="dataFinal" ng-model="vm.filtros.dataFinal"
+                  uib-datepicker-popup="dd/MM/yyyy" datepicker-options="vm.optionsDatePickerFiltro" is-open="focus2"
+                  ng-focus="focus2=true">
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ue'">
+              <div class="form-control">
+                <label for="ue" class="dois-pontos">Unidade Escolar</label>
+                <ui-select id="ue" ng-model="vm.filtros.unidadeEscolar">
+                  <ui-select-match allow-clear="true" placeholder="Todos">
+                    {{$select.selected.codigo}} - {{$select.selected.descricao}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="ue in vm.unidadeEscolarList | filter: $select.search">
+                    <span class="mb-0 d-block" ng-bind-html="ue.descricao | highlight: $select.search"></span>
+                    <small class="my-2" ng-bind-html="ue.codigo | highlight: $select.search"></small>
+                    <small class="my-2"> - </small>
+                    <small class="my-2" ng-bind-html="ue.tipo | highlight: $select.search"></small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-4">
+              <button type="button" class="btn btn-primary" ng-click="vm.recarregarTabela()">Filtrar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </uib-accordion>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-12">
+        <lista></lista>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,231 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off"
+  autocapitalize="off" spellcheck="false">
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{vm.modal.isEditar ? 'EDITAR' : 'CADASTRAR'}} CONTRATO</h5>
+    <button type="button" class="close" ng-click="vm.fecharModal()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row">
+
+      <div class="col-sm-12 col-md-6 col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Dados Gerais</h4>
+            <div class="row mt-4">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="modelo" class="obrigatorio">Modelo de Medição</label>
+                  <select class="form-control" id="modelo" name="modelo" ng-model="vm.modal.model.modelo"
+                    ng-class="{'is-invalid': (formulario.modelo.$dirty && formulario.modelo.$invalid)}" required>
+                    <option value="1">Modelo 01</option>
+                    <option value="2">Modelo 02</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <div class="form-group">
+                  <label for="descricao" class="obrigatorio">Descrição</label>
+                  <input type="text" id="descricao" name="descricao" class="form-control"
+                    ng-model="vm.modal.model.descricao"
+                    ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" required>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="codigo" class="obrigatorio">Código</label>
+                  <input type="text" id="codigo" name="codigo" class="form-control" ng-model="vm.modal.model.codigo"
+                    ng-class="{'is-invalid': (formulario.codigo.$dirty && formulario.codigo.$invalid)}" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="prestadorServico" class="obrigatorio">Prestador do Serviço</label>
+                  <select class="form-control" id="prestadorServico" name="prestadorServico"
+                    ng-model="vm.modal.model.idPrestadorServico"
+                    ng-options="prestadorServico.id as prestadorServico.razaoSocial for prestadorServico in vm.prestadorServicoTodosList"
+                    ng-class="{'is-invalid': (formulario.prestadorServico.$dirty && formulario.prestadorServico.$invalid)}"
+                    required>
+                    <option value="" disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="nomeResponsavel" class="obrigatorio">Nome do Responsável</label>
+                  <input type="text" id="nomeResponsavel" name="nomeResponsavel" class="form-control"
+                    ng-model="vm.modal.model.nomeResponsavel"
+                    ng-class="{'is-invalid': (formulario.nomeResponsavel.$dirty && formulario.nomeResponsavel.$invalid)}"
+                    required>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="emailResponsavel" class="obrigatorio">E-mail do Responsável</label>
+                  <input type="email" id="emailResponsavel" name="emailResponsavel" class="form-control"
+                    ng-model="vm.modal.model.emailResponsavel"
+                    ng-class="{'is-invalid': (formulario.emailResponsavel.$dirty && formulario.emailResponsavel.$invalid)}"
+                    required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="numeroPregao" class="dois-pontos">Número do Pregão</label>
+                  <input type="text" id="numeroPregao" name="numeroPregao" class="form-control"
+                    ng-model="vm.modal.model.numeroPregao"
+                    ng-class="{'is-invalid': (formulario.numeroPregao.$dirty && formulario.numeroPregao.$invalid)}">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="nomeLote" class="dois-pontos">Nome do DRE/Lote</label>
+                  <input type="text" id="nomeLote" name="nomeLote" class="form-control"
+                    ng-model="vm.modal.model.nomeLote"
+                    ng-class="{'is-invalid': (formulario.nomeLote.$dirty && formulario.nomeLote.$invalid)}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">
+              Faturamento
+              <div class="text-right">
+                <button type="button" class="btn btn-outline-success btn-sm" ng-click="vm.abrirModalReajuste()">
+                  Adicionar Reajuste
+                  <i class="icon-plus ml-1"></i>
+                </button>
+              </div>
+            </h4>
+            <div class="row mt-4">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                  <label for="valorTotal" class="dois-pontos">Valor Global</label>
+                  <h3 class="text-bold" ng-bind="vm.modal.model.valorTotal | finance:true:2"></h3>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <h5 class="text-bold text-primary"> - Reajustes</h5>
+                <div class="table-responsive">
+                  <p class="card-description text-center text-danger p-4 pt-5"
+                    ng-if="!vm.modal.model.reajusteLista || (vm.modal.model.reajusteLista | filter: { flagAtivo: true }).length == 0">
+                    Nenhuma reajuste adicionado.</p>
+                  <table class="table" ng-if="(vm.modal.model.reajusteLista | filter: { flagAtivo: true }).length > 0">
+                    <thead>
+                      <tr>
+                        <th class="pl-0">Data de Início</th>
+                        <th class="text-right">Percentual</th>
+                        <th class="text-right pr-0">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="reajuste in vm.modal.model.reajusteLista | filter: { flagAtivo: true }">
+                        <td class="pl-0" ng-bind="reajuste.dataInicial | date:'dd/MM/yyyy'"></td>
+                        <td class="text-right" ng-bind="vm.formatarPercentual(reajuste.percentual)"></td>
+                        <td class="text-right pr-0">
+                          <button type="button" class="btn btn-outline-danger btn-sm"
+                            ng-click="vm.removerReajuste(reajuste)">
+                            <i class="icon-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bnt-salvar-contrato grid-margin col-12">
+        <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar Contrato</button>
+      </div>
+
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Unidades Escolares
+              <div class="text-right">
+                <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.abrirModalImportacaoUE()">
+                  Importar UE's
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.abrirModalImportacaoCargo()">
+                  Importar Cargos
+                </button>
+                <button type="button" class="btn btn-outline-success btn-sm" ng-click="vm.abrirModalUnidadeEscolar()">
+                  Adicionar UE
+                  <i class="icon-plus ml-1"></i>
+                </button>
+              </div>
+            </h4>
+            <div class="table-responsive mt-4">
+              <p class="card-description text-center text-danger p-4 pt-5"
+                ng-if="!vm.modal.model.unidadeEscolarLista || vm.modal.model.unidadeEscolarLista.length === 0">
+                Nenhuma unidade escolar adicionada.
+              </p>
+              <table class="table" ng-if="vm.modal.model.unidadeEscolarLista.length > 0">
+                <thead>
+                  <tr>
+                    <th class="pl-0" style="width: 35%">Identificação da Unidade Escolar</th>
+                    <th class="text-right">Data Inicial</th>
+                    <th class="text-right">Data Final</th>
+                    <th class="text-right">Valor Contrato</th>
+                    <th class="text-right">Equipe Alocada</th>
+                    <th class="text-right pr-0">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="unidade in vm.modal.model.unidadeEscolarLista">
+                    <td class="py-4 pl-0">
+                      <h5 class="font-weight-light" ng-bind="unidade.descricao"></h5>
+                      <small>{{unidade.tipoEscola.descricao}} &nbsp; - &nbsp; {{unidade.codigo}}</small>
+                    </td>
+                    <td class="text-right" ng-bind="unidade.dataInicial | date:'dd/MM/yyyy'"></td>
+                    <td class="text-right" ng-bind="unidade.dataFinal | date:'dd/MM/yyyy'"></td>
+                    <td class="text-right" ng-bind="unidade.valor | finance:true:2"></td>
+                    <td class="text-right">
+                      <div class="badge badge-pill badge-primary" ng-bind="vm.getTotalEquipe(unidade)"></div>
+            </div>
+            </td>
+            <td class="text-right pr-0">
+              <button type="button" class="btn btn-outline-primary btn-sm mr-1"
+                ng-click="vm.abrirModalUnidadeEscolar($index, unidade)"><i class="icon-pencil"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm" ng-click="vm.removerUnidadeEscolar($index)"><i
+                  class="icon-trash"></i></button>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar Contrato</button>
+  </div>
+
+</form>

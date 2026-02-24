@@ -1,0 +1,39 @@
+<div class="pl-1 pr-1 mb-5">
+  <uib-accordion class="accordion accordion-solid-header accordion-custom no-toggle" id="encerrar">
+    <div uib-accordion-group is-open="true">
+      <uib-accordion-heading>Encerrar Ocorrência</uib-accordion-heading>
+      <div class="row">
+        <div class="col-12">
+          <div class="alert alert-warning text-center text-bold"
+            ng-if="!usuario.flagFiscal && !vm.ocorrencia.flagEncerrado">
+            Ocorrência aberta, aguardando fiscal.
+          </div>
+          <div class="alert alert-warning text-center text-bold" ng-if="vm.ocorrencia.flagEncerrado">
+            Ocorrência encerrada pelo fiscal em {{ vm.ocorrencia.dataHoraFinal | date:'dd/MM/yyyy HH:mm:ss'}}.
+          </div>
+          <div class="alert alert-fill-danger text-center text-bold p-3"
+            ng-if="vm.ocorrencia.flagEncerrado && vm.ocorrencia.flagGerarDesconto">
+            Solicitação não atendida!
+          </div>
+          <div class="text-center card-body p-3"
+            ng-if="vm.ocorrencia.flagEncerrado && vm.ocorrencia.flagGerarDesconto && vm.ocorrencia.observacaoFinal">
+            <div class="text-bold">Motivo: {{ vm.ocorrencia.observacaoFinal }}</div>
+          </div>
+          <div ng-if="!vm.ocorrencia.flagEncerrado && usuario.usuarioOrigem.codigo === 'ue' && usuario.flagFiscal"
+           class="alert alert-warning text-center text-bold p-3"
+            ng-if="vm.ocorrencia.flagEncerrado && vm.ocorrencia.flagGerarDesconto && vm.ocorrencia.observacaoFinal">
+            Aguarde o prazo de 24h para realizar a avaliação da ocorrência. Caso não haja tratativa, o sistema irá encerrar AUTOMATICAMENTE no prazo de 48h, SEM PENALIZAÇÃO À EMPRESA CONTRATADA.
+          </div>
+          <div ng-if="!vm.ocorrencia.flagEncerrado && usuario.usuarioOrigem.codigo === 'ue' && usuario.flagFiscal"
+            class="p-3">
+            <span>Sua solicitação foi atendida?</span>
+            <div class="d-flex mt-3">
+              <button class="btn-sim mr-2" ng-click="vm.encerrar(false)">SIM</button>
+              <button class="btn-nao" ng-click="vm.abrirModalMotivoNaoAtendido()">NÃO</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </uib-accordion>
+</div>

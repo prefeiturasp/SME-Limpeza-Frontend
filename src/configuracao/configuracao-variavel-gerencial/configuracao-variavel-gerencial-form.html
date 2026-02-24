@@ -1,0 +1,96 @@
+<form novalidate name="formulario" ng-submit="vm.salvarOcorrencia(formulario)" autocomplete="off" autocorrect="off"
+  autocapitalize="off" spellcheck="false">
+
+  <div class="modal-header">
+    <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR NÍVEL DE SERVIÇO</h5>
+    <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR NÍVEL DE SERVIÇO</h5>
+    <button type="button" class="close" ng-click="vm.fecharModalOcorrencia()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row">
+
+      <div class="col-lg-5 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Dados gerais</h4>
+            <p class="text-muted font-weight-light">Informações gerais do nível de serviço.
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="descricao" class="obrigatorio">Descrição</label>
+                  <input type="text" id="descricao" name="descricao" class="form-control"
+                    ng-model="vm.modal.model.descricao"
+                    ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="peso" class="obrigatorio">Peso</label>
+                  <input type="text" id="peso" name="peso" class="form-control" ng-model="vm.modal.model.peso"
+                    ng-class="{'is-invalid': (formulario.peso.$dirty && formulario.peso.$invalid)}" ui-number-mask="0"
+                    min="1" max="100" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Descritivos</h4>
+            <p class="text-muted font-weight-light">Descritivos utilizados na análise, fiscalização e faturamento.</p>
+            <div class="table-responsive">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="conforme" class="obrigatorio">Conforme</label>
+                    <input type="text" id="conforme" name="conforme" class="form-control"
+                      ng-model="vm.modal.model.descricaoConforme"
+                      ng-class="{'is-invalid': (formulario.conforme.$dirty && formulario.conforme.$invalid)}" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="com-ressalva" class="obrigatorio">Com Ressalva</label>
+                    <input type="text" id="com-ressalva" name="com-ressalva" class="form-control"
+                      ng-model="vm.modal.model.descricaoConformeComRessalva"
+                      ng-class="{'is-invalid': (formulario.com-ressalva.$dirty && formulario.com-ressalva.$invalid)}"
+                      required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="nao-conforme" class="obrigatorio">Não Conforme</label>
+                    <input type="text" id="nao-conforme" name="nao-conforme" class="form-control"
+                      ng-model="vm.modal.model.descricaoNaoConforme"
+                      ng-class="{'is-invalid': (formulario.nao-conforme.$dirty && formulario.nao-conforme.$invalid)}"
+                      required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar</button>
+  </div>
+
+</form>

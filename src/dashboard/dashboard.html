@@ -1,0 +1,106 @@
+<!-- <div class="row" ng-if="!['ue', 'ps', 'sme'].includes(usuario.usuarioOrigem.codigo)">
+	<div class="col">
+		<div class="card text-center">
+			<div class="card-body p-5">
+				<h4 class="card-text mt-3">Bem-vindo!</h4>
+				<img src="src/layout/img/logo-sme/logo-preto-vertical.png" class="img-fluid" style="max-height: 15rem;">
+			</div>
+		  </div>
+	</div>
+</div> -->
+
+<div class="row mt-3" ng-if="usuario.usuarioOrigem.codigo == 'sme'">
+	<div class="col-md-4 grid-margin">
+        <div class="card bg-danger text-white border-0" ng-class="{'pointer': vm.contratoList90.length > 0}" ng-click="vm.abrirModalContrato(vm.contratoList90)">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="icon-speedometer icon-lg"></i>
+                    <div class="ml-4">
+                        <h4 class="font-weight-light">Contratos À Vencer</h4>
+                        <h3 class="font-weight-light mb-3">{{vm.contratoList90.length || 0}}</h3>
+                        <p class="mb-0 font-weight-light">Em 90 dias</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 grid-margin">
+        <div class="card bg-warning text-white border-0" ng-class="{'pointer': vm.contratoList180.length > 0}" ng-click="vm.abrirModalContrato(vm.contratoList180)">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="icon-speedometer icon-lg"></i>
+                    <div class="ml-4">
+                        <h4 class="font-weight-light">Contratos À Vencer</h4>
+                        <h3 class="font-weight-light mb-3">{{vm.contratoList180.length || 0}}</h3>
+                        <p class="mb-0 font-weight-light">Em 180 dias</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="col-md-4 grid-margin">
+        <div class="card bg-primary text-white border-0" ng-class="{'pointer': vm.prestadorComReincidenciaList.length > 0}" ng-click="vm.abrirModalPrestadores()">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="icon-shield icon-lg"></i>
+                    <div class="ml-4">
+                        <h4 class="font-weight-light">Reincidência de Ocorrências</h4>
+                        <h3 class="font-weight-light mb-3">{{vm.prestadorComReincidenciaList.length || 0}}</h3>
+                        <p class="mb-0 font-weight-light">Prestadores</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<div class="row mt-3" ng-if="['ue', 'dre'].includes(usuario.usuarioOrigem.codigo)">
+    <div class="col-12">
+        <div class="card mb-3">
+            <div class="card-body d-flex flex-column justify-content-between p-0">
+                <p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">NOTÍCIAS E COMUNICADOS</p>
+                <div class="div-noticias p-4" ng-bind-html="vm.conteudoNoticia"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3" ng-if="['ue', 'ps'].includes(usuario.usuarioOrigem.codigo)">
+
+    <div class="col-sm-12 col-md-6 col-lg-6 grid-margin">
+        <div class="card mb-3">
+            <div class="card-body d-flex flex-column justify-content-between p-0">
+                <p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">Últimas Ocorrências</p>
+                <table class="table">
+                    <tbody>
+                        <tr ng-if="!vm.ultimasOcorrencias || vm.ultimasOcorrencias.length == 0">
+                            <td>Nenhuma ocorrência.</td>
+                        </tr>
+                        <tr class="text-right" ng-repeat="ocorrencia in vm.ultimasOcorrencias">
+                            <td class="text-left">{{ocorrencia.dataHoraCadastro | date:'dd/MM/yyyy HH:mm:ss'}} - {{ocorrencia.id}} - {{ocorrencia.tipo}} - <a href="ocorrencia/detalhe/{{ocorrencia.id}}" target="_blank">Ver Ocorrência</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-6 grid-margin">
+        <div class="card mb-3">
+            <div class="card-body d-flex flex-column justify-content-between p-0">
+                <p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">Últimas Mensagens</p>
+                <table class="table">
+                    <tbody>
+                        <tr ng-if="!vm.ultimasMensagens || vm.ultimasMensagens.length == 0">
+                            <td>Nenhuma mensagem.</td>
+                        </tr>
+                        <tr class="text-right" ng-repeat="mensagem in vm.ultimasMensagens">
+                            <td class="text-left">{{mensagem.dataHora | date:'dd/MM/yyyy HH:mm:ss'}} - {{mensagem.mensagem.slice(0, 50)}}... <a href="ocorrencia/detalhe/{{mensagem.idOcorrencia}}" target="_blank">Ver Ocorrência</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

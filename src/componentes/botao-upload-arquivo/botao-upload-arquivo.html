@@ -1,0 +1,5 @@
+<button type="button" class="btn btn-outline-info btn-lg btn-block btn-flat" ng-click="selecionar()">
+    <i class="fa fa-cloud-upload-alt mr-2"></i>
+    Carregar Arquivo
+</button>
+<input type="file" ng-if="uploader" ng-hide="true" id="inputFileUploader" nv-file-select uploader="uploader" accept=".csv">
