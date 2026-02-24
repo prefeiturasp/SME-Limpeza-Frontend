@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h5 class="modal-title">CONTRATOS À VENCER</h5>
+    <button type="button" class="close" ng-click="vm.fecharModal()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="pl-0">Contrato</th>
+                                    <th class="">Prestador de Serviço</th>
+                                    <th class="pr-0 text-right">Data de Vencimento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="contrato in vm.modal.contratoList">
+                                    <td class="py-4 pl-0">
+                                        <h5 class="font-weight-light" ng-bind="contrato.descricao"></h5>
+                                        <small>Código: {{contrato.codigo}}</small>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-weight-light" ng-bind="contrato.prestadorServico.razaoSocial"></h5>
+                                        <small>CNPJ: {{contrato.prestadorServico.cnpj | brCnpj}}</small>
+                                    </td>
+                                    <td class="pr-0 text-right">
+                                        <h5 class="font-weight-light" ng-bind="contrato.dataFinal | date:'dd/MM/yyyy'"></h5>
+                                        <small>Em {{contrato.dias}} dias</small>
+                                    </td>
+                                </tr>
+                                <tr ng-if="vm.modal.contratoList.length == 0">
+                                    <td colspan="3" class="text-center py-4 text-primary">
+                                        <h5>Nenhum contrato a vencer.</h5>
+                                        <small class="text-white">...</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

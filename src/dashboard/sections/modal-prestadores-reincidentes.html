@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h5 class="modal-title">PRESTADORES COM REINCIDÊNCIA DE OCORRÊNCIAS</h5>
+    <button type="button" class="close" ng-click="vm.fecharModal()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="pl-0">Prestador de Serviço</th>
+                                    <th class="">Dados da Ocorrência</th>
+                                    <th class="pr-0 text-right">Quantidade de Ocorrências</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.prestadorComReincidenciaList">
+                                    <td class="py-4 pl-0">
+                                        <h5 class="font-weight-light" ng-bind="item.prestadorServico.razaoSocial"></h5>
+                                        <small>CNPJ: {{item.prestadorServico.cnpj | brCnpj}}</small>
+                                    </td>
+                                    <td class="">
+                                        <h5 class="font-weight-light" ng-bind="item.ocorrencia"></h5>
+                                        <small>Variável Gerencial: {{item.tipo}}</small>
+                                    </td>
+                                    <td class="pr-0 text-right">
+                                        <div class="badge badge-pill badge-primary">{{item.total}}</div>
+                                    </td>
+                                </tr>
+                                <tr ng-if="vm.prestadorComReincidenciaList.length == 0">
+                                    <td colspan="3" class="text-center py-4 text-primary">
+                                        <h5>Nenhuma informação encontrada.</h5>
+                                        <small class="text-white">...</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

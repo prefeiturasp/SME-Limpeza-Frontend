@@ -1,0 +1,205 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off"
+  autocapitalize="off" spellcheck="false">
+
+  <div class="modal-header">
+    <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR UNIDADE DE ENISNO</h5>
+    <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR UNIDADE DE ENISNO</h5>
+    <button type="button" class="close" ng-click="vm.fecharModal()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-sm-12 col-sm-12 col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Identificação</h4>
+            <p class="text-muted font-weight-light">Informações gerais da unidade escolar.
+            <div class="row mt-4">
+              <div class="col-sm-12 col-sm-5 col-lg-5">
+                <div class="form-group">
+                  <label for="codigo" class="obrigatorio">Código</label>
+                  <input type="text" id="codigo" name="codigo" class="form-control" ng-model="vm.modal.model.codigo"
+                    ng-class="{'is-invalid': (formulario.codigo.$dirty && formulario.codigo.$invalid)}" required>
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-7 col-lg-7">
+                <div class="form-group">
+                  <label for="descricao" class="obrigatorio">Descrição</label>
+                  <input type="text" id="descricao" name="descricao" class="form-control"
+                    ng-model="vm.modal.model.descricao"
+                    ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-sm-5 col-lg-5">
+                <div class="form-group">
+                  <label for="telefone" class="dois-pontos">Telefone</label>
+                  <input type="text" id="telefone" name="telefone" class="form-control"
+                    ng-model="vm.modal.model.telefone" placeholder="(__) _____-____" ui-br-phone-number-mask="areaCode"
+                    ng-class="{'is-invalid': (formulario.telefone.$dirty && formulario.telefone.$invalid)}">
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-7 col-lg-7">
+                <div class="form-group">
+                  <label for="email" class="dois-pontos">E-mail</label>
+                  <input type="email" id="email" name="email" class="form-control" ng-model="vm.modal.model.email"
+                    ng-class="{'is-invalid': (formulario.email.$dirty && formulario.email.$invalid)}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-sm-12 col-lg-5">
+                <div class="form-group">
+                  <label for="tipo" class="obrigatorio">Tipo de Escola</label>
+                  <select class="form-control" id="tipo" name="tipo" ng-model="vm.modal.model.idTipoEscola"
+                    ng-options="tipo.id as tipo.descricao for tipo in vm.tipoEscolaList"
+                    ng-class="{'is-invalid': (formulario.tipo.$dirty && formulario.tipo.$invalid)}" required>
+                    <option value="" disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-12 col-lg-7">
+                <div class="form-group">
+                  <label class="control-label obrigatorio" for="dre">Diretoria Regional de Educação</label>
+                  <select class="form-control" id="dre" name="dre" ng-model="vm.modal.model.idDiretoriaRegional"
+                    ng-options="dre.id as dre.descricao for dre in vm.diretoriaRegionalList"
+                    ng-class="{'is-invalid': (formulario.dre.$dirty && formulario.dre.$invalid)}" required>
+                    <option value="" selected disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-sm-12 col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Localização</h4>
+            <p class="text-muted font-weight-light">Informações de localização da unidade escolar.</p>
+            <div class="row mt-4">
+              <div class="col-sm-12 col-sm-5 col-lg-5">
+                <div class="form-group">
+                  <label for="cep" class="obrigatorio">CEP</label>
+                  <input type="text" id="cep" name="cep" class="form-control" ng-model="vm.modal.model.cep"
+                    placeholder="_____-___" ui-br-cep-mask ng-blur="vm.evtChangeCEP(formulario)"
+                    ng-class="{'is-invalid': (formulario.cep.$dirty && formulario.cep.$invalid)}" required>
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-7 col-lg-7">
+                <div class="form-group">
+                  <label for="endereco" class="obrigatorio">Endereço</label>
+                  <input type="text" id="endereco" name="endereco" class="form-control"
+                    ng-model="vm.modal.model.endereco"
+                    ng-class="{'is-invalid': (formulario.endereco.$dirty && formulario.endereco.$invalid)}" disabled
+                    required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-sm-5 col-lg-5">
+                <div class="form-group">
+                  <label for="numero" class="obrigatorio">Número</label>
+                  <input type="text" id="numero" name="numero" class="form-control" ng-model="vm.modal.model.numero"
+                    ng-disabled="!vm.modal.model.endereco" ng-blur="vm.evtChangeEndereco(formulario)"
+                    ng-class="{'is-invalid': (formulario.numero.$dirty && formulario.numero.$invalid)}" required>
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-7 col-lg-7">
+                <div class="form-group">
+                  <label for="bairro" class="obrigatorio">Bairro</label>
+                  <input type="text" id="bairro" name="bairro" class="form-control" ng-model="vm.modal.model.bairro"
+                    ng-class="{'is-invalid': (formulario.bairro.$dirty && formulario.bairro.$invalid)}" disabled
+                    required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-sm-6 col-lg-5">
+                <div class="form-group">
+                  <label for="latitude" class="obrigatorio">Latitude</label>
+                  <input type="text" id="latitude" name="latitude" class="form-control"
+                    ng-model="vm.modal.model.latitude"
+                    ng-class="{'is-invalid': (formulario.latitude.$dirty && (formulario.latitude.$invalid || !vm.verificarLatitude()))}"
+                    ng-disabled="vm.modal.model.numero == undefined || (vm.modal.model.numero != undefined && !vm.flagErroCoordenadas)"
+                    required>
+                </div>
+              </div>
+              <div class="col-sm-6 col-sm-6 col-lg-5">
+                <div class="form-group">
+                  <label for="longitude" class="obrigatorio">Longitude</label>
+                  <input type="text" id="longitude" name="longitude" class="form-control"
+                    ng-model="vm.modal.model.longitude"
+                    ng-class="{'is-invalid': (formulario.longitude.$dirty && (formulario.longitude.$invalid || !vm.verificarLongitude()))}"
+                    ng-disabled="vm.modal.model.numero == undefined || (vm.modal.model.numero != undefined && !vm.flagErroCoordenadas)"
+                    required>
+                </div>
+              </div>
+              <div class="col-sm-12 col-sm-12 col-lg-2 m-auto">
+                <div class="form-group">
+                  <label for="" class="text-white">.</label>
+                  <button type="button" class="btn btn-outline-primary btn-block text-bold" ng-click="vm.abrirMapa()">
+                    <i class="icon-location-pin"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Responsável Legal</h4>
+            <p class="text-muted font-weight-light">Informações de contato do responsável legal pela unidade escolar.
+            </p>
+            <div class="table-responsive">
+              <p class="card-description text-center text-danger p-4 pt-5"
+                ng-if="!vm.modal.model.responsavelLegalLista || vm.modal.model.responsavelLegalLista.length == 0">Nenhum
+                Responsável Legal cadastrado.</p>
+              <table class="table" ng-if="!vm.modal.model.responsavelLegalLista.length == 0">
+                <thead>
+                  <tr>
+                    <th class="pl-0">Nome</th>
+                    <th>Cargo</th>
+                    <th class="text-right pr-0" style="width: 10%">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="responsavel in vm.modal.model.responsavelLegalLista">
+                    <td class="py-1 pl-0">
+                      <p class="mb-2" ng-bind="responsavel.nome"></p>
+                      <p class="mb-0 text-muted text-small">E-mail.: {{ responsavel.email }}</p>
+                    </td>
+                    <td ng-bind="responsavel.cargo" style="width: 30%"></td>
+                    <td class="text-right pr-0">
+                      <a class="mr-1 btn btn-outline-primary btn-sm" href="#"
+                        ng-click="vm.abrirModalResponsavelLegal($index, responsavel)"><i class="icon-pencil"></i></a>
+                      <a class="btn btn-outline-secondary btn-sm" href="#"
+                        ng-click="vm.removerResponsavelLegal($index)"><i class="icon-trash"></i></a>'
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button type="button" class="btn btn-primary btn-block mt-3"
+                ng-click="vm.abrirModalResponsavelLegal()">Cadastrar Responsável Legal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success"
+      ng-disabled="formulario.$invalid || !vm.verificarLatitudeLongitude()">Salvar</button>
+  </div>
+
+</form>

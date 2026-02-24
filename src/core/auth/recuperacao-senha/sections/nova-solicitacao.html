@@ -1,0 +1,43 @@
+<div ng-if="!vm.model.flagEnviado || (vm.model.flagEnviado && !vm.model.flagSucesso)">
+
+    <h3 class="mr-auto">Redefinir sua senha</h3>
+    <p class="mb-4 mr-auto">Insira seu endereço de e-mail e lhe enviaremos um link para redefinir a sua senha.</p>
+
+    <div class="alert alert-danger mt-2 mb-4" ng-if="vm.model.flagEnviado && !vm.model.flagSucesso">
+        Não encontramos nenhum usuário associado ao e-mail informado</strong>. Verifique e tente novamente.
+    </div>
+
+    <div class="form-group">
+        <label id="email" class="dois-pontos">E-mail</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-user"></i></span>
+            </div>
+            <input type="email" id="email" name="email" class="form-control" ng-model="vm.model.email"
+                placeholder="Digite seu e-mail aqui"
+                ng-class="{'is-invalid': (formulario.email.$dirty && formulario.email.$invalid)}" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Redefinir senha</button>
+        <a href="login" class="btn btn-link btn-fw">Retornar para login</a>
+    </div>
+
+</div>
+
+<div ng-if="vm.model.flagEnviado && vm.model.flagSucesso">
+
+    <h3 class="mr-auto">Verifique seu e-mail</h3>
+
+    <div class="alert alert-success mt-4" role="alert">
+        Enviado com sucesso! Enviamos um e-mail para <strong ng-bind="vm.model.email"></strong> contendo um link para redefinir sua senha.
+    </div>
+
+    <p class="mb-5 mr-auto">Se você não receber um e-mail de ativação, confira sua caixa de spam antes de solicitar outro e-mail.</p>
+
+    <div class="form-group">
+        <a href="login" class="btn btn-link btn-fw pl-0">Retornar para login</a>
+    </div>
+
+</div>

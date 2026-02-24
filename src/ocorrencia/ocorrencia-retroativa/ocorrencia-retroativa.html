@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="container-fluid d-flex justify-content-between">
+          <div class="col-lg-4 pl-0">
+            <p class="mb-0 mt-2"><b>Ocorrências Retroativas</b></p>
+            <p>Listagem de ocorrências lançadas manualmente.</p>
+          </div>
+          <div class="col-lg-4 pr-0">
+            <div class="d-flex justify-content-end mb-3">
+              <div class="btn-group" role="group">
+                <button class="btn btn-primary" ng-click="vm.abrirModalOcorrenciaRetroativa()" ><!-- ng-if="$root.usuario.flagFiscal" -->
+                  <i class="icon-plus"></i>
+                  Cadastrar Ocorrência Retroativa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <uib-accordion class="accordion accordion-solid-header accordion-custom">
+          <div uib-accordion-group is-open="vm.isFilterOpen">
+            <uib-accordion-heading>
+              Filtros de busca
+            </uib-accordion-heading>
+            <form name="formFiltro" novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+              <div class="row">
+                <div class="col-sm-12 col-md-2 col-lg-2 my-2">
+                  <div class="form-control">
+                    <label for="dataInicial">Data Inicial</label>
+                    <input type="text" id="dataInicial" name="dataInicial" class="form-control" ng-model="vm.filtros.dataInicial" uib-datepicker-popup="dd/MM/yyyy" datepicker-options="vm.optionsDatePickerFiltro" is-open="focus1" ng-focus="focus1=true">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2 my-2">
+                  <div class="form-control">
+                    <label for="dataFinal">Data Final</label>
+                      <input type="text" id="dataFinal" name="dataFinal" class="form-control" ng-model="vm.filtros.dataFinal" uib-datepicker-popup="dd/MM/yyyy" datepicker-options="vm.optionsDatePickerFiltro" is-open="focus2" ng-focus="focus2=true">
+                  </div>
+                </div>
+               
+                <div class="col-sm-12 col-md-4 col-lg-4 my-2">
+                  <div class="form-control">
+                    <label for="idContrato">Contrato</label>
+
+                     <ui-select id="idContrato" name="idContrato" ng-model="vm.filtros.idContrato">
+                          <ui-select-match allow-clear="true" placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                          <ui-select-choices repeat="c in vm.contratoLista | filter: $select.search">
+                              <span class="mb-0 d-block" ng-bind-html="c.descricao | highlight: $select.search"></span>
+                              <small class="my-2" ng-bind-html="c.codigo | highlight: $select.search"></small>
+                          </ui-select-choices>
+                      </ui-select>
+
+                  </div>
+                </div>
+
+                 <div class="col-sm-12 col-md-4 col-lg-4 my-2">
+                  <div class="form-control">
+                   <label for="idUnidadeEscolar">Unidade Escolar</label>
+
+                   <ui-select id="idUnidadeEscolar" name="idUnidadeEscolar" ng-model="vm.filtros.idUnidadeEscolar">
+                      <ui-select-match allow-clear="true" placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                      <ui-select-choices repeat="ue in vm.unidadeEscolarList | filter: $select.search">
+                          <span class="mb-0 d-block" ng-bind-html="ue.descricao | highlight: $select.search"></span>
+                      </ui-select-choices>
+                  </ui-select>
+                   
+                  </div>
+                </div>
+
+              </div>
+              <div class="row mt-2">
+                <div class="col-4">
+                  <button type="button" class="btn btn-primary" ng-disabled="formFiltro.$invalid"
+                    ng-click="vm.recarregarTabela()">Filtrar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </uib-accordion>
+
+        <hr>
+
+        <div class="row">
+          <div class="col-12">
+            <lista></lista>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

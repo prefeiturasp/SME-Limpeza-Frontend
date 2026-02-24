@@ -1,0 +1,40 @@
+<div class="modal-header bg-secondary">
+  <h5 class="modal-title">OCORRÊNCIAS</h5>
+  <button type="button" class="close" ng-click="vm.fecharModalOcorrencias()">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+
+<div class="modal-body p-0">
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-small">
+        <thead>
+          <tr class="bg-light">
+            <th class="text-left">Data/Hora Ocorrência</th>
+            <th class="text-left">Cadastrado em</th>
+            <th class="text-left">Nome do Fiscal</th>
+            <th class="text-left">Situação</th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-right" ng-repeat="ocorrencia in vm.modalOcorrencias.ocorrencias">
+            <td class="text-left" ng-bind="ocorrencia.data | date: 'dd/MM/yyyy HH:mm:ss'"></td>
+            <td class="text-left" ng-bind="ocorrencia.dataHoraCadastro | date: 'dd/MM/yyyy HH:mm:ss'"></td>
+            <td class="text-left" ng-bind="ocorrencia.nomeFiscal"></td>
+            <td class="text-left text-danger">SOLICITAÇÃO NÃO ATENDIDA</td>
+            <td>
+              <a class="btn btn-outline-primary btn-sm" href="ocorrencia/detalhe/{{ocorrencia.idOcorrencia}}"
+                target="_blank" title="Visualizar">
+                <i class="icon-eye"></i>
+                Visualizar
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

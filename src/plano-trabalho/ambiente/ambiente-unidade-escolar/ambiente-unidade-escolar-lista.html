@@ -1,0 +1,101 @@
+<div class="card">
+    <div class="card-body p-0">
+
+        <h4 class="card-title m-4">
+            {{usuario.usuarioOrigem.codigo == 'sme' ? 'AMBIENTES DAS UNIDADES ESCOLARES' : 'AMBIENTE DA UNIDADE
+            ESCOLAR'}}
+            <div class="text-right">
+                <button type="button" class="btn btn-outline-primary btn-sm mr-1" ng-click="vm.gerarTodosQRCode()"
+                    ng-if="usuario.usuarioOrigem.codigo === 'ue'">
+                    Baixar Todos
+                    <i class="icon-cloud-download ml-1"></i>
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-sm mr-1" ng-click="vm.irParaImportacao()"
+                    ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+                    Importar
+                    <i class="icon-cloud-upload"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModal()">
+                    Adicionar
+                    <i class="icon-plus ml-1"></i>
+                </button>
+            </div>
+        </h4>
+
+        <uib-accordion class="accordion accordion-solid-header accordion-custom">
+            <div uib-accordion-group is-open="vm.isFilterOpen">
+                <uib-accordion-heading>
+                    Filtros de busca
+                </uib-accordion-heading>
+                <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+                            <div class="form-control">
+                                <label class="dois-pontos" for="descricao">Nome do ambiente</label>
+                                <input type="text" class="form-control lh-18" id="descricao"
+                                    placeholder="Digite aqui o nome do ambiente" ng-model="vm.filtros.descricao">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+                            <div class="form-control">
+                                <label class="dois-pontos" for="tipo">Tipo de ambiente</label>
+                                <select class="form-control" id="tipo" ng-model="vm.filtros.idTipoAmbiente"
+                                    ng-options="tipo.id as tipo.descricao for tipo in vm.tipoAmbienteList">
+                                    <option value="" selected>Todos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ue'">
+                            <div class="form-control">
+                                <label for="ue" class="dois-pontos">Diretoria Regional de Educação</label>
+                                <ui-select id="dre" ng-model="vm.filtros.idDiretoriaRegional"
+                                    ng-change="vm.evtChangeDiretoriaRegional()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                                    <ui-select-choices
+                                        repeat="dre in vm.diretoriaRegionalList | filter: $select.search">
+                                        <span class="mb-0 d-block"
+                                            ng-bind-html="dre.descricao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ue'">
+                            <div class="form-control">
+                                <label for="ue" class="dois-pontos">Unidade Escolar</label>
+                                <ui-select id="ue" ng-model="vm.filtros.idUnidadeEscolar">
+                                    <ui-select-match allow-clear="true" placeholder="Todos">
+                                        {{$select.selected.codigo}} - {{$select.selected.descricao}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="ue in vm.unidadeEscolarList | filter: $select.search">
+                                        <span class="mb-0 d-block"
+                                            ng-bind-html="ue.descricao | highlight: $select.search"></span>
+                                        <small class="my-2"
+                                            ng-bind-html="ue.codigo | highlight: $select.search"></small>
+                                        <small class="my-2"> - </small>
+                                        <small class="my-2" ng-bind-html="ue.tipo | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary"
+                                ng-click="vm.recarregarTabela()">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </uib-accordion>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-12">
+                <lista></lista>
+            </div>
+        </div>
+
+    </div>
+</div>

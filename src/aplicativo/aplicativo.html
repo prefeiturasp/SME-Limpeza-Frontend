@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-body">
+
+        <h4 class="card-title">APLICATIVO</h4>
+
+        <div class="row mt-4">
+            <div ng-class="vm.isPrestadorServico ? 'col-sm-12 col-md-12 col-lg-6' : 'col-12'">
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <p class="mb-1 text-bold h4 mb-0 mr-2">Instalação</p>
+                            <p class="mb-0 text-muted font-weight-light">Leia o QRCode abaixo para baixar o aplicativo.
+                            </p>
+                        </div>
+                        <div class="mt-5 text-center">
+                            <qrcode data="{{vm.urlAplicativo}}" size="300" color="#00B297"></qrcode>
+                            <canvas id="canvas"></canvas>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <button class="btn btn-outline-success btn-block" ng-click="vm.download()">
+                                <i class="icon-cloud-download"></i>
+                                Download .APK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6" ng-if="vm.isPrestadorServico">
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <p class="mb-1 text-bold h4 mb-0 mr-2">Acesso</p>
+                            <p class="mb-0 text-muted font-weight-light">Utilize as credenciais abaixo para acessar o aplicativo.</p>
+                        </div>
+                        <div class="mt-4">
+                            <form class="forms-sample">
+                                <div class="form-group">
+                                    <label for="cnpj" class="dois-pontos">Usuário</label>
+                                    <input type="cnpj" class="form-control" id="cnpj" ng-model="vm.dados.cnpj" ui-br-cnpj-mask disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="senha" class="dois-pontos">Senha</label>
+                                    <input type="{{ vm.verSenha ? 'text' : 'password' }}" class="form-control" id="senha" ng-model="vm.dados.senhaAplicativo">
+                                </div>
+                                <div class="form-check form-check-flat form-check-primary">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" ng-model="vm.verSenha">
+                                        Ver senha <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-primary mb-2 float-right" ng-disabled="!vm.senhaOriginal || vm.dados.senhaAplicativo == vm.senhaOriginal" ng-click="vm.alterarSenha()">Alterar Senha</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
