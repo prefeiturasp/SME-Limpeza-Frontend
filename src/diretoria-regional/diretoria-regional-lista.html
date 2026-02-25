@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-body p-0">
+
+    <h4 class="card-title m-4">DIRETORIAS REGIONAIS DE EDUCAÇÃO
+      <div class="text-right">
+        <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.irParaImportacao()">
+          Importar
+          <i class="icon-cloud-upload ml-1"></i>
+        </button>
+        <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModal()">
+          Adicionar
+          <i class="icon-plus ml-1"></i>
+        </button>
+      </div>
+    </h4>
+
+    <uib-accordion class="accordion accordion-solid-header accordion-custom">
+      <div uib-accordion-group is-open="vm.isFilterOpen">
+        <uib-accordion-heading>
+          Filtros de busca
+        </uib-accordion-heading>
+        <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <div class="row">
+            <div class="col-4">
+              <div class="form-control">
+                <label class="dois-pontos" for="descricao">Nome da DRE</label>
+                <input type="text" class="form-control lh-18" id="descricao" placeholder="Digite aqui o nome da DRE"
+                  ng-model="vm.filtros.descricao">
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-4">
+              <button type="button" class="btn btn-primary" ng-click="vm.recarregarTabela()">Filtrar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </uib-accordion>
+
+    <div class="row">
+      <div class="col-12">
+        <lista></lista>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div ng-if="vm.model && vm.model.flagTokenExpirado">
+
+    <h3 class="mr-auto">Solicitação expirada</h3>
+
+    <div class="alert alert-danger mt-4 mb-4">
+        Olá, <strong ng-bind="vm.model.nome"></strong>, a sua solicitação de redefinição de senha <strong>expirou</strong>. Faça uma nova solicitação clicando no botão abaixo.
+    </div>
+
+    <div class="form-group">
+        <a href="recuperacao-senha" class="btn btn-success">Solicitar recuperação</a>
+    </div>
+
+</div>
+
+<div ng-if="vm.model && !vm.model.flagTokenExpirado">
+
+    <h3 class="mr-auto">Definir uma nova senha</h3>
+
+    <p class="mb-4 mt-3 mr-auto">Olá, {{vm.model.nome}}, escolha uma senha forte. Recomendamos que você não repita senhas para diferentes contas.</p>
+
+    <div class="form-group">
+        <label id="senha" class="dois-pontos">Nova senha</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-lock"></i></span>
+            </div>
+            <input type="password" id="senha" name="senha" class="form-control"
+                placeholder="Digite sua senha aqui" ng-model="vm.model.senha"
+                ng-class="{'is-invalid': (formulario.senha.$dirty && formulario.senha.$invalid)}" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Alterar senha</button>
+        <a href="login" class="btn btn-link btn-fw">Retornar para login</a>
+    </div>
+
+</div>

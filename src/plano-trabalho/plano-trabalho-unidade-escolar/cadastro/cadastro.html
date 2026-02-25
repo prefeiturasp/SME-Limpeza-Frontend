@@ -1,0 +1,204 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off">
+
+  <div class="modal-header">
+    <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR PLANO DE TRABALHO DA UNIDADE ESCOLAR</h5>
+    <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR PLANO DE TRABALHO DA UNIDADE ESCOLAR</h5>
+    <button type="button" class="close" ng-click="vm.fecharModal()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row" ng-if="vm.model.flagAprovado === false">
+      <div class="col-12">
+        <div class="alert alert-fill-danger"
+          ng-if="usuario.usuarioOrigem.codigo !== 'ue' && usuario.usuarioCargo.id !== 2">
+          Este plano de trabalho ainda não foi aprovado.
+        </div>
+
+        <div class="alert alert-fill-danger"
+          ng-if="usuario.usuarioOrigem.codigo === 'ue' && usuario.usuarioCargo.id === 2">
+          Este relatório ainda não foi aprovado. Você deseja aprová-lo?
+          <a href="#" class="text-bold text-white" ng-click="vm.aprovar()">
+            Sim, aprovar!
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="grid-margin stretch-card" ng-class="vm.isEditar ? 'col-lg-6' : 'col-lg-4'">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Importação</h4>
+            <p class="text-muted font-weight-light">Importar plano de trabalho da matriz para a unidade escolar.</p>
+            <div class="row mt-4">
+              <div class="col-12" ng-if="usuario.usuarioOrigem.codigo === 'ps'">
+
+                <div class="d-block mb-4" ng-if="vm.isEditar">
+                  <small>Unidade Escolar:</small>
+                  <h4 class="text-bold mt-1" ng-bind="vm.model.unidadeEscolar.descricao"></h4>
+                  <div>
+                    <span class="badge badge-secondary text-dark">Código: {{vm.model.unidadeEscolar.codigo}}</span>
+                    <span class="badge badge-secondary text-dark">Tipo: {{vm.model.unidadeEscolar.tipo}}</span>
+                  </div>
+                </div>
+
+                <div class="form-group" ng-if="!vm.isEditar">
+                  <label for="ue" class="obrigatorio">Unidade Escolar</label>
+                  <ui-select id="ue" ng-model="vm.model.unidadeEscolar" required>
+                    <ui-select-match allow-clear="true" placeholder="Selecionar">
+                      {{$select.selected.codigo}} - {{$select.selected.descricao}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="ue in vm.unidadeEscolarList | filter: $select.search">
+                      <span class="mb-0 d-block" ng-bind-html="ue.descricao | highlight: $select.search"></span>
+                      <small class="my-2" ng-bind-html="ue.codigo | highlight: $select.search"></small>
+                      <small class="my-2"> - </small>
+                      <small class="my-2" ng-bind-html="ue.tipo | highlight: $select.search"></small>
+                    </ui-select-choices>
+                  </ui-select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="ambienteGeral" class="obrigatorio">Ambiente Geral</label>
+                  <select class="form-control" id="ambienteGeral" name="ambienteGeral"
+                    ng-model="vm.model.idAmbienteGeral" ng-change="vm.evtChangeAmbienteGeral()"
+                    ng-options="ag.id as ag.descricao for ag in vm.ambienteGeralList"
+                    ng-class="{'is-invalid': (formulario.ambienteGeral.$dirty && formulario.ambienteGeral.$invalid)}"
+                    ng-disabled="usuario.usuarioOrigem.codigo === 'ps' && !vm.model.unidadeEscolar" required>
+                    <option value="" disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="periodicidade" class="obrigatorio">Periodicidade</label>
+                  <select class="form-control" id="periodicidade" name="periodicidade"
+                    ng-model="vm.model.idPeriodicidade" ng-change="vm.evtChangePeriodicidade()"
+                    ng-options="p.id as p.descricao for p in vm.periodicidadeList"
+                    ng-class="{'is-invalid': (formulario.periodicidade.$dirty && formulario.periodicidade.$invalid)}"
+                    required>
+                    <option value="" disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="turno" class="obrigatorio">Turno</label>
+                  <select class="form-control" id="turno" name="turno" ng-model="vm.model.idTurno"
+                    ng-change="vm.evtChangeTurno()" ng-options="t.id as t.descricao for t in vm.turnoList"
+                    ng-class="{'is-invalid': (formulario.turno.$dirty && formulario.turno.$invalid)}" required>
+                    <option value="" disabled>Selecione</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-if="vm.model.idPeriodicidade == 1">
+              <div class="col-6">
+                <div class="form-check">
+                  <label for="flagFinalSemana" class="form-check-label">
+                    <input type="checkbox" id="flagFinalSemana" name="flagFinalSemana" class="form-check-input"
+                      ng-model="vm.model.flagFinalSemana">
+                    Incluir nos finais de semana
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 grid-margin stretch-card" ng-if="!vm.isEditar">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Ambientes</h4>
+            <p class="text-muted font-weight-light">Ambientes da unidade escolar.</p>
+            <div class="alert alert-danger"
+              ng-if="!vm.ambienteUnidadeEscolarList || vm.ambienteUnidadeEscolarList.length == 0" role="alert">
+              Nenhum ambiente cadastrado para o ambiente geral selecionado.
+            </div>
+            <div class="table-responsive mt-4" ng-if="vm.ambienteUnidadeEscolarList.length > 0">
+              <table class="table p-relative d-block"
+                ng-style="{ 'max-height': usuario.usuarioOrigem.codigo === 'ps' ? '225px' : '150px' }"
+                style="overflow: auto; overscroll-behavior: contain">
+                <tbody class="p-relative">
+                  <tr ng-repeat="aue in vm.ambienteUnidadeEscolarList | filter: vm.filter | limitTo: vm.limit"
+                    in-view="vm.loadMore($last, $inview)">
+                    <td class="text-center p-2">
+                      <div class="d-inline icheck-success">
+                        <input type="checkbox" id="checkbox-{{aue.id}}" ng-model="aue.isSelected">
+                        <label class="sem-dois-pontos font-weight-normal" for="checkbox-{{aue.id}}"></label>
+                      </div>
+                    </td>
+                    <td class="w-100 px-2" ng-bind="aue.descricao"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-margin stretch-card" ng-class="vm.isEditar ? 'col-lg-6' : 'col-lg-4'">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Periodicidade</h4>
+            <p class="text-muted font-weight-light">Informações referentes à periodicidade de execução do plano de
+              trabalho.</p>
+            <div class="alert" ng-class="vm.model.idPeriodicidade ? 'alert-primary' : 'alert-danger'" role="alert">
+              <span ng-if="!vm.model.idPeriodicidade">Informe a periodicidade para continuar.</span>
+              <span ng-if="vm.model.idPeriodicidade == 1">Os planos de trabalho com periodicidade <strong>dária</strong>
+                serão agendados automaticamente para o prestador de segunda a sexta-feira.</span>
+              <span ng-if="vm.model.idPeriodicidade == 2">Os planos de trabalho com periodicidade
+                <strong>semanal</strong> serão agendados automaticamente para o prestador no dia da semana informado
+                abaixo.</span>
+              <span ng-if="vm.model.idPeriodicidade == 3">Os planos de trabalho com periodicidade
+                <strong>mensal</strong> serão agendados automaticamente para o prestador no primeiro dia da semana
+                informado abaixo de cada mês.</span>
+              <span ng-if="vm.model.idPeriodicidade == 4">Os planos de trabalho com periodicidade
+                <strong>trimestral</strong> serão agendados automaticamente para o prestador a cada 90 dias a partir da
+                data inicial informada abaixo.</span>
+            </div>
+            <div class="form-group" ng-if="vm.model.idPeriodicidade == 2 || vm.model.idPeriodicidade == 3">
+              <label for="diaSemana" class="obrigatorio">Dia da semana</label>
+              <select class="form-control" id="diaSemana" name="diaSemana" ng-model="vm.model.diaSemana"
+                ng-options="ds.id as ds.descricao for ds in vm.diaSemanaList" required
+                ng-class="{'is-invalid': (formulario.diaSemana.$dirty && formulario.diaSemana.$invalid)}">
+                <option value="" disabled>Selecione</option>
+              </select>
+            </div>
+            <div class="form-group" ng-if="vm.model.idPeriodicidade == 4">
+              <label for="dataInicial" class="obrigatorio">Data Inicial</label>
+              <input type="text" id="dataInicial" name="dataInicial" class="form-control"
+                ng-model="vm.model.dataInicial" uib-datepicker-popup="dd/MM/yyyy"
+                datepicker-options="vm.optionsDatePicker" is-open="focus1" ng-focus="focus1=true"
+                ng-class="{'is-invalid': (formulario.dataInicial.$dirty && formulario.dataInicial.$invalid)}" required>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Atividades</h4>
+            <p class="text-muted font-weight-light">Descrição das atividades deste plano de trabalho.
+            <div class="form-group mt-4 mb-0">
+              <summernote config="vm.optionsSummernote" ng-model="vm.model.descricao" required></summernote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-disabled="!vm.verificarFormulario(formulario)">Salvar</button>
+  </div>
+
+</form>

@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-body p-0">
+
+        <h4 class="card-title m-4">CONTRATOS
+            <div class="text-right">
+                <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModal()">
+                    Adicionar
+                    <i class="icon-plus ml-1"></i>
+                </button>
+            </div>
+        </h4>
+
+        <uib-accordion class="accordion accordion-solid-header accordion-custom">
+            <div uib-accordion-group is-open="vm.isFilterOpen">
+                <uib-accordion-heading>
+                    Filtros de busca
+                </uib-accordion-heading>
+                <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+                            <div class="form-control">
+                                <label class="dois-pontos" for="codigo">Código do Contrato</label>
+                                <input type="text" class="form-control lh-18" id="codigo" placeholder="Digite aqui o código do contrato" ng-model="vm.filtros.codigo">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2">
+                            <div class="form-control">
+                                <label class="dois-pontos" for="prestadorServico">Prestador de Serviço</label>
+                                <ui-select id="ps" ng-model="vm.filtros.prestadorServico">
+                                    <ui-select-match allow-clear="true" placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                                    <ui-select-choices repeat="ps in vm.prestadorServicoList | filter: $select.search">
+                                        <span class="mb-0 d-block" ng-bind-html="ps.razaoSocial | highlight: $select.search"></span>
+                                        <small class="my-2">CNPJ:</small>
+                                        <small class="my-2" ng-bind-html="(ps.cnpj | brCnpj) | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary" ng-click="vm.recarregarTabela()">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </uib-accordion>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-12">
+                <lista></lista>
+            </div>
+        </div>
+
+    </div>
+</div>

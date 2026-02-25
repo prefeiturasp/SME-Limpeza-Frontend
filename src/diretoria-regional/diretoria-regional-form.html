@@ -1,0 +1,74 @@
+<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off">
+
+    <div class="modal-header">
+        <h5 class="modal-title" ng-bind="vm.modal.isEditar ? 'Editar' : 'Cadastrar'"></h5>
+        <button type="button" class="close" ng-click="vm.fecharModal()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="descricao" class="obrigatorio">Descrição</label>
+                    <input type="text" id="descricao" name="descricao" class="form-control" ng-model="vm.modal.model.descricao" 
+                        ng-class="{'is-invalid': (formulario.descricao.$dirty && formulario.descricao.$invalid)}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="endereco" class="obrigatorio">Endereço</label>
+                    <input type="text" id="endereco" name="endereco" class="form-control" ng-model="vm.modal.model.endereco" 
+                        ng-class="{'is-invalid': (formulario.endereco.$dirty && formulario.endereco.$invalid)}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="bairro" class="obrigatorio">Bairro</label>
+                    <input type="text" id="bairro" name="bairro" class="form-control" ng-model="vm.modal.model.bairro" 
+                        ng-class="{'is-invalid': (formulario.bairro.$dirty && formulario.bairro.$invalid)}" required>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="cep" class="obrigatorio">CEP</label>
+                    <input type="text" id="cep" name="cep" class="form-control" ng-model="vm.modal.model.cep" 
+                        placeholder="_____-___" ui-br-cep-mask
+                        ng-class="{'is-invalid': (formulario.cep.$dirty && formulario.cep.$invalid)}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" class="form-control" ng-model="vm.modal.model.telefone"
+                        placeholder="(__) _____-____" ui-br-phone-number-mask="areaCode"
+                        ng-class="{'is-invalid': (formulario.telefone.$dirty && formulario.telefone.$invalid)}">
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" class="form-control" ng-model="vm.modal.model.email" 
+                        ng-class="{'is-invalid': (formulario.email.$dirty && formulario.email.$invalid)}">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar</button>
+    </div>
+
+</form>

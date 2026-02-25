@@ -1,0 +1,25 @@
+<form novalidate name="formulario" ng-submit="vm.transferirData()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+    <div class="modal-header">
+        <h5 class="modal-title">REAGENDAR MONITORAMENTO</h5>
+        <button type="button" class="close" ng-click="vm.fecharModalTransferencia()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="dataInicial">Selecione a nova data que o prestador de serviço deverá realizar as atividades dessa plano de trabalho.</label>
+                    <div uib-datepicker ng-model="vm.modalTransferencia.model.novaData" class="mt-3" datepicker-options="vm.optionsDatePicker"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Reagendar</button>
+    </div>
+
+</form>

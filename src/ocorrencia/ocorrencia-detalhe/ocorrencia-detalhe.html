@@ -1,0 +1,228 @@
+<div class="card">
+  <div class="card-body">
+
+    <h4 class="card-title">DETALHES DA OCORRÊNCIA</h4>
+    <hr>
+
+    <div class="alert alert-primary" role="alert"
+      ng-if="usuario.usuarioOrigem.codigo === 'dre' && vm.ocorrencia.flagEncerrado">
+      Esta ocorrência foi encerrada. Deseja reabrí-la?
+      <a href="#" ng-click="vm.reabrir()">Clique aqui!</a>
+    </div>
+
+    <div class="alert alert-danger" ng-if="vm.ocorrencia.flagGerarDesconto">
+      <i class="icon-exclamation"></i>
+      Essa ocorrência irá gerar desconto no faturamento do prestador de serviço!
+    </div>
+
+    <div class="row" ng-if="vm.ocorrencia.idMonitoramento">
+      <div class="col-12">
+        <div class="alert alert-primary" role="alert">
+          Esta ocorrência está relacionada a um monitoramento.
+          <a href="monitoramento/detalhe/{{vm.ocorrencia.idMonitoramento}}" target="_blank">
+            Clique aqui para visualizar.
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-3 stretch-card">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <p class="mb-1">
+                <span class="h4 mb-0 mr-2" ng-bind="vm.ocorrencia.data | date:'dd/MM/yyyy - HH:mm'"></span>
+              </p>
+              <p class="mb-0 text-muted font-weight-light">Data da ocorrência</p>
+            </div>
+            <div>
+              <span class="badge badge-light text-black mt-3 pt-2 pb-2">
+                Cadastro: {{ vm.ocorrencia.dataHoraCadastro | date:'dd/MM/yyyy - HH:mm' }}
+              </span>
+              <span class="badge badge-light text-black mt-3 pt-2 pb-2" ng-if="vm.ocorrencia.dataHoraRemocao">
+                Remoção: {{ vm.ocorrencia.dataHoraRemocao | date:'dd/MM/yyyy - HH:mm' }}
+              </span>
+              <span class="badge badge-light text-black mt-1 pt-2 pb-2" ng-if="vm.ocorrencia.dataHoraRemocao">
+                Excluído por: {{ vm.ocorrencia.nomeUsuarioRemocao }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-3 stretch-card">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <p class="mb-1"><span class="h4 mb-0 mr-2" ng-bind="vm.ocorrencia.unidadeEscolar.descricao"></span></p>
+              <p class="mb-0 text-muted font-weight-light">Unidade Escolar</p>
+            </div>
+            <div>
+              <span class="badge badge-light text-black mt-3 pt-2 pb-2">
+                Codigo: {{ vm.ocorrencia.unidadeEscolar.codigo }}
+              </span>
+              <span class="badge badge-light text-black mt-3 pt-2 pb-2">
+                Tipo: {{ vm.ocorrencia.unidadeEscolar.tipo }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-3 stretch-card">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <p class="mb-1"><span class="h4 mb-0 mr-2" ng-bind="vm.ocorrencia.prestadorServico.razaoSocial"></span>
+              </p>
+              <p class="mb-0 text-muted font-weight-light">Prestador de Serviço</p>
+            </div>
+            <div class="d-inline-flex">
+              <span class="badge badge-light text-black mt-3 mr-2 pt-2 pb-2">
+                CNPJ: {{ vm.ocorrencia.prestadorServico.cnpj | brCnpj}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-1">
+      <div class="col-12">
+        <div class="card text-white border-0 bg-danger">
+          <div class="card-body no-border">
+            <div class="d-flex align-items-center">
+              <i class="icon-shield" style="font-size: 2.5rem"></i>
+              <div class="ml-4">
+                <h3 class="font-weight-bold mb-3 mt-3" ng-bind="vm.ocorrencia.variavel.descricao"></h3>
+                <p class="mb-0 font-weight-light">Variável Gerencial: {{ vm.ocorrencia.tipo }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <div class="card" style="min-height: 8.3rem;">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <p class="mb-3 h4 text-bold">Observações do fiscal:</p>
+            <div>
+              <h6 class="font-weight-normal" ng-if="vm.ocorrencia.observacao" ng-bind="vm.ocorrencia.observacao"></h6>
+              <h6 class="font-weight-normal" ng-if="!vm.ocorrencia.observacao">
+                Nenhuma observação informada pelo fiscal.
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-lg-7 col-md-12 col-sm-12 mb-3">
+        <div class="card" style="min-height: 8.3rem;">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <p class="mb-3 h4 text-bold">Ação coretiva:</p>
+            <div>
+              <h6 class="font-weight-normal" ng-if="vm.ocorrencia.acaoCorretiva" ng-bind="vm.ocorrencia.acaoCorretiva">
+              </h6>
+              <h6 class="font-weight-normal" ng-if="!vm.ocorrencia.acaoCorretiva">
+                Nenhuma ação corretiva definida pelo fiscal.
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-12 col-sm-12 mb-3">
+        <div class="card" style="min-height: 8.3rem;">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <p class="mb-3 h4 text-bold">Arquivos de apoio;</p>
+            <button type="button" class="btn btn-primary btn-fw btn-block" ng-if="vm.ocorrencia.arquivos.length > 0"
+              ng-click="vm.visualizarImagens()">
+              <i class="icon-picture"></i>
+              Visualizar Arquivos
+            </button>
+            <h6 class="font-weight-normal" ng-if="vm.ocorrencia.arquivos.length == 0">
+              Nenhum arquivo anexado pelo fiscal.
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.ocorrencia.equipeList.length > 0">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <h4 class="card-title ml-4 mt-4">Funcionários</h4>
+            <div class="tb-responsive mt-4">
+              <table class="table">
+                <thead>
+                  <tr class="bg-light text-center">
+                    <th class="text-left pl-4" style="width: 70%">Cargo</th>
+                    <th class="text-right" style="width: 15%">Quantidade Contratada</th>
+                    <th class="text-right pr-4" style="width: 15%">Quantidade Ausente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" ng-repeat="e in vm.ocorrencia.equipeList">
+                    <td class="text-left pl-4" ng-bind="e.descricao"></td>
+                    <td class="text-right" ng-bind="e.quantidadeContratada"></td>
+                    <td class="text-right pr-4" ng-bind="e.quantidadeAusente"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body direct-chat direct-chat-success shadow-sm">
+            <h4 class="card-title">Troca de mensagens</h4>
+            <div class="direct-chat-messages">
+              <div class="alert alert-success text-center" role="alert"
+                ng-if="!vm.mensagemList || vm.mensagemList.length == 0">
+                Nenhuma mensagem registrada.
+              </div>
+              <div class="direct-chat-msg" ng-repeat="msg in vm.mensagemList"
+                ng-class="{ 'right': msg.usuario.origem == usuario.usuarioOrigem.codigo }">
+                <div class="direct-chat-infos clearfix">
+                  <span class="direct-chat-name float-left" ng-bind="msg.usuario.nome"></span>
+                  <span class="direct-chat-timestamp float-right"
+                    ng-bind="msg.dataHora | date:'dd/MM/yyyy HH:mm:ss'"></span>
+                </div>
+                <img class="direct-chat-img" ng-if="msg.usuario.origem == 'ps'" src="src/layout/img/avatar-ps.png">
+                <img class="direct-chat-img" ng-if="msg.usuario.origem == 'ue'" src="src/layout/img/avatar-ue.png">
+                <div class="direct-chat-text" ng-bind="msg.mensagem"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <form action="#" method="post">
+              <div class="input-group">
+                <input type="text"
+                  ng-if="!vm.ocorrencia.flagEncerrado && (usuario.usuarioOrigem.codigo == 'ps' || usuario.usuarioOrigem.codigo == 'ue')"
+                  placeholder="Escreva sua mensagem aqui..." ng-model="vm.mensagem" class="form-control">
+                <input type="text"
+                  ng-if="vm.ocorrencia.flagEncerrado || (usuario.usuarioOrigem.codigo != 'ps' && usuario.usuarioOrigem.codigo != 'ue')"
+                  placeholder="Ocorrência encerrada, não é possível enviar mensagens." class="form-control" disabled>
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-primary" ng-click="vm.enviarMensagem()"
+                    ng-disabled="!vm.mensagem || vm.ocorrencia.flagEncerrado || (usuario.usuarioOrigem.codigo != 'ps' && usuario.usuarioOrigem.codigo != 'ue')">Enviar</button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-include src="'src/ocorrencia/ocorrencia-detalhe/ocorrencia-detalhe-fiscalizacao.html'"></ng-include>
+
+</div>

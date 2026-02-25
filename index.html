@@ -1,0 +1,442 @@
+<html ng-app="app" ng-strict-di>
+
+<head>
+
+  <title>SME - Limpeza</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <base href="/">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="src/layout/img/favicon.ico" />
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Dosis">
+  <link rel="stylesheet" type="text/css" href="vendor/FlareUI/css/style.css">
+  <link rel="stylesheet" type="text/css" href="vendor/FlareUI/css/vendor.bundle.base.css">
+  <link rel="stylesheet" type="text/css" href="vendor/FlareUI/css/vendor.bundle.addons.css">
+  <link rel="stylesheet" type="text/css" href="vendor/ui-select/select.min.css">
+
+  <link rel="stylesheet" type="text/css"
+    href="node_modules/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/sweetalert/lib/sweet-alert.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/toastr/build/toastr.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/ui-bootstrap4/dist/ui-bootstrap-csp.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/summernote/dist/summernote-bs4.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/simple-line-icons/dist/styles/simple-line-icons.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css">
+  <link rel="stylesheet" type="text/css" href="src/layout/style.css?v=CSS_VERSION">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+</head>
+
+<body>
+
+  <menu-topo></menu-topo>
+
+  <div class="container-fluid page-body-wrapper full-body-wrapper full-page-wrapper" style="height: auto;">
+    <div ng-class="{'main-panel': logado}">
+      <div class="content-wrapper" ng-class="{'auth theme-two p-0': !logado}" ng-view>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/FlareUI/js/vendor.bundle.base.js"></script>
+  <script src="vendor/FlareUI/js/vendor.bundle.addons.js"></script>
+
+  <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-ui-sortable/dist/sortable.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+  <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="node_modules/ngstorage/ngStorage.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-jwt/dist/angular-jwt.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-loading-bar/src/loading-bar.js"></script>
+  <script type="text/javascript" src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-touch/angular-touch.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-aria/angular-aria.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+  <script type="text/javascript" src="node_modules/sweetalert/lib/sweet-alert.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-sweetalert/SweetAlert.min.js"></script>
+  <script type="text/javascript" src="node_modules/toastr/build/toastr.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-datatables/dist/angular-datatables.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-datatables/dist/plugins/scroller/angular-datatables.scroller.min.js"></script>
+  <script type="text/javascript" src="node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" src="node_modules/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="node_modules/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.js"></script>
+  <script type="text/javascript" src="node_modules/moment/min/moment-with-locales.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-moment/angular-moment.min.js"></script>
+  <script type="text/javascript" src="node_modules/ui-bootstrap4/dist/ui-bootstrap-tpls.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
+  <script type="text/javascript" src="node_modules/jquery-confirm/dist/jquery-confirm.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-bootstrap-confirm/dist/angular-bootstrap-confirm.min.js"></script>
+  <script type="text/javascript"
+    src="node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
+  <script type="text/javascript" src="node_modules/summernote/dist/summernote-bs4.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-summernote/dist/angular-summernote.min.js"></script>
+
+  <script type="text/javascript" src="node_modules/leaflet/dist/leaflet.js"></script>
+  <script type="text/javascript" src="node_modules/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+  <script type="text/javascript" src="node_modules/ui-leaflet/dist/ui-leaflet.min.js"></script>
+  <script type="text/javascript" src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+
+  <script type="text/javascript" src="node_modules/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-br-filters/release/angular-br-filters.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular-inview/angular-inview.js"></script>
+
+  <script type="text/javascript" src="vendor/ui-select/select.min.js"></script>
+  <script type="text/javascript" src="vendor/searchHighlight/jquery.highlight.js"></script>
+  <script type="text/javascript" src="vendor/searchHighlight/dataTables.searchHighlight.min.js"></script>
+  <script type="text/javascript" src="vendor/datetime-picker.js"></script>
+  <script type="text/javascript" src="vendor/locales/pt-br.js"></script>
+
+  <script type="text/javascript" src="vendor/qrcode.js"></script>
+  <script type="text/javascript" src="vendor/angular-qr-scanner-master.js"></script>
+
+  <script src="vendor/qr-scanner.js"></script>
+  <!-- <script src="vendor/jsqrcode-combined.min.js"></script> -->
+
+  <script type="text/javascript" src="src/app.module.js"></script>
+  <script type="text/javascript" src="src/core/config.js"></script>
+  <script type="text/javascript" src="src/core/core.module.js"></script>
+  <script type="text/javascript" src="src/core/clear-cache-interceptor.js"></script>
+  <script type="text/javascript" src="src/core/session/session.module.js"></script>
+  <script type="text/javascript" src="src/core/session/session.constants.js"></script>
+  <script type="text/javascript" src="src/core/session/session.factory.js"></script>
+
+  <script type="text/javascript" src="src/core/constantes/constantes.module.js"></script>
+  <script type="text/javascript" src="src/core/constantes/datatables.constants.js"></script>
+  <script type="text/javascript" src="src/core/constantes/rest.constantes.js"></script>
+
+  <script type="text/javascript" src="src/core/utils/utils.module.js"></script>
+  <script type="text/javascript" src="src/core/utils/rest.factory.js"></script>
+  <script type="text/javascript" src="src/core/utils/multi-promise.factory.js"></script>
+  <script type="text/javascript" src="src/core/utils/tabela.factory.js"></script>
+  <script type="text/javascript" src="src/core/utils/message.factory.js"></script>
+  <script type="text/javascript" src="src/core/utils/controller.factory.js"></script>
+
+  <script type="text/javascript" src="src/core/auth/auth.module.js"></script>
+  <script type="text/javascript" src="src/core/auth/auth-interceptor.factory.js"></script>
+  <script type="text/javascript" src="src/core/auth/auth-service.factory.js"></script>
+  <script type="text/javascript" src="src/core/auth/auth-token.factory.js"></script>
+  <script type="text/javascript" src="src/core/auth/login.js"></script>
+  <script type="text/javascript" src="src/core/auth/login.rest.js"></script>
+  <script type="text/javascript" src="src/core/auth/login.route.js"></script>
+
+  <script type="text/javascript" src="src/core/auth/recuperacao-senha/recuperacao-senha.module.js"></script>
+  <script type="text/javascript" src="src/core/auth/recuperacao-senha/recuperacao-senha.controller.js"></script>
+  <script type="text/javascript" src="src/core/auth/recuperacao-senha/recuperacao-senha.rest.js"></script>
+  <script type="text/javascript" src="src/core/auth/recuperacao-senha/recuperacao-senha.route.js"></script>
+
+  <script type="text/javascript" src="src/layout/layout.module.js"></script>
+
+  <script type="text/javascript" src="src/layout/lista.directive.js"></script>
+
+  <script type="text/javascript" src="src/layout/menu-topo/menu-topo.module.js"></script>
+  <script type="text/javascript" src="src/layout/menu-topo/menu-topo.controller.js"></script>
+  <script type="text/javascript" src="src/layout/menu-topo/menu-topo.directive.js"></script>
+
+  <script type="text/javascript" src="src/componentes/componentes.module.js"></script>
+
+  <script type="text/javascript" src="src/componentes/botao-upload-arquivo/botao-upload-arquivo.module.js"></script>
+  <script type="text/javascript" src="src/componentes/botao-upload-arquivo/botao-upload-arquivo.directive.js"></script>
+  <script type="text/javascript" src="src/componentes/botao-upload-arquivo/botao-upload-arquivo.factory.js"></script>
+
+  <script type="text/javascript" src="src/componentes/mapa/mapa.module.js"></script>
+  <script type="text/javascript" src="src/componentes/mapa/mapa.controller.js"></script>
+  <script type="text/javascript" src="src/componentes/mapa/mapa.factory.js"></script>
+
+  <script type="text/javascript" src="src/componentes/endereco/endereco.module.js"></script>
+  <script type="text/javascript" src="src/componentes/endereco/endereco.rest.js"></script>
+  <script type="text/javascript" src="src/componentes/endereco/endereco.factory.js"></script>
+
+  <script type="text/javascript" src="src/dashboard/dashboard.module.js"></script>
+  <script type="text/javascript" src="src/dashboard/dashboard.js"></script>
+  <script type="text/javascript" src="src/dashboard/dashboard.route.js"></script>
+
+  <script type="text/javascript" src="src/usuario/usuario.module.js"></script>
+
+  <script type="text/javascript" src="src/usuario/usuario/usuario.module.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario.rest.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario.route.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario.controller.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario.factory.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario-importacao/usuario-importacao.module.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario/usuario-importacao/usuario-importacao.controller.js"></script>
+
+  <script type="text/javascript" src="src/usuario/usuario-origem/usuario-origem.module.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-origem/usuario-origem.rest.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-origem/usuario-origem.factory.js"></script>
+
+  <script type="text/javascript" src="src/usuario/usuario-cargo/usuario-cargo.module.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-cargo/usuario-cargo.rest.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-cargo/usuario-cargo.factory.js"></script>
+
+  <script type="text/javascript" src="src/usuario/usuario-status/usuario-status.module.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-status/usuario-status.rest.js"></script>
+  <script type="text/javascript" src="src/usuario/usuario-status/usuario-status.factory.js"></script>
+
+  <script type="text/javascript" src="src/usuario/alteracao-senha/alteracao-senha.module.js"></script>
+  <script type="text/javascript" src="src/usuario/alteracao-senha/alteracao-senha.controller.js"></script>
+
+  <script type="text/javascript" src="src/diretoria-regional/diretoria-regional.module.js"></script>
+  <script type="text/javascript" src="src/diretoria-regional/diretoria-regional.rest.js"></script>
+  <script type="text/javascript" src="src/diretoria-regional/diretoria-regional.route.js"></script>
+  <script type="text/javascript" src="src/diretoria-regional/diretoria-regional.controller.js"></script>
+  <script type="text/javascript" src="src/diretoria-regional/diretoria-regional.factory.js"></script>
+  <script type="text/javascript"
+    src="src/diretoria-regional/diretoria-regional-importacao/diretoria-regional-importacao.module.js"></script>
+  <script type="text/javascript"
+    src="src/diretoria-regional/diretoria-regional-importacao/diretoria-regional-importacao.controller.js"></script>
+
+  <script type="text/javascript" src="src/cargo/cargo.module.js"></script>
+  <script type="text/javascript" src="src/cargo/cargo.rest.js"></script>
+  <script type="text/javascript" src="src/cargo/cargo.route.js"></script>
+  <script type="text/javascript" src="src/cargo/cargo.controller.js"></script>
+  <script type="text/javascript" src="src/cargo/cargo.factory.js"></script>
+
+  <script type="text/javascript" src="src/feriado/feriado.module.js"></script>
+  <script type="text/javascript" src="src/feriado/feriado.rest.js"></script>
+  <script type="text/javascript" src="src/feriado/feriado.route.js"></script>
+  <script type="text/javascript" src="src/feriado/feriado.controller.js"></script>
+
+  <script type="text/javascript" src="src/unidade-escolar/unidade-escolar.module.js"></script>
+  <script type="text/javascript" src="src/unidade-escolar/unidade-escolar.rest.js"></script>
+  <script type="text/javascript" src="src/unidade-escolar/unidade-escolar.route.js"></script>
+  <script type="text/javascript" src="src/unidade-escolar/unidade-escolar.controller.js"></script>
+  <script type="text/javascript" src="src/unidade-escolar/unidade-escolar.factory.js"></script>
+  <script type="text/javascript"
+    src="src/unidade-escolar/unidade-escolar-importacao/unidade-escolar-importacao.module.js"></script>
+  <script type="text/javascript"
+    src="src/unidade-escolar/unidade-escolar-importacao/unidade-escolar-importacao.controller.js"></script>
+
+  <script type="text/javascript" src="src/prestador-servico/prestador-servico.module.js"></script>
+  <script type="text/javascript" src="src/prestador-servico/prestador-servico.rest.js"></script>
+  <script type="text/javascript" src="src/prestador-servico/prestador-servico.route.js"></script>
+  <script type="text/javascript" src="src/prestador-servico/prestador-servico.controller.js"></script>
+  <script type="text/javascript" src="src/prestador-servico/prestador-servico.factory.js"></script>
+
+  <script type="text/javascript" src="src/aplicativo/aplicativo.module.js"></script>
+  <script type="text/javascript" src="src/aplicativo/aplicativo.rest.js"></script>
+  <script type="text/javascript" src="src/aplicativo/aplicativo.route.js"></script>
+  <script type="text/javascript" src="src/aplicativo/aplicativo.controller.js"></script>
+  <script type="text/javascript" src="src/aplicativo/aplicativo-download.controller.js"></script>
+
+  <script type="text/javascript" src="src/contrato/contrato.module.js"></script>
+  <script type="text/javascript" src="src/contrato/contrato.rest.js"></script>
+  <script type="text/javascript" src="src/contrato/contrato.route.js"></script>
+  <script type="text/javascript" src="src/contrato/contrato.controller.js"></script>
+  <script type="text/javascript" src="src/contrato/contrato.factory.js"></script>
+
+  <script type="text/javascript" src="src/declaracao/declaracao.module.js"></script>
+  <script type="text/javascript" src="src/declaracao/declaracao.rest.js"></script>
+  <script type="text/javascript" src="src/declaracao/declaracao.route.js"></script>
+  <script type="text/javascript" src="src/declaracao/declaracao.controller.js"></script>
+
+  <script type="text/javascript" src="src/configuracao/configuracao.module.js"></script>
+  <script type="text/javascript" src="src/configuracao/configuracao.rest.js"></script>
+  <script type="text/javascript" src="src/configuracao/configuracao.route.js"></script>
+  <script type="text/javascript" src="src/configuracao/configuracao.controller.js"></script>
+  <script type="text/javascript" src="src/configuracao/configuracao.factory.js"></script>
+  <script type="text/javascript"
+    src="src/configuracao/configuracao-variavel-gerencial/configuracao-variavel-gerencial.module.js"></script>
+  <script type="text/javascript"
+    src="src/configuracao/configuracao-variavel-gerencial/configuracao-variavel-gerencial.controller.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/plano-trabalho.module.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/nao-conformidade/nao-conformidade.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/nao-conformidade/nao-conformidade.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/nao-conformidade/nao-conformidade.route.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/nao-conformidade/nao-conformidade.controller.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/nao-conformidade/nao-conformidade.factory.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente.module.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/tipo-ambiente/tipo-ambiente.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/tipo-ambiente/tipo-ambiente.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/tipo-ambiente/tipo-ambiente.factory.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/periodicidade/periodicidade.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/periodicidade/periodicidade.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/periodicidade/periodicidade.factory.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/turno/turno.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/turno/turno.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/turno/turno.factory.js"></script>
+
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente-geral/ambiente-geral.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente-geral/ambiente-geral.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente-geral/ambiente-geral.route.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente-geral/ambiente-geral.controller.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/ambiente/ambiente-geral/ambiente-geral.factory.js"></script>
+
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar.module.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar.rest.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar.route.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar.controller.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar.factory.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar-importacao/ambiente-unidade-escolar-importacao.module.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/ambiente/ambiente-unidade-escolar/ambiente-unidade-escolar-importacao/ambiente-unidade-escolar-importacao.controller.js"></script>
+
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-matriz/plano-trabalho-matriz.module.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/plano-trabalho-matriz/plano-trabalho-matriz.rest.js"></script>
+  <script type="text/javascript" src="src/plano-trabalho/plano-trabalho-matriz/plano-trabalho-matriz.route.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-matriz/plano-trabalho-matriz.controller.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-matriz/plano-trabalho-matriz.factory.js"></script>
+
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/plano-trabalho-unidade-escolar.module.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/plano-trabalho-unidade-escolar.rest.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/plano-trabalho-unidade-escolar.route.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/plano-trabalho-unidade-escolar.controller.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/plano-trabalho-unidade-escolar.factory.js"></script>
+
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/cadastro/cadastro.module.js"></script>
+  <script type="text/javascript"
+    src="src/plano-trabalho/plano-trabalho-unidade-escolar/cadastro/cadastro.controller.js"></script>
+
+  <script type="text/javascript" src="src/monitoramento/monitoramento.module.js"></script>
+  <script type="text/javascript" src="src/monitoramento/monitoramento.rest.js"></script>
+  <script type="text/javascript" src="src/monitoramento/monitoramento.route.js"></script>
+  <script type="text/javascript" src="src/monitoramento/monitoramento.controller.js"></script>
+  <script type="text/javascript" src="src/monitoramento/monitoramento.factory.js"></script>
+  <script type="text/javascript" src="src/monitoramento/monitoramento-detalhe/monitoramento-detalhe.module.js"></script>
+  <script type="text/javascript"
+    src="src/monitoramento/monitoramento-detalhe/monitoramento-detalhe.controller.js"></script>
+
+  <script type="text/javascript"
+    src="src/monitoramento/monitoramento-agendamento/monitoramento-agendamento.module.js"></script>
+  <script type="text/javascript"
+    src="src/monitoramento/monitoramento-agendamento/monitoramento-agendamento.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia.rest.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia.route.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia.controller.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia.factory.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-detalhe/ocorrencia-detalhe.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-detalhe/ocorrencia-detalhe.controller.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-form/ocorrencia-form.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-form/ocorrencia-form.controller.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-tipo/ocorrencia-tipo.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-tipo/ocorrencia-tipo.rest.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-tipo/ocorrencia-tipo.factory.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-situacao/ocorrencia-situacao.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-situacao/ocorrencia-situacao.rest.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-situacao/ocorrencia-situacao.factory.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-mensagem/ocorrencia-mensagem.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-mensagem/ocorrencia-mensagem.controller.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-mensagem/ocorrencia-mensagem.rest.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-mensagem/ocorrencia-mensagem.factory.js"></script>
+
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-variavel/ocorrencia-variavel.module.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-variavel/ocorrencia-variavel.rest.js"></script>
+  <script type="text/javascript" src="src/ocorrencia/ocorrencia-variavel/ocorrencia-variavel.factory.js"></script>
+
+  <script type="text/javascript" src="src/relatorio/relatorio.module.js"></script>
+
+  <script type="text/javascript" src="src/relatorio/relatorio-gerencial/relatorio-gerencial.module.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-gerencial/relatorio-gerencial.controller.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-gerencial/relatorio-gerencial.rest.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-gerencial/relatorio-gerencial.route.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-gerencial/relatorio-gerencial.factory.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-gerencial/relatorio-gerencial-detalhe/relatorio-gerencial-detalhe.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-gerencial/relatorio-gerencial-detalhe/relatorio-gerencial-detalhe.controller.js"></script>
+
+  <script type="text/javascript" src="src/relatorio/relatorio-contrato/relatorio-contrato.module.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-contrato/relatorio-contrato.controller.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-contrato/relatorio-contrato.rest.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-contrato/relatorio-contrato.route.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato/relatorio-contrato-detalhe/relatorio-contrato-detalhe.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato/relatorio-contrato-detalhe/relatorio-contrato-detalhe.controller.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato/relatorio-contrato-importacao/relatorio-contrato-importacao.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato/relatorio-contrato-importacao/relatorio-contrato-importacao.controller.js"></script>
+
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos.controller.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos.rest.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos.route.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos-detalhe/relatorio-contrato-pontos-detalhe.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-contrato-pontos/relatorio-contrato-pontos-detalhe/relatorio-contrato-pontos-detalhe.controller.js"></script>
+
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-agendamento-manual/relatorio-agendamento-manual.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-agendamento-manual/relatorio-agendamento-manual.controller.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-agendamento-manual/relatorio-agendamento-manual.route.js"></script>
+
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-ocorrencia-funcionario/relatorio-ocorrencia-funcionario.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-ocorrencia-funcionario/relatorio-ocorrencia-funcionario.controller.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-ocorrencia-funcionario/relatorio-ocorrencia-funcionario.rest.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-ocorrencia-funcionario/relatorio-ocorrencia-funcionario.route.js"></script>
+
+  <script type="text/javascript" src="src/relatorio/relatorio-equipe/relatorio-equipe.module.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-equipe/relatorio-equipe.controller.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-equipe/relatorio-equipe.rest.js"></script>
+  <script type="text/javascript" src="src/relatorio/relatorio-equipe/relatorio-equipe.route.js"></script>
+
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-equipe-contrato/relatorio-equipe-contrato.module.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-equipe-contrato/relatorio-equipe-contrato.controller.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-equipe-contrato/relatorio-equipe-contrato.rest.js"></script>
+  <script type="text/javascript"
+    src="src/relatorio/relatorio-equipe-contrato/relatorio-equipe-contrato.route.js"></script>
+
+  <script src="src/shared/directives/multiple-flatpickr.directive.js"></script>
+
+</body>
+
+</html>
