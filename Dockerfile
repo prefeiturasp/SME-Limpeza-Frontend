@@ -1,4 +1,4 @@
-FROM node:16-bullseye as builder
+FROM node:16-bullseye AS builder
 RUN mkdir -p /opt/services/front/src
 WORKDIR /opt/services/front/src
 COPY . ./
