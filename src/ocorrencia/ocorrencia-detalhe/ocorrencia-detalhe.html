@@ -37,6 +37,9 @@
               <p class="mb-0 text-muted font-weight-light">Data da ocorrência</p>
             </div>
             <div>
+              <span class="badge badge-success text-black mt-1 pt-2 pb-2" ng-if="vm.ocorrencia.flagOcorrenciaRetroativa == true">
+                Ocorrência Retroativa
+              </span>
               <span class="badge badge-light text-black mt-3 pt-2 pb-2">
                 Cadastro: {{ vm.ocorrencia.dataHoraCadastro | date:'dd/MM/yyyy - HH:mm' }}
               </span>

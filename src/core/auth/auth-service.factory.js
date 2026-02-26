@@ -19,6 +19,7 @@
     function logout() {
       $rootScope.logado = false;
       AuthToken.deleteToken('accessToken');
+      sessionStorage.removeItem('idUsu');
       controller.$location.path('/login');
     }
 

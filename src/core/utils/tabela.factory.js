@@ -53,12 +53,15 @@
       evtRemover: evtRemover,
       booleanParaBadgeAtivoEncerrado: booleanParaBadgeAtivoEncerrado,
       formatarContrato: formatarContrato,
+      formatarStatusContrato: formatarStatusContrato,
+      formatarStatusContratoRetroativo: formatarStatusContratoRetroativo,
+      criarBotoesTabOcorrenciaRetroativa: criarBotoesTabOcorrenciaRetroativa
     };
 
     return service;
 
     function adicionarColunas(colunas) {
-
+     
       var dtColumns = [];
 
       angular.forEach(colunas, function (value, key) {
@@ -70,7 +73,7 @@
     }
 
     function criarColuna(value, obj, data) {
-
+     
       var column = DTColumnBuilder
         .newColumn(value.data)
         .withTitle(value.title)
@@ -153,10 +156,8 @@
 
       angular.forEach(colunas, function (value, key) {
 
-        var column = DTColumnBuilder
-          .newColumn(value[0])
-          .withTitle(value[1]);
-
+        var column = DTColumnBuilder.newColumn(value[0]).withTitle(value[1]);
+        
         if (value.length >= 3) {
           if (value[2] !== null) {
             column.renderWith(value[2]);
@@ -165,7 +166,7 @@
 
         column.withOption('name', value.length === 4 ? value[3] : value[0]);
         dtColumns.push(column);
-
+        
       });
 
       return dtColumns;
@@ -263,6 +264,10 @@
       return valor == null ? '-' : moment(valor).format('DD/MM/YYYY');
     }
 
+    function formatarStatusContrato(valor){
+      return valor == null ? '-' : valor.trim();
+    }
+
     function formatarHora(valor) {
       return valor == null ? '-' : moment(valor).format('HH:mm:ss');
     }
@@ -310,6 +315,14 @@
       return `
         <h5 style="font-weight: 100">${value.contratoDescricao}</h5>
         <small class="">${value.contratoCodigo}</small>`;
+    }
+
+    function formatarStatusContratoRetroativo(value) {
+      return value == 'A' ? 'ATIVO' : 'INATIVO';
+    }
+
+    function criarBotoesTabOcorrenciaRetroativa() {
+      return `<button class="btn btn-outline-primary btn-sm visualizar" title="Visualizar"><i class="icon-eye"></i></button>`;
     }
 
   }

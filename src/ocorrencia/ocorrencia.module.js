@@ -8,7 +8,8 @@
 		'ocorrencia.ocorrencia-variavel',
 		'ocorrencia.ocorrencia-tipo',
 		'ocorrencia.ocorrencia-situacao',
-		'ocorrencia.ocorrencia-form'
+		'ocorrencia.ocorrencia-form',
+		'ocorrencia.ocorrencia-retroativa'
 	]);
 
 })();

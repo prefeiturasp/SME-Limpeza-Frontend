@@ -7,10 +7,10 @@
     .controller('OcorrenciaLista', OcorrenciaLista);
 
   OcorrenciaLista.$inject = ['$rootScope', '$window', '$location', 'controller', 'OcorrenciaRest', 'tabela', '$uibModal',
-    'OcorrenciaTipoUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'SweetAlert', 'ContratoUtils'];
+    'OcorrenciaTipoUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'SweetAlert', 'ContratoUtils', 'OcorrenciaRetroativaUtils'];
 
   function OcorrenciaLista($rootScope, $window, $location, controller, dataservice, tabela, $uibModal,
-    OcorrenciaTipoUtils, UnidadeEscolarUtils, PrestadorServicoUtils, SweetAlert, ContratoUtils) {
+    OcorrenciaTipoUtils, UnidadeEscolarUtils, PrestadorServicoUtils, SweetAlert, ContratoUtils, OcorrenciaRetroativaUtils) {
     /* jshint validthis: true */
 
     var vm = this;
@@ -40,6 +40,7 @@
       carregarComboUnidadeEscolar();
       carregarComboContrato();
       montarTabela();
+      verificaDatasOcorrenciasRetroativas();
     }
 
     function carregarComboTipoOcorrencia() {
@@ -296,6 +297,30 @@
 
       function error(response) {
         controller.feedMessage(response);
+      }
+
+    }
+
+    function verificaDatasOcorrenciasRetroativas() {
+      
+      if($rootScope.usuario.unidadeEscolar){
+
+        let dados = {
+          idUnidadeEscolar: $rootScope.usuario.unidadeEscolar.id
+        };
+
+        OcorrenciaRetroativaUtils.buscaDataOcorrenciaRetroativa(dados).then(success).catch(error);
+
+        function success(response) {
+          if (response.data && response.data.length > 0) {
+          localStorage.setItem('datasOcorrenciasRetroativas', JSON.stringify(response.data));
+          }
+        }
+
+        function error(response) {
+          console.log(response);
+        }
+        
       }
 
     }

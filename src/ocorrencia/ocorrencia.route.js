@@ -26,6 +26,11 @@
 			controller: 'OcorrenciaMensagemLista',
 			controllerAs: 'vm',
 			reloadOnSearch: false
+		}).when('/ocorrencia/ocorrencia-retroativa', {
+			templateUrl: 'src/ocorrencia/ocorrencia-retroativa/ocorrencia-retroativa.html',
+			controller: 'OcorrenciaRetroativa',
+			controllerAs: 'vm',
+			reloadOnSearch: false
 		});
 
 	}

@@ -15,9 +15,16 @@
       <div class="col-sm-12 col-md-6 col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Dados Gerais</h4>
+            <h4 class="card-title">Dados Gerais
+              <div class="text-right">
+                <button type="button" class="btn btn-outline-success btn-sm" ng-click="vm.abrirModalHistoricoContrato()">
+                  Histórico de Status
+                  <i class="icon-eye ml-1"></i>
+                </button>
+              </div>
+            </h4>
             <div class="row mt-4">
-              <div class="col-4">
+              <div class="col-6">
                 <div class="form-group">
                   <label for="modelo" class="obrigatorio">Modelo de Medição</label>
                   <select class="form-control" id="modelo" name="modelo" ng-model="vm.modal.model.modelo"
@@ -27,6 +34,7 @@
                   </select>
                 </div>
               </div>
+
             </div>
             <div class="row">
               <div class="col-8">
@@ -97,6 +105,31 @@
                 </div>
               </div>
             </div>
+
+
+            <div class="row mt-4">
+
+              <div class="col-6">
+                  <div class="form-group">
+
+                    <ul class="list-arrow text-black" ng-if="vm.modal.model.id">
+                      <li class="li-status-line">
+                          <span><strong>Status:</strong> {{vm.modal.model.descricaostatuscontrato}}</span>
+                          <button type="button" class="btn btn-outline-primary btn-sm li-status-btn"
+                            ng-click="vm.editarStatusContrato(vm.modal.model)">
+                            <i class="icon-pencil"></i>
+                          </button>
+                        </li>
+                    </ul>
+                    
+                  </div>
+                </div>
+                <div class="col-6">
+                  <span ng-if="vm.modal.model.idstatuscontrato === 4"><strong>Motivo Status:</strong> {{vm.modal.model.motivostatuscontrato}}</span>
+                </div>
+
+              </div>
+
           </div>
         </div>
       </div>
