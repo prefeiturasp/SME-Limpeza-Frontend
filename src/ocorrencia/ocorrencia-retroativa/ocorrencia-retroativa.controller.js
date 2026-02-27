@@ -404,16 +404,16 @@
           function success(response) {
             controller.feed('success', 'Ocorrência(s) retroativa(s) salva(s) com sucesso.');
             recarregarTabela();
-            fecharModalOcorrenciaRetroativa();
+            delete vm.model.motivo;
           }
 
           function error(response) {
             controller.feedMessage(response);
           }
 
-        } else {
-          fecharModalOcorrenciaRetroativa();
-        }
+        } 
+        
+        fecharModalOcorrenciaRetroativa();
         
       }).catch(()=>{
         console.log('erro');
