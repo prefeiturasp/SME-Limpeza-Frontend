@@ -318,11 +318,19 @@
     }
 
     function formatarStatusContratoRetroativo(value) {
-      return value == 'A' ? 'ATIVO' : 'INATIVO';
+      return value == 'A' ? '<div class="badge badge-success">ABERTO</div>' : '<div class="badge badge-danger">FECHADO</div>';
     }
 
     function criarBotoesTabOcorrenciaRetroativa() {
-      return `<button class="btn btn-outline-primary btn-sm visualizar" title="Visualizar"><i class="icon-eye"></i></button>`;
+      return `<button class="btn btn-outline-primary btn-sm visualizar" title="Visualizar">
+                <i class="icon-eye"></i>
+              </button>
+              <button class="btn btn-outline-primary btn-sm editar" title="Editar">
+                <i class="icon-pencil"></i>
+              </button>
+              <button class="btn btn-outline-danger btn-sm remover" title="Remover">
+                <i class="icon-trash"></i>
+              </button>`;
     }
 
   }

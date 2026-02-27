@@ -10,25 +10,26 @@
         <div class="col-6">
             <div class="card card-inverse-secondary">
                 <div class="card-body">
-                    <h5 class="card-title text-black">OCORRÊNCIA HABILITADA EM: {{vm.detalhesOcorrenciaRetroativa.dataHoraCriacao | date:'dd/MM/yyyy HH:mm'}}
+                    <h5 class="card-title text-black">OCORRÊNCIA HABILITADA EM: {{vm.detalhesOcorrenciaRetroativa[0].dataHoraCriacao | date:'dd/MM/yyyy HH:mm'}}
                     </h5>
-                    <small class="text-black"><strong>Cadastrado realizado por:</strong> {{vm.detalhesOcorrenciaRetroativa.usuario}}</small>
+                    <small class="text-black"><strong>Cadastrado realizado por:</strong> {{vm.detalhesOcorrenciaRetroativa[0].usuario}}</small>
                     <hr>
                     <ul class="list-arrow text-black">
-                        <li><strong>Data Inicial:</strong> {{vm.detalhesOcorrenciaRetroativa.dataInicial | date:'dd/MM/yyyy HH:mm'}}</li>
-                        <li><strong>Data Final:</strong> {{vm.detalhesOcorrenciaRetroativa.dataFinal | date:'dd/MM/yyyy HH:mm'}}</li>
+                        <li><strong>Data Inicial:</strong> {{vm.detalhesOcorrenciaRetroativa[0].dataInicial | date:'dd/MM/yyyy HH:mm'}}</li>
+                        <li><strong>Data Final:</strong> {{vm.detalhesOcorrenciaRetroativa[0].dataFinal | date:'dd/MM/yyyy HH:mm'}}</li>
+                        <li><strong>Motivo da Ocorrência:</strong> {{vm.detalhesOcorrenciaRetroativa[0].motivo}}</li>
+                        <li><strong>Quantidade de Ocorrências a serem registradas:</strong> {{vm.detalhesOcorrenciaRetroativa[0].qtdOcorrenciasPermitidas}}</li>
                         <hr>
-                        <li><strong>DRE:</strong> {{vm.detalhesOcorrenciaRetroativa.dre}}</li>
-                        <li><strong>Contrato:</strong> {{vm.detalhesOcorrenciaRetroativa.codigo}}</li>
-                        <li><strong>Unidade Escolar:</strong> {{vm.detalhesOcorrenciaRetroativa.descricao}}</li>
+                        <li><strong>DRE:</strong> {{vm.detalhesOcorrenciaRetroativa[0].dre}}</li>
+                        <li><strong>Contrato:</strong> {{vm.detalhesOcorrenciaRetroativa[0].codigo}}</li>
+                        <li><strong>Unidade Escolar:</strong> {{vm.detalhesOcorrenciaRetroativa[0].descricao}}</li>
                         <hr>
-                        <li ng-if="vm.detalhesOcorrenciaRetroativa.prestadorServico"><strong>Regitrado por:</strong> {{vm.detalhesOcorrenciaRetroativa.prestadorServico}}</li>
+                        <li ng-if="vm.detalhesOcorrenciaRetroativa.prestadorServico"><strong>Regitrado por:</strong> {{vm.detalhesOcorrenciaRetroativa[0].prestadorServico}}</li>
+                       
                         <li class="li-status-line">
                             <span>
                                 <strong>Status:</strong> 
-                                <span class="badge badge-light text-black mt-1 pt-2 pb-2">
-                                    <strong>{{vm.retornaStatusOcorrenciaRetroativa(vm.detalhesOcorrenciaRetroativa.statusOcorrenciaRetroativa)}}</strong>
-                                </span>
+                                    <strong ng-bind-html="vm.retornaStatusOcorrenciaRetroativa(vm.detalhesOcorrenciaRetroativa[0].statusOcorrenciaRetroativa)"></strong>
                             </span>
                         </li>
                     </ul>
@@ -36,17 +37,29 @@
             </div>
         </div>
 
-        <div class="col-6" ng-if="vm.detalhesOcorrenciaRetroativa.idOcorrencia">
+        <div class="col-6"> <!--ng-if="vm.detalhesOcorrenciaRetroativa.idOcorrencia" -->
             <div class="card card-inverse-secondary">
                 <div class="card-body">
-                    <h5 class="card-title text-black">OCORRÊNCIA</h5>
-                    <hr>
-                    <ul class="list-arrow text-black">
-                        <li>
-                            <strong>Visualizar detalhes da Ocorrência:</strong> 
-                            <a class="btn btn-outline-primary btn-sm" href="ocorrencia/detalhe/{{vm.detalhesOcorrenciaRetroativa.idOcorrencia}}" target="_blank"><i class="icon-eye"></i></a>
-                        </li>
-                    </ul>
+                    <h5 class="card-title text-black">DETALHES DA(S) OCORRÊNCIA(S) VINCULADA(S):</h5>
+                    <table class="table">
+                        <tbody>
+                            <tr ng-repeat="oro in vm.detalhesOcorrenciaRetroativa">
+                                
+                                <td class="py-2 pl-0" ng-if="oro.prestadorServico">
+                                    <b>Registrada por:</b> <span class="badge badge-light text-black mt-1 pt-2 pb-2">{{oro.prestadorServico}}</span><br>
+                                    <b>Data e Hora:</b> <span>{{oro.ocorrenciaRetroativaOcorrenciaDataHoraAlteracao | date:'dd/MM/yyyy HH:mm'}}</span>
+                                </td>
+                                <td class="py-2 pl-0 col-5">
+                                    <strong>Ocorrência </strong>
+                                    <span ng-if="!oro.idOcorrencia">
+                                        <b>{{$index + 1}}</b> - Aguardando preenchimento
+                                    </span>
+                                    <span class="badge badge-light text-black mt-1 pt-2 pb-2" ng-if="oro.idOcorrencia" ng-bind="oro.idOcorrencia"></span>
+                                    <a class="btn btn-outline-primary btn-sm" href="ocorrencia/detalhe/{{oro.idOcorrencia}}" target="_blank" ng-if="oro.idOcorrencia"><i class="icon-eye"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -17,7 +17,10 @@
       cadastrarOcorrenciaRetroativa: cadastrarOcorrenciaRetroativa,
       tabela: tabela,
       buscaDataOcorrenciaRetroativa: buscaDataOcorrenciaRetroativa,
-      buscaDetalhesOcorrenciaRetroativa: buscaDetalhesOcorrenciaRetroativa
+      buscaDetalhesOcorrenciaRetroativa: buscaDetalhesOcorrenciaRetroativa,
+      buscaOcorrenciaRetroativaAbertaUE: buscaOcorrenciaRetroativaAbertaUE,
+      removerOcorrenciaRetroativa: removerOcorrenciaRetroativa,
+      editarOcorrenciaRetroativa: editarOcorrenciaRetroativa
     };
 
     return service;
@@ -70,6 +73,16 @@
 
     }
 
+    function editarOcorrenciaRetroativa(dados){
+
+      var url = base + '/editarOcorrenciaRetroativa';
+
+      return $http.post(url, dados).then(function (response) {
+        return response.data;
+      });
+
+    }
+
     function tabela(params){
 
       var url = base + '/tabela?' + params;
@@ -79,6 +92,7 @@
     }
 
     function buscaDataOcorrenciaRetroativa(idUnidadeEscolar){
+
       var url = base + '/buscaDataOcorrenciaRetroativa';
 
       return $http.post(url, idUnidadeEscolar).then(function (response) {
@@ -96,6 +110,26 @@
       });
 
     }
+
+    function buscaOcorrenciaRetroativaAbertaUE(idsUnidadeEscolarList){
+      
+      var url = base + '/buscaOcorrenciaRetroativaAbertaUE';
+
+      return $http.post(url, idsUnidadeEscolarList).then(function (response) {
+        return response.data;
+      });
+
+    }
+
+    function removerOcorrenciaRetroativa(idOcorrenciaRetroativa){
+      var url = base + '/removerOcorrenciaRetroativa';
+
+      return $http.post(url, {idOcorrenciaRetroativa: idOcorrenciaRetroativa}).then(function (response) {
+        return response.data;
+      });
+
+    }
+
 
   }
 

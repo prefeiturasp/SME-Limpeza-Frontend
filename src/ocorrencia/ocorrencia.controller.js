@@ -29,6 +29,8 @@
     vm.fecharModal = fecharModal;
     vm.exportar = exportar;
 
+    $rootScope.verificaDatasOcorrenciasRetroativas = verificaDatasOcorrenciasRetroativas;
+
     iniciar();
 
     function iniciar() {
@@ -302,7 +304,7 @@
     }
 
     function verificaDatasOcorrenciasRetroativas() {
-      
+     
       if($rootScope.usuario.unidadeEscolar){
 
         let dados = {
@@ -313,7 +315,10 @@
 
         function success(response) {
           if (response.data && response.data.length > 0) {
-          localStorage.setItem('datasOcorrenciasRetroativas', JSON.stringify(response.data));
+            localStorage.setItem('datasOcorrenciasRetroativas', JSON.stringify(response.data));
+          } else {
+            localStorage.removeItem('datasOcorrenciasRetroativas');
+            localStorage.removeItem('OcorrenciaRetroativa');
           }
         }
 
