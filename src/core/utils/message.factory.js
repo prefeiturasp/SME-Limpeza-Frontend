@@ -52,14 +52,15 @@
       }
     }
 
-    function feed(type, message) {
+    function feed(type, message, tempo = 3000) {
       $.toast({
         heading: getTitle(type),
         text: message,
         showHideTransition: 'slide',
         icon: type,
         loaderBg: getLoader(type),
-        position: 'bottom-right'
+        position: 'bottom-right',
+        hideAfter: tempo
       });
     }
 
