@@ -2,8 +2,6 @@
 
 	'use strict';
 
-	angular.module('app.prestador-servico', [
-
-	]);
+	angular.module('app.prestador-servico', ['app.core']);
 
 })();
