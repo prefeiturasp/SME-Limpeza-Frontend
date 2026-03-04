@@ -4,21 +4,11 @@
     function CnpjService() {
 
         function charToValue(char) {
-            if (/[0-9]/.test(char)) {
+            if (/[\d]/.test(char)) {
                 return parseInt(char, 10);
             }
-
             // Letras A-Z → 10-35
             return char.charCodeAt(0) - 55;
-        }
-
-        function calcularDV(base, pesos) {
-            let soma = 0;
-            for (let i = 0; i < pesos.length; i++) {
-                soma += charToValue(base[i]) * pesos[i];
-            }
-            let resto = soma % 11;
-            return resto < 2 ? 0 : 11 - resto;
         }
 
         this.validar = function (cnpj) {

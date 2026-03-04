@@ -16,7 +16,7 @@
 
                     if (valor.length > 12) {
                         let base = valor.substring(0, 12);
-                        let dv = valor.substring(12).replace(/[^0-9]/g, '');
+                        let dv = valor.substring(12).replace(/[^\d]/g, '');
                         valor = base + dv;
                     }
 
