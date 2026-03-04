@@ -24,6 +24,8 @@
 
 		vm.recarregarTabela = recarregarTabela;
 
+		vm.buscarCep = buscarCep;
+
 		iniciar();
 		
 		function iniciar() {
@@ -137,6 +139,20 @@
 
 		function recarregarTabela() {
 			tabela.recarregarDados(vm.instancia);
+		}
+
+		function buscarCep() {
+			let cep = vm.modal.model.cep;
+			if (cep && cep.length === 8) {
+				dataservice.buscarCep(cep).then((response) => {
+					if(!response.data.erro){
+						vm.modal.model.endereco = response.data.logradouro;
+						vm.modal.model.bairro = response.data.bairro;
+					} else {
+						controller.feed('error', 'CEP não encontrado.');
+					}
+				});
+			}
 		}
 
 	}
