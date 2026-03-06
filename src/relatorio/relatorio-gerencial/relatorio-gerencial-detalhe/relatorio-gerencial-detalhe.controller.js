@@ -53,7 +53,6 @@
 
       function success(response) {
         vm.dados = controller.ler(response, 'data');
-        console.log(vm.dados);
       }
 
       function error(response) {
