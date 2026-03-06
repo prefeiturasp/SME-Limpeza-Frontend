@@ -305,7 +305,6 @@
         let dados = response.data.data;
         if(dados.length > 0){
           vm.historicoBoletimMedicaoList = dados;
-          console.log(vm.historicoBoletimMedicaoList);
         }
       }).catch(function error(err) {
         controller.feed('error', 'Erro ao buscar historico de status da unidade escolar.');
@@ -340,7 +339,6 @@
               }
           },
           pageLength: 10,
-          order: [[1, 'desc']],
           searching: false,
           bLengthChange: false
         });
