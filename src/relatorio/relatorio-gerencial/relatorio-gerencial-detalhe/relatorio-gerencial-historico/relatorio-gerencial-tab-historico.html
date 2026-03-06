@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <h5 class="modal-title">HISTÓRICO</h5>
+    <button type="button" class="close" ng-click="vm.fecharModalHistoricoBoletimMedicao()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive" id="historicoBoletimMedicao">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>DATA E HORA DA AÇÃO</th>
+                                    <th>AÇÃO REALIZADA</th>
+                                    <th>USUÁRIO RESPONSÁVEL PELA MUDANÇA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="hbm in vm.historicoBoletimMedicaoList"> <!-- contrato in vm.modal.contratoList -->
+                                    <td><h5 class="font-weight-light">{{$index + 1}}</h5></td>
+                                    <td><h5 class="font-weight-light" ng-bind="vm.retornaDataFormatada(hbm.dataHora)"></h5></td>
+                                    <td><h5 class="font-weight-light" ng-bind="hbm.acaoRealizada"></h5></td>
+                                    <td><h5 class="font-weight-light" ng-bind="hbm.nome"></h5></td>
+                                </tr>
+                                <tr ng-if="vm.historicoBoletimMedicaoList.length == 0">
+                                    <td colspan="5" class="text-center py-4 text-primary">
+                                        <h5>Nenhum resultado encontrado.</h5>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
