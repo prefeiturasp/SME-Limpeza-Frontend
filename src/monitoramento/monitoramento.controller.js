@@ -496,7 +496,7 @@
       } else {
         carregarComboContrato();
         carregarComboPrestadorServico();
-        carregarComboUeEscolar();
+        carregarComboUnidadeEscolar();
       }
     }
 
