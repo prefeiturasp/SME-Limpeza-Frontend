@@ -7,10 +7,10 @@
     .controller('MonitoramentoController', MonitoramentoController);
 
   MonitoramentoController.$inject = ['$rootScope', '$scope', '$window', 'controller', 'MonitoramentoRest',
-    'tabela', '$uibModal', 'SweetAlert', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'AmbienteUnidadeEscolarUtils', 'ContratoUtils'];
+    'tabela', '$uibModal', 'SweetAlert', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'AmbienteUnidadeEscolarUtils', 'ContratoUtils', 'MonitoramentoUtils'];
 
   function MonitoramentoController($rootScope, $scope, $window, controller, dataservice,
-    tabela, $uibModal, SweetAlert, UnidadeEscolarUtils, PrestadorServicoUtils, AmbienteUnidadeEscolarUtils, ContratoUtils) {
+    tabela, $uibModal, SweetAlert, UnidadeEscolarUtils, PrestadorServicoUtils, AmbienteUnidadeEscolarUtils, ContratoUtils, MonitoramentoUtils) {
     /* jshint validthis: true */
 
     var vm = this;
@@ -32,6 +32,8 @@
     vm.fecharModalLeituraQrCode = fecharModalLeituraQrCode;
 
     vm.filtros.datasSelecionadas = vm.filtros.datasSelecionadas || [];
+
+    vm.evtChangeFilter = evtChangeFilter;
 
     vm.formatarData = function (d) {
       var dd = ('0' + d.getDate()).slice(-2);
@@ -62,7 +64,6 @@
 
       function success(response) {
         vm.unidadeEscolarList = response.objeto;
-
       }
 
       function error(response) {
@@ -481,6 +482,71 @@
         controller.feed('error', 'Erro ao buscar combo de contratos.');
       }
     }
+
+    function evtChangeFilter() {
+      console.log(vm.filtros);
+      if (vm.filtros.contrato != null) {
+        buscaComboUePorIdContratoFiltrado(vm.filtros.contrato.id);
+        buscaComboPrestadorServicoPorIdContratoFiltrado(vm.filtros.contrato.id);
+      } else if (!vm.filtros.contrato && vm.filtros.prestadorServico != null) {
+        buscaComboContratoPorIdPrestadorServicoFiltrado(vm.filtros.prestadorServico.id);
+        buscaComboUePorIdPrestadorServicoFiltrado(vm.filtros.prestadorServico.id);
+      } else if (!vm.filtros.contrato && !vm.filtros.prestadorServico && vm.filtros.unidadeEscolar != null) {
+        buscaComboContratoPorIdUeFiltrado(vm.filtros.unidadeEscolar.id);
+        buscaComboPrestadorServicoPorIdUeFiltrado(vm.filtros.unidadeEscolar.id);
+      } else {
+        carregarComboContrato();
+        carregarComboPrestadorServico();
+        carregarComboUeEscolar();
+      }
+    }
+
+    function buscaComboPrestadorServicoPorIdContratoFiltrado(idContrato){
+      MonitoramentoUtils.comboPrestadorServicoPorIdContrato(idContrato).then(function (response) {
+        vm.prestadorServicoList = response.data || [];
+      }).catch(function () {
+        controller.feed('error', 'Erro ao carregar prestadores para o contrato selecionado.');
+      });
+    }
+
+    function buscaComboUePorIdContratoFiltrado(idContrato){
+      MonitoramentoUtils.comboUePorIdContrato(idContrato).then(function (response) {
+        vm.unidadeEscolarList = response.data || [];
+      }).catch(function () {
+        controller.feed('error', 'Erro ao carregar unidades escolares para o contrato selecionado.');
+      });
+    }
+
+    function buscaComboContratoPorIdPrestadorServicoFiltrado(idPrestadorServico){
+      MonitoramentoUtils.comboContratoPorIdPrestadorServico(idPrestadorServico).then(function (response) {
+        vm.contratoLista = response.data || [];
+      }).catch(function () {
+        controller.feed('error', 'Erro ao carregar prestadores para o contrato selecionado.');
+      });
+    }
+
+    function buscaComboUePorIdPrestadorServicoFiltrado(idPrestadorServico){
+      MonitoramentoUtils.comboUePorIdPrestadorServico(idPrestadorServico).then(function (response) {
+        vm.unidadeEscolarList = response.data || [];
+        console.log(vm.unidadeEscolarList);
+      });
+    }
+
+    function buscaComboContratoPorIdUeFiltrado(idUnidadeEscolar){
+      MonitoramentoUtils.comboContratoPorIdUe(idUnidadeEscolar).then(function (response) {
+        vm.contratoLista = response.data || [];
+        console.log(vm.contratoLista);
+      });
+    }
+
+    function buscaComboPrestadorServicoPorIdUeFiltrado(idUnidadeEscolar){
+      MonitoramentoUtils.comboPrestadorServicoPorIdUe(idUnidadeEscolar).then(function (response) {
+        vm.prestadorServicoList = response.data || [];
+        console.log(vm.prestadorServicoList);
+      });
+
+    }
+  
   }
 
 })();

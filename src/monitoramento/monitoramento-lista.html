@@ -27,7 +27,8 @@
                 </uib-accordion-heading>
                 <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                     <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-3 my-2">
+
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2">
                             <div class="form-control">
                                 <label for="datas" class="dois-pontos">Datas</label>
                                 <input id="datas" type="text" class="form-control lh-18" multiple-flatpickr
@@ -36,20 +37,46 @@
                                     placeholder="Selecione múltiplas datas" />
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo == 'ue'">
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ps'">
                             <div class="form-control">
-                                <label for="ambiente-ue" class="dois-pontos">Ambiente</label>
-                                <select class="form-control" id="ambiente-ue"
-                                    ng-model="vm.filtros.idAmbienteUnidadeEscolar"
-                                    ng-options="aue.id as aue.descricao for aue in vm.ambienteUnidadeEscolarList">
-                                    <option value="" selected>Todos</option>
-                                </select>
+                                <label for="contrato" class="dois-pontos">Contrato</label>
+                                <ui-select id="contrato" ng-model="vm.filtros.contrato" ng-change="vm.evtChangeFilter()">
+                                    <ui-select-match allow-clear="true" placeholder="Todos">
+                                        {{$select.selected.codigo}} - {{$select.selected.descricao}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
+                                        <span class="mb-0 d-block"
+                                            ng-bind-html="contrato.descricao | highlight: $select.search"></span>
+                                        <small class="my-2">Código:</small>
+                                        <small class="my-2"
+                                            ng-bind-html="contrato.codigo | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ue'">
+
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ps'">
+                            <div class="form-control">
+                                <label for="ps" class="dois-pontos">Prestador de Serviço</label>
+                                <ui-select id="ps" ng-model="vm.filtros.prestadorServico" ng-change="vm.evtChangeFilter()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                                    <ui-select-choices repeat="ps in vm.prestadorServicoList | filter: $select.search">
+                                        <span class="mb-0 d-block"
+                                            ng-bind-html="ps.razaoSocial | highlight: $select.search"></span>
+                                        <small class="my-2">CNPJ:</small>
+                                        <small class="my-2"
+                                            ng-bind-html="(ps.cnpj | brCnpj) | highlight: $select.search"></small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ue'">
                             <div class="form-control">
                                 <label for="ue" class="dois-pontos">Unidade Escolar</label>
-                                <ui-select id="ue" ng-model="vm.filtros.unidadeEscolar">
+                                <ui-select id="ue" ng-model="vm.filtros.unidadeEscolar" ng-change="vm.evtChangeFilter()">
                                     <ui-select-match allow-clear="true" placeholder="Todos">
                                         {{$select.selected.codigo}} - {{$select.selected.descricao}}
                                     </ui-select-match>
@@ -64,40 +91,19 @@
                                 </ui-select>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ps'">
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 my-2" ng-if="usuario.usuarioOrigem.codigo == 'ue'">
                             <div class="form-control">
-                                <label for="ps" class="dois-pontos">Prestador de Serviço</label>
-                                <ui-select id="ps" ng-model="vm.filtros.prestadorServico">
-                                    <ui-select-match allow-clear="true"
-                                        placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
-                                    <ui-select-choices repeat="ps in vm.prestadorServicoList | filter: $select.search">
-                                        <span class="mb-0 d-block"
-                                            ng-bind-html="ps.razaoSocial | highlight: $select.search"></span>
-                                        <small class="my-2">CNPJ:</small>
-                                        <small class="my-2"
-                                            ng-bind-html="(ps.cnpj | brCnpj) | highlight: $select.search"></small>
-                                    </ui-select-choices>
-                                </ui-select>
+                                <label for="ambiente-ue" class="dois-pontos">Ambiente</label>
+                                <select class="form-control" id="ambiente-ue"
+                                    ng-model="vm.filtros.idAmbienteUnidadeEscolar"
+                                    ng-options="aue.id as aue.descricao for aue in vm.ambienteUnidadeEscolarList">
+                                    <option value="" selected>Todos</option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="col-sm-12 col-md-6 col-lg-3 my-2" ng-if="usuario.usuarioOrigem.codigo != 'ps'">
-                            <div class="form-control">
-                                <label for="contrato" class="dois-pontos">Contrato</label>
-                                <ui-select id="contrato" ng-model="vm.filtros.contrato">
-                                    <ui-select-match allow-clear="true" placeholder="Todos">
-                                        {{$select.selected.codigo}} - {{$select.selected.descricao}}
-                                    </ui-select-match>
-                                    <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
-                                        <span class="mb-0 d-block"
-                                            ng-bind-html="contrato.descricao | highlight: $select.search"></span>
-                                        <small class="my-2">Código:</small>
-                                        <small class="my-2"
-                                            ng-bind-html="contrato.codigo | highlight: $select.search"></small>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="row mt-2">
                         <div class="col-lg-4 col-md-4 col-sm-12">
