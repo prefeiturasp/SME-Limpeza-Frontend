@@ -10,7 +10,13 @@
 	function MonitoramentoUtils(utils, dataservice) {
 
 		var service = {
-			buscar: buscar
+			buscar: buscar,
+			comboUePorIdContrato: comboUePorIdContrato,
+			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato,
+			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
+			comboUePorIdPrestadorServico: comboUePorIdPrestadorServico,
+			comboContratoPorIdUe: comboContratoPorIdUe,
+			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe
 		};
 
 		return service;
@@ -27,6 +33,42 @@
 				return utils.criarRetornoPromise(false, {});
 			}
 
+		}
+
+		function comboUePorIdContrato(idContrato){
+			return dataservice.comboUePorIdContrato(idContrato).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboPrestadorServicoPorIdContrato(idContrato){
+			return dataservice.comboPrestadorServicoPorIdContrato(idContrato).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboContratoPorIdPrestadorServico(idPrestadorServico){
+			return dataservice.comboContratoPorIdPrestadorServico(idPrestadorServico).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboUePorIdPrestadorServico(idPrestadorServico){
+			return dataservice.comboUePorIdPrestadorServico(idPrestadorServico).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboContratoPorIdUe(idUe) {
+			return dataservice.comboContratoPorIdUe(idUe).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboPrestadorServicoPorIdUe(idUe) {
+			return dataservice.comboPrestadorServicoPorIdUe(idUe).then(function (response) {
+				return response.data;
+			});
 		}
 
 	}
