@@ -484,7 +484,6 @@
     }
 
     function evtChangeFilter() {
-      console.log(vm.filtros);
       if (vm.filtros.contrato != null) {
         buscaComboUePorIdContratoFiltrado(vm.filtros.contrato.id);
         buscaComboPrestadorServicoPorIdContratoFiltrado(vm.filtros.contrato.id);
@@ -528,23 +527,19 @@
     function buscaComboUePorIdPrestadorServicoFiltrado(idPrestadorServico){
       MonitoramentoUtils.comboUePorIdPrestadorServico(idPrestadorServico).then(function (response) {
         vm.unidadeEscolarList = response.data || [];
-        console.log(vm.unidadeEscolarList);
       });
     }
 
     function buscaComboContratoPorIdUeFiltrado(idUnidadeEscolar){
       MonitoramentoUtils.comboContratoPorIdUe(idUnidadeEscolar).then(function (response) {
         vm.contratoLista = response.data || [];
-        console.log(vm.contratoLista);
       });
     }
 
     function buscaComboPrestadorServicoPorIdUeFiltrado(idUnidadeEscolar){
       MonitoramentoUtils.comboPrestadorServicoPorIdUe(idUnidadeEscolar).then(function (response) {
         vm.prestadorServicoList = response.data || [];
-        console.log(vm.prestadorServicoList);
       });
-
     }
   
   }
