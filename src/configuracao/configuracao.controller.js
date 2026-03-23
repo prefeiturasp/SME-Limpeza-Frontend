@@ -17,6 +17,8 @@
 		vm.evtChangeConfiguracao = evtChangeConfiguracao;
 		vm.evtKeyboardConfiguracao = evtKeyboardConfiguracao;
 		vm.salvarNoticia = salvarNoticia;
+		vm.manutencaoSistema = false;
+		vm.evtChangeManutencao = evtChangeManutencao;
 
 		vm.optionsSummernote = {
 			height: 300,
@@ -39,6 +41,7 @@
 			buscar();
 			buscarNoticia();
 			carregarComboOcorrenciaTipo();
+			verificaManutencaoSistema();
 		}
 
 		function buscar() {
@@ -149,8 +152,41 @@
 				controller.feed('error', 'Hove um erro ao atualizar o conteúdo de notícias.');
 				buscarNoticia();
 			}
+		}
+
+		function verificaManutencaoSistema(){
+			dataservice.buscaManutencaoSistema().then(success).catch(error);
+
+			function success(response) {
+				let valor = response.data.data.valor;
+				if (valor === 1) {
+					vm.manutencaoSistema = true;
+				} else {
+					vm.manutencaoSistema = false;
+				}
+			}
+			function error(response) {
+				controller.feed('error', 'Hove um erro ao buscar a configuração de manutenção do sistema.');
+			}
 
 		}
+
+		function evtChangeManutencao(){
+			
+			dataservice.salvaManutencaoSistema(vm.manutencaoSistema).then(success).catch(error);
+			function success(response) {
+				if (vm.manutencaoSistema){
+					controller.feed('success', 'Manutenção do sistema foi ativada com sucesso.');
+				} else {
+					controller.feed('warning', 'Manutenção do sistema foi desativada com sucesso.');
+				}
+			}
+			function error(response) {
+
+			}
+
+		}
+
 
 	}
 
