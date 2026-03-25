@@ -54,7 +54,6 @@
 			}
 
 			function error(response) {
-				console.log(response)
 				controller.feed('error', 'Hove um erro ao buscar os parâmetros gerais.');
 				vm.configuracaoList = [];
 			}
@@ -182,7 +181,7 @@
 				}
 			}
 			function error(response) {
-
+				controller.feed('error', 'Hove um erro ao ativar/desativar a manutenção do sistema.');
 			}
 
 		}
