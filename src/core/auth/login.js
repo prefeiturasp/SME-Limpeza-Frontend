@@ -5,7 +5,7 @@
   angular.module('core.auth')
     .controller('Login', Login);
 
-  Login.$inject = ['$rootScope', '$scope', 'controller', 'AuthToken', 'LoginRest', '$location', 'ConfiguracaoRest','$uibModal'];
+  Login.$inject = ['$rootScope', '$scope', 'controller', 'AuthToken', 'LoginRest', '$location', 'ConfiguracaoRest', '$uibModal'];
 
   function Login($rootScope, $scope, controller, AuthToken, dataservice, $location, ConfiguracaoRest, $uibModal) {
     /* jshint validthis: true */

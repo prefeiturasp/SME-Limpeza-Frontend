@@ -26,7 +26,7 @@
 		}
 
 		function salvaManutencaoSistema(manutencao) {
-			manutencao ? manutencao = 1 : manutencao = 0;
+			manutencao  = (manutencao) ? 1 : 0;
 			return $http.post(service.url + '/manutencao-sistema/', { manutencao:manutencao });
 		}
 		
