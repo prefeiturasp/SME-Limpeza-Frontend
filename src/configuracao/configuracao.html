@@ -144,20 +144,21 @@
 						<p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">CONFIGURAÇÕES DO SISTEMA</p>
 						<div class="tb-responsive">
 							<table class="table">
-								<tbody>
-									<tr class="text-center">
-										<td class="text-left"><div class="badge badge-danger">ATIVAR/DESATIVAR MANUTENÇÃO DO SISTEMA</div></td>
-										<td>
-											<div class="toggle-switch text-right">
-												<input type="checkbox" id="toggle" class="checkbox-input" ng-model="vm.manutencaoSistema" ng-change="vm.evtChangeManutencao()"/>
-												<label for="toggle" class="checkbox-label">
-													<span class="slider"></span>
-												</label>
-											</div>
-										</td>
-										</td>
-									</tr>
-								</tbody>
+									<thead>
+										<tr>
+											<th class="text-left">
+												<div class="badge badge-danger">ATIVAR/DESATIVAR MANUTENÇÃO DO SISTEMA</div>
+											</th>
+											<th>
+												<div class="toggle-switch text-right">
+													<input type="checkbox" id="toggle" class="checkbox-input" ng-model="vm.manutencaoSistema" ng-change="vm.evtChangeManutencao()"/>
+													<label for="toggle" class="checkbox-label">
+														<span class="slider"></span>
+													</label>
+												</div>
+											</th>
+										</tr>
+									</thead>
 							</table>
 						</div>
 					</div>
