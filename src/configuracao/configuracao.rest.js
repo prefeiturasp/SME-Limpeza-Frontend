@@ -12,12 +12,24 @@
 		
 		let service = new RestUtils(ConfigRest.configuracao);
 		service.atualizarNoticia = atualizarNoticia;
+		service.buscaManutencaoSistema = buscaManutencaoSistema;
+		service.salvaManutencaoSistema = salvaManutencaoSistema;
+		
 		return service;
 
 		function atualizarNoticia(conteudo) {
 			return $http.post(service.url + '/noticia/', { conteudo });
 		}
 
+		function buscaManutencaoSistema() {
+			return $http.get(service.url + '/manutencao-sistema/');
+		}
+
+		function salvaManutencaoSistema(manutencao) {
+			manutencao  = (manutencao) ? 1 : 0;
+			return $http.post(service.url + '/manutencao-sistema/', { manutencao:manutencao });
+		}
+		
 	}
 	
 })();

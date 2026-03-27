@@ -975,3 +975,40 @@ strong {
   width: 28px;
   padding: 0;
 }
+
+
+/* CHECKBOX IN TOGGLE*/
+.checkbox-input {
+  display: none; /* Oculta o checkbox nativo */
+}
+
+.checkbox-label {
+  cursor: pointer;
+  width: 50px;
+  height: 25px;
+  background: #ccc; /* Cor de fundo (off) */
+  border-radius: 50px;
+  position: relative;
+  transition: background 0.4s;
+}
+
+.checkbox-label .slider {
+  content: '';
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 20px;
+  height: 20px;
+  background: #fff; /* Cor do botão deslizante */
+  border-radius: 50%;
+  transition: transform 0.4s;
+}
+
+/* Estado 'checked' (quando marcado) */
+.checkbox-input:checked ~ .checkbox-label {
+  background: #4CAF50; /* Nova cor de fundo (on) */
+}
+
+.checkbox-input:checked ~ .checkbox-label .slider {
+  transform: translateX(25px); /* Move o botão para a direita */
+}
