@@ -4,11 +4,10 @@
 	
 	angular.module('usuario.usuario').controller('UsuarioController', UsuarioController);
 	
-	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'ContratoUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils'];
 	
-	function UsuarioController($rootScope, $scope, $location, tabela, controller, $uibModal, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils, dataservice) {
+	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, ContratoUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils) {
 		/* jshint validthis: true */
-
 		var vm = this;
 		
 		vm.filtros = {};
@@ -27,14 +26,13 @@
 		
 		function init() {
 			montarTabelaUsuario();
-			carregarComboUsuarioOrigem();
-			carregarComboUsuarioStatus();
+			carregaComboUsuarioOrigem();
+			carregaComboUsuarioStatus();
 		}
 		
 		function montarTabelaUsuario() {
-
+			
 			criarOpcoesdaTabela();
-
 			function carregarObjetoDados(aData) {
 				dataservice.buscar(aData.id).then((response) => {
 					abrirModalUsuario(aData.id, controller.ler(response, 'data'));
@@ -42,7 +40,6 @@
 			}
 
 			function criarColunasTabelaUsuario() {
-
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
 						return `<div class="py-3">
@@ -76,16 +73,13 @@
 					}},
 					{data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios}
 				);
-
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
-
 			}
 
 			function criarOpcoesdaTabela() {
 
 				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjetoDados);
 				criarColunasTabelaUsuario();
-
 				function ajax(data, callback, settings) {
 
 					dataservice.tabela(tabela.criarParametros(data, vm.filtros)).then(success).catch(error);
@@ -119,7 +113,7 @@
 
 		}
 
-		function carregarComboUsuarioOrigem() {
+		function carregaComboUsuarioOrigem() {
 
 			UsuarioOrigemUtils.carregarCombo().then(success).catch(error);
 
@@ -138,7 +132,7 @@
 
 		}
 
-		function carregarComboUsuarioStatus() {
+		function carregaComboUsuarioStatus() {
 
 			UsuarioStatusUtils.carregarCombo().then(success).catch(error);
 			function success(response) {
