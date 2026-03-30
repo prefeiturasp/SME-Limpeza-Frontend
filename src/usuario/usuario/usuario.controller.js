@@ -45,7 +45,7 @@
 				});
 			}
 
-			function criarColunasTabela() {
+			function criarColunasTabelaUsuario() {
 
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
@@ -88,7 +88,7 @@
 			function criarOpcoesdaTabela() {
 
 				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjeto);
-				criarColunasTabela();
+				criarColunasTabelaUsuario();
 
 				function ajax(data, callback, settings) {
 
