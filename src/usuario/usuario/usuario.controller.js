@@ -78,7 +78,7 @@
 
 			function criarOpcoesdaTabela() {
 
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjetoDados);
+				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, desativar, 'data', carregarObjetoDados);
 				criarColunasTabelaUsuario();
 				function ajax(data, callback, settings) {
 
@@ -93,7 +93,7 @@
 
 				}
 
-				function remover(id) {
+				function desativar(id) {
 					
 					dataservice.remover(id).then(success).catch(error);
 
@@ -244,7 +244,7 @@
 					dataservice.inserir(vm.modal.model).then(success).catch(error);
 				}).catch(error);
 			}
-			
+
 			function success(response) {
 				controller.feed('success', 'Registro salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
