@@ -6,11 +6,9 @@
 	.module('usuario.usuario')
 	.controller('UsuarioController', UsuarioController);
 	
-	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
-		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
 	
-	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
-		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
+	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
 		/* jshint validthis: true */
 
 		var vm = this;
