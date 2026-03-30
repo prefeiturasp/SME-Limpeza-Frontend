@@ -39,7 +39,7 @@
 
 			criarOpcoesdaTabela();
 
-			function carregarObjeto(aData) {
+			function carregarObjetoDados(aData) {
 				dataservice.buscar(aData.id).then((response) => {
 					abrirModalUsuario(aData.id, controller.ler(response, 'data'));
 				});
@@ -87,7 +87,7 @@
 
 			function criarOpcoesdaTabela() {
 
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjeto);
+				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjetoDados);
 				criarColunasTabelaUsuario();
 
 				function ajax(data, callback, settings) {
