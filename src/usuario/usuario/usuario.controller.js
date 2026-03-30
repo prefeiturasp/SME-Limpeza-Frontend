@@ -2,9 +2,7 @@
 	
 	'use strict';
 	
-	angular
-	.module('usuario.usuario')
-	.controller('UsuarioController', UsuarioController);
+	angular.module('usuario.usuario').controller('UsuarioController', UsuarioController);
 	
 	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
 	
@@ -134,7 +132,6 @@
 			}
 
 			function error(err) {
-				console.log(err);
 				vm.usuarioOrigemList = [];
 				controller.feed('error', 'Houve um erro ao carregar a relação de origem.');
 			}
@@ -144,11 +141,9 @@
 		function carregarComboUsuarioStatus() {
 
 			UsuarioStatusUtils.carregarCombo().then(success).catch(error);
-
 			function success(response) {
 				vm.usuarioStatusList = response.objeto;
 			}
-
 			function error(response) {
 				vm.usuarioStatusList = [];
 				controller.feed('error', 'Houve um erro ao carregar a relação de status.');
@@ -160,8 +155,8 @@
 
 			vm.origemSelecionada = vm.usuarioOrigemList.find(origem => origem.id == (ehFiltro ? vm.filtros.idUsuarioOrigem : vm.modal.model.idUsuarioOrigem));
 			if(ehFiltro) vm.filtros.idOrigemDetalhe = null;
-			carregarComboUsuarioCargo(ehFiltro);
-			carregarComboOrigemDetalhe();
+			carregaComboUsuarioCargo(ehFiltro);
+			carregaComboOrigemDetalhe();
 
 			if(vm.modal) {
 				vm.modal.model.unidadeEscolarList = [];
@@ -170,7 +165,7 @@
 
 		}
 
-		function carregarComboUsuarioCargo(ehFiltro = false) {
+		function carregaComboUsuarioCargo(ehFiltro = false) {
 
 			const idUsuarioOrigem = angular.copy(ehFiltro ? vm.filtros.idUsuarioOrigem : vm.modal.model.idUsuarioOrigem);
 			if(!idUsuarioOrigem) {
@@ -190,7 +185,7 @@
 
 		}
 
-		function carregarComboOrigemDetalhe() {
+		function carregaComboOrigemDetalhe() {
 
 			switch(vm.origemSelecionada?.codigo) {
 				case 'dre'	: DiretoriaRegionalUtils.carregarComboTodos().then(success).catch(error); break;
