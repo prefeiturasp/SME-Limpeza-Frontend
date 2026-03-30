@@ -20,11 +20,11 @@
 		vm.tabela = {};
 
 		vm.abrirModalUsuario = abrirModalUsuario;
-		vm.fecharModal = fecharModal;
+		vm.fecharModalUsuario = fecharModalUsuario;
 		vm.salvarUsuario = salvarUsuario;
 
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
-		vm.recarregarTabela = recarregarTabela;
+		vm.recarregarTabelaUsuario = recarregarTabelaUsuario;
 		vm.irParaImportacao = irParaImportacao;
 		
 		init();
@@ -271,7 +271,7 @@
 			function success(response) {
 				controller.feed('success', 'Registro salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
-				fecharModal();
+				fecharModalUsuario();
 			}
 
 			function error(response) {
@@ -299,12 +299,12 @@
 
 		}
 
-		function fecharModal() {
+		function fecharModalUsuario() {
 			vm.modal.close();
 			delete vm.modal;
 		}
 
-		function recarregarTabela() {
+		function recarregarTabelaUsuario() {
 			tabela.recarregarDados(vm.instancia);
 		}
 
