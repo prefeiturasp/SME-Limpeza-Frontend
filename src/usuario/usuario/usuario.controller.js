@@ -51,8 +51,8 @@
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
 						return `
 							<div class="py-3">
-              	<h5>${data.nome}</h5>
-                <small>${data.email || '-'}</small>
+              					<h5>${data.nome}</h5>
+                				<small>${data.email || '-'}</small>
 							</div>
 						`;
 					}}
@@ -77,10 +77,14 @@
 				}
 
 				colunas.push(
-					{data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
-						return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
-					}},
-					{data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadrao}
+					{
+						data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
+							return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
+						}
+					},
+					{
+						data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios
+					}
 				);
 
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
@@ -111,12 +115,12 @@
 					dataservice.remover(id).then(success).catch(error);
 
 					function success(response) {
-						controller.feed('success', 'Registro removido com sucesso.');
+						controller.feed('success', 'Usuário(a) desativado(a) com sucesso.');
 						tabela.recarregarDados(vm.instancia);
 					}
 
 					function error(response) {
-						controller.feed('error', 'Erro ao remover registro.');				
+						controller.feed('error', 'Erro ao inativar o usuário.');				
 					}
 
 				}
@@ -259,7 +263,16 @@
 			if(vm.modal.isEditar) {
 				dataservice.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
 			} else {
-				dataservice.inserir(vm.modal.model).then(success).catch(error);
+				dataservice.verificaVinculoContrato(vm.modal.model.email).then((response) => {
+				
+					const possuiVinculo = response.data.data.possuiVinculo;
+					if (possuiVinculo) {
+						controller.feed('warning', 'Este usuário já está vinculado a um contrato ativo e não pode ser inserido.');
+						return;
+					}
+				
+					dataservice.inserir(vm.modal.model).then(success).catch(error);
+				}).catch(error);
 			}
 
 			function success(response) {
