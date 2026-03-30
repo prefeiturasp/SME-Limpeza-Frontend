@@ -20,7 +20,7 @@
 
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
 		vm.recarregarTabelaUsuario = recarregarTabelaUsuario;
-		vm.irParaImportacao = irParaImportacao;
+		vm.irParaImportacaoUsuario = irParaImportacaoUsuario;
 		
 		init();
 		
@@ -295,7 +295,7 @@
 			tabela.recarregarDados(vm.instancia);
 		}
 
-		function irParaImportacao() {
+		function irParaImportacaoUsuario() {
 			$rootScope.$evalAsync(() => {
 				$location.path('usuario/importar');
 			});
