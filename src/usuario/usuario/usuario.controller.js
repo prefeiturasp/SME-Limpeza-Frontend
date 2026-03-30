@@ -19,29 +19,29 @@
 		vm.instancia = {};
 		vm.tabela = {};
 
-		vm.abrirModal = abrirModal;
+		vm.abrirModalUsuario = abrirModalUsuario;
 		vm.fecharModal = fecharModal;
-		vm.salvar = salvar;
+		vm.salvarUsuario = salvarUsuario;
 
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
 		vm.recarregarTabela = recarregarTabela;
 		vm.irParaImportacao = irParaImportacao;
 		
-		iniciar();
+		init();
 		
-		function iniciar() {
-			montarTabela();
+		function init() {
+			montarTabelaUsuario();
 			carregarComboUsuarioOrigem();
 			carregarComboUsuarioStatus();
 		}
 		
-		function montarTabela() {
+		function montarTabelaUsuario() {
 
 			criarOpcoesdaTabela();
 
 			function carregarObjeto(aData) {
 				dataservice.buscar(aData.id).then((response) => {
-					abrirModal(aData.id, controller.ler(response, 'data'));
+					abrirModalUsuario(aData.id, controller.ler(response, 'data'));
 				});
 			}
 
@@ -246,7 +246,7 @@
 
 		}
 
-		function salvar(formulario) {
+		function salvarUsuario(formulario) {
 
 			if(formulario.$invalid) {
 				return;
@@ -280,7 +280,7 @@
 
 		}
 
-		function abrirModal(id, usuario) {
+		function abrirModalUsuario(id, usuario) {
 
 			vm.modal = $uibModal.open({
 				templateUrl: 'src/usuario/usuario/usuario-form.html?' + new Date(),
