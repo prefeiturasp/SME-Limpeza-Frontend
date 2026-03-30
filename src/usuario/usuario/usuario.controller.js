@@ -2,23 +2,17 @@
 	'use strict';
 	angular.module('usuario.usuario').controller('UsuarioController', UsuarioController);
 	
-	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
-		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
 	
-	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
-		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
+	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
 		/* jshint validthis: true */
-
 		var vm = this;
-		
 		vm.filtros = {};
 		vm.instancia = {};
 		vm.tabela = {};
-
 		vm.abrirModal = abrirModal;
 		vm.fecharModal = fecharModal;
 		vm.salvar = salvar;
-
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
 		vm.recarregarTabela = recarregarTabela;
 		vm.irParaImportacao = irParaImportacao;
@@ -305,6 +299,5 @@
 				$location.path('usuario/importar');
 			});
 		}
-
 	}
 })();
