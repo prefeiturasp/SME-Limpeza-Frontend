@@ -1,10 +1,6 @@
 (function () {
-	
 	'use strict';
-	
-	angular
-	.module('usuario.usuario')
-	.controller('UsuarioController', UsuarioController);
+	angular.module('usuario.usuario').controller('UsuarioController', UsuarioController);
 	
 	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
 		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
@@ -38,7 +34,6 @@
 		function montarTabela() {
 
 			criarOpcoesTabela();
-
 			function carregarObjeto(aData) {
 				dataservice.buscar(aData.id).then((response) => {
 					abrirModal(aData.id, controller.ler(response, 'data'));
@@ -46,7 +41,6 @@
 			}
 
 			function criarColunasTabela() {
-
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
 						return `
@@ -86,9 +80,7 @@
 						data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios
 					}
 				);
-
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
-
 			}
 
 			function criarOpcoesTabela() {
@@ -99,11 +91,9 @@
 				function ajax(data, callback, settings) {
 
 					dataservice.tabela(tabela.criarParametros(data, vm.filtros)).then(success).catch(error);
-
 					function success(response) {
 						callback(controller.lerRetornoDatatable(response));
 					}
-
 					function error(response) {
 						callback(tabela.vazia());
 					}
@@ -113,18 +103,14 @@
 				function remover(id) {
 					
 					dataservice.remover(id).then(success).catch(error);
-
 					function success(response) {
 						controller.feed('success', 'Usuário(a) desativado(a) com sucesso.');
 						tabela.recarregarDados(vm.instancia);
 					}
-
 					function error(response) {
 						controller.feed('error', 'Erro ao inativar o usuário.');				
 					}
-
 				}
-
 			}
 
 		}
@@ -264,7 +250,6 @@
 				dataservice.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
 			} else {
 				dataservice.verificaVinculoContrato(vm.modal.model.email).then((response) => {
-				
 					const possuiVinculo = response.data.data.possuiVinculo;
 					if (possuiVinculo) {
 						controller.feed('warning', 'Este usuário já está vinculado a um contrato ativo e não pode ser inserido.');
