@@ -214,7 +214,7 @@
 
 		}
 
-		function carregarComboUnidadeEscolar() {
+		function carregaComboUnidadeEscolar() {
 
 			UnidadeEscolarUtils.carregarComboDetalhadoTodos().then(success).catch(error);
 			
@@ -230,7 +230,7 @@
 
 		}
 
-		function carregarComboContrato() {
+		function carregaComboContrato() {
 
 			ContratoUtils.carregarComboTodos().then(success).catch(error);
 			
@@ -294,8 +294,8 @@
 			vm.modal.model.id = id;
 			vm.modal.isEditar = angular.isDefined(usuario);
 			evtChangeUsuarioOrigem();
-			carregarComboUnidadeEscolar();
-			carregarComboContrato();
+			carregaComboUnidadeEscolar();
+			carregaComboContrato();
 
 		}
 
