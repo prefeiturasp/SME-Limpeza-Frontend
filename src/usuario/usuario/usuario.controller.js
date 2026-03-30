@@ -83,7 +83,6 @@
 				function ajax(data, callback, settings) {
 
 					dataservice.tabela(tabela.criarParametros(data, vm.filtros)).then(success).catch(error);
-
 					function success(response) {
 						callback(controller.lerRetornoDatatable(response));
 					}
@@ -116,7 +115,6 @@
 		function carregaComboUsuarioOrigem() {
 
 			UsuarioOrigemUtils.carregarCombo().then(success).catch(error);
-
 			function success(response) {
 				vm.usuarioOrigemList = response.objeto;
 				if($rootScope.usuario.usuarioOrigem.codigo == 'ue') {
@@ -156,7 +154,6 @@
 				vm.modal.model.unidadeEscolarList = [];
 				vm.modal.model.contratoList = [];
 			}
-
 		}
 
 		function carregaComboUsuarioCargo(ehFiltro = false) {
@@ -167,16 +164,13 @@
 			}
 
 			UsuarioCargoUtils.carregarCombo(idUsuarioOrigem).then(success).catch(error);
-
 			function success(response) {
 				vm.usuarioCargoList = response.objeto;
 			}
-
 			function error(response) {
 				vm.usuarioCargoList = [];
 				controller.feed('error', 'Houve um erro ao carregar a relação de cargos.');
 			}
-
 		}
 
 		function carregaComboOrigemDetalhe() {
@@ -193,7 +187,6 @@
 					vm.modal.model.idOrigemDetalhe = angular.copy(vm.origemDetalheList.find(od => od.id == vm.modal.model.idOrigemDetalhe));
 				}
 			}
-
 			function error(response) {
 				vm.origemDetalheList = [];
 				controller.feed('error');
@@ -204,7 +197,6 @@
 		function carregaComboUnidadeEscolar() {
 
 			UnidadeEscolarUtils.carregarComboDetalhadoTodos().then(success).catch(error);
-			
 			function success(response) {
 				vm.unidadeEscolarLista = response.objeto;
 				vm.modal.model.unidadeEscolarList = vm.unidadeEscolarLista.filter(ue => vm.modal.model.unidadeEscolarPermissao?.includes(ue.id));
@@ -220,7 +212,6 @@
 		function carregaComboContrato() {
 
 			ContratoUtils.carregarComboTodos().then(success).catch(error);
-			
 			function success(response) {
 				vm.contratoLista = response.objeto;
 				vm.modal.model.contratoList = vm.contratoLista.filter(c => vm.modal.model.contratoPermissao?.includes(c.id));
@@ -240,7 +231,6 @@
 			}
 
 			vm.modal.model.idOrigemDetalhe = vm.modal.model.idOrigemDetalhe?.id || vm.modal.model.idOrigemDetalhe;
-			
 			if(vm.modal.isEditar) {
 				dataservice.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
 			} else {
@@ -254,7 +244,7 @@
 					dataservice.inserir(vm.modal.model).then(success).catch(error);
 				}).catch(error);
 			}
-
+			
 			function success(response) {
 				controller.feed('success', 'Registro salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
