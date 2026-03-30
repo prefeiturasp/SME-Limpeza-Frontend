@@ -29,7 +29,7 @@
 
 			criarOpcoesTabela();
 			function carregarObjeto(aData) {
-				dataservice.buscar(aData.id).then((response) => {
+				dataservice.buscar(aData.id).then((response) => { 
 					abrirModal(aData.id, controller.ler(response, 'data'));
 				});
 			}
@@ -37,24 +37,14 @@
 			function criarColunasTabela() {
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
-						return `
-							<div class="py-3">
-              					<h5>${data.nome}</h5>
-                				<small>${data.email || '-'}</small>
-							</div>
-						`;
+						return `<div class="py-3"><h5>${data.nome}</h5><small>${data.email || '-'}</small></div>`;
 					}}
 				];
 
 				if(!['ps', 'ue'].includes($rootScope.usuario.usuarioOrigem.codigo)) {
 					colunas.push({
 						data: '', title: 'Origem e Cargo', width: 30, renderWith: (v1, v2, data) => {
-							return ['sme', 'dre'].includes(data.usuarioOrigem.codigo) ? data.usuarioOrigem.descricao : `
-								<div class="py-3">
-									<h5>${data.usuarioOrigem.descricao}</h5>
-									<small>${data.usuarioCargo.descricao}</small>
-								</div>
-							`;
+							return ['sme', 'dre'].includes(data.usuarioOrigem.codigo) ? data.usuarioOrigem.descricao : `<div class="py-3"><h5>${data.usuarioOrigem.descricao}</h5><small>${data.usuarioCargo.descricao}</small></div>`;
 						}
 					});
 				}
