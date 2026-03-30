@@ -1,18 +1,28 @@
 (function () {
+	
 	'use strict';
-	angular.module('usuario.usuario').controller('UsuarioController', UsuarioController);
 	
-	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+	angular
+	.module('usuario.usuario')
+	.controller('UsuarioController', UsuarioController);
 	
-	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
+	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
+		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+	
+	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
+		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
 		/* jshint validthis: true */
+
 		var vm = this;
+		
 		vm.filtros = {};
 		vm.instancia = {};
 		vm.tabela = {};
+
 		vm.abrirModal = abrirModal;
 		vm.fecharModal = fecharModal;
 		vm.salvar = salvar;
+
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
 		vm.recarregarTabela = recarregarTabela;
 		vm.irParaImportacao = irParaImportacao;
@@ -27,24 +37,34 @@
 		
 		function montarTabela() {
 
-			criarOpcoesTabela();
+			criarOpcoesdaTabela();
+
 			function carregarObjeto(aData) {
-				dataservice.buscar(aData.id).then((response) => { 
+				dataservice.buscar(aData.id).then((response) => {
 					abrirModal(aData.id, controller.ler(response, 'data'));
 				});
 			}
 
 			function criarColunasTabela() {
+
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
-						return `<div class="py-3"><h5>${data.nome}</h5><small>${data.email || '-'}</small></div>`;
+						return `<div class="py-3">
+									<h5>${data.nome}</h5>
+									<small>${data.email || '-'}</small>
+								</div>`;
 					}}
 				];
 
 				if(!['ps', 'ue'].includes($rootScope.usuario.usuarioOrigem.codigo)) {
 					colunas.push({
 						data: '', title: 'Origem e Cargo', width: 30, renderWith: (v1, v2, data) => {
-							return ['sme', 'dre'].includes(data.usuarioOrigem.codigo) ? data.usuarioOrigem.descricao : `<div class="py-3"><h5>${data.usuarioOrigem.descricao}</h5><small>${data.usuarioCargo.descricao}</small></div>`;
+							return ['sme', 'dre'].includes(data.usuarioOrigem.codigo) ? data.usuarioOrigem.descricao : `
+								<div class="py-3">
+									<h5>${data.usuarioOrigem.descricao}</h5>
+									<small>${data.usuarioCargo.descricao}</small>
+								</div>
+							`;
 						}
 					});
 				}
@@ -55,19 +75,17 @@
 				}
 
 				colunas.push(
-					{
-						data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
-							return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
-						}
-					},
-					{
-						data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios
-					}
+					{data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
+						return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
+					}},
+					{data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios}
 				);
+
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
+
 			}
 
-			function criarOpcoesTabela() {
+			function criarOpcoesdaTabela() {
 
 				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjeto);
 				criarColunasTabela();
@@ -75,9 +93,11 @@
 				function ajax(data, callback, settings) {
 
 					dataservice.tabela(tabela.criarParametros(data, vm.filtros)).then(success).catch(error);
+
 					function success(response) {
 						callback(controller.lerRetornoDatatable(response));
 					}
+
 					function error(response) {
 						callback(tabela.vazia());
 					}
@@ -87,14 +107,18 @@
 				function remover(id) {
 					
 					dataservice.remover(id).then(success).catch(error);
+
 					function success(response) {
 						controller.feed('success', 'Usuário(a) desativado(a) com sucesso.');
 						tabela.recarregarDados(vm.instancia);
 					}
+
 					function error(response) {
-						controller.feed('error', 'Erro ao inativar o usuário.');				
+						controller.feed('error', 'Erro ao desativar o usuário.');				
 					}
+
 				}
+
 			}
 
 		}
@@ -289,5 +313,6 @@
 				$location.path('usuario/importar');
 			});
 		}
+
 	}
 })();
