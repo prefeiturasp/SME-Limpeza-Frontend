@@ -75,6 +75,8 @@
 
     vm.retornaDataFormatada = retornaDataFormatada;
 
+    vm.exportarUEContrato = exportarUEContrato;
+
     iniciar();
 
     function iniciar() {
@@ -505,7 +507,7 @@
     function salvarUnidadeEscolarCarregada() {
 
       const unidadeEscolarList = vm.modalImportacao.resultado.filter(ue => ue.classeResultado === 'success');
-      console.log(vm.modal)
+     
       for (const ue of unidadeEscolarList) {
 
         const ueExistente = vm.modal.model.unidadeEscolarLista.find(ueExistente => ueExistente.id === ue.id);
@@ -1192,6 +1194,23 @@
           controller.feed('error', 'Erro ao salvar o histórico de status da unidade.');
         }
       }
+    }
+
+    function exportarUEContrato(){
+
+      dataservice.exportarUEContrato(vm.modal.model.id).then(success).catch(error);
+
+      function success(response) { 
+        const arquivo = controller.ler(response, 'data');
+        if (arquivo) {
+          controller.downloadArquivo(arquivo);
+        }
+      }
+
+      function error(response) {
+        controller.feed('error', 'Houve um erro ao exportar as Unidades Escolares do contrato.');
+      }
+       
     }
 
   }
