@@ -19,6 +19,10 @@
 		vm.salvarNoticia = salvarNoticia;
 		vm.manutencaoSistema = false;
 		vm.evtChangeManutencao = evtChangeManutencao;
+		vm.emailSettings = [];
+		vm.salvarEmailSettings = salvarEmailSettings;
+		vm.evtChangeEmailSetting = evtChangeEmailSetting;
+
 
 		vm.optionsSummernote = {
 			height: 300,
@@ -42,6 +46,7 @@
 			buscarNoticia();
 			carregarComboOcorrenciaTipo();
 			verificaManutencaoSistema();
+			buscarEmailSettings();
 		}
 
 		function buscar() {
@@ -186,6 +191,39 @@
 
 		}
 
+		function buscarEmailSettings() {
+			dataservice.buscarEmailSettings().then(function(response) {
+				vm.emailSettings = response.data.data.map(function(setting) {
+					return {
+						parametro: setting.parametro,
+						valor: setting.valor === 1 ? true : false,
+						descricao: setting.descricao
+					};
+				});
+			}).catch(function() {
+				controller.feed('error', 'Erro ao buscar as configurações de e-mail.');
+			});
+		}
+
+		function salvarEmailSettings() {
+			var payload = vm.emailSettings.map(function(setting) {
+				return {
+					parametro: setting.parametro,
+					valor: setting.valor ? '1' : '0'
+				};
+			});
+
+			dataservice.atualizarEmailSettings(payload).then(function() {
+				controller.feed('success', 'Configurações de e-mail salvas com sucesso!');
+			}).catch(function(error) {
+				controller.feedMessage(error);
+			});
+		}
+
+
+		function evtChangeEmailSetting(opcao){
+			salvarEmailSettings();
+		}
 
 	}
 
