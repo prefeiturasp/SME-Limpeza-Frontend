@@ -22,7 +22,9 @@
 		vm.emailSettings = [];
 		vm.salvarEmailSettings = salvarEmailSettings;
 		vm.evtChangeEmailSetting = evtChangeEmailSetting;
-
+		vm.emailsParaNotificacoes = [];
+		vm.buscaListaEmailsParaNotificacoes = buscaListaEmailsParaNotificacoes;
+		vm.salvarEmailsParaNotificacoes = salvarEmailsParaNotificacoes;
 
 		vm.optionsSummernote = {
 			height: 300,
@@ -47,6 +49,7 @@
 			carregarComboOcorrenciaTipo();
 			verificaManutencaoSistema();
 			buscarEmailSettings();
+			buscaListaEmailsParaNotificacoes();
 		}
 
 		function buscar() {
@@ -172,7 +175,6 @@
 			function error(response) {
 				controller.feed('error', 'Hove um erro ao buscar a configuração de manutenção do sistema.');
 			}
-
 		}
 
 		function evtChangeManutencao(){
@@ -225,6 +227,26 @@
 			salvarEmailSettings();
 		}
 
-	}
+		function buscaListaEmailsParaNotificacoes(){
+			dataservice.buscaListaEmailsParaNotificacoes().then(success).catch(error);
 
+			function success(response) {
+				let retorno = controller.ler(response, 'data');
+				vm.emailsParaNotificacoes = retorno.descricao;
+			}
+			function error(response) {
+				controller.feed('error', 'Hove um erro ao buscar a lista de emails para notificações.');
+			}
+		}
+		function salvarEmailsParaNotificacoes() {
+			dataservice.salvarEmailsParaNotificacoes(vm.emailsParaNotificacoes).then(success).catch(error);
+			function success(response) {	
+				controller.feed('success', 'Lista de emails atualizada com sucesso.');
+			}
+
+			function error(response) {
+				console.log(response);
+			}
+		}
+	}
 })();
