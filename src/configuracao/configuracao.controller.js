@@ -206,7 +206,7 @@
 		}
 
 		function salvarEmailSettings() {
-			var payload = vm.emailSettings.map(function(setting) {
+			let payload = vm.emailSettings.map(function(setting) {
 				return {
 					parametro: setting.parametro,
 					valor: setting.valor ? '1' : '0'
