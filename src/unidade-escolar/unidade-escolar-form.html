@@ -2,8 +2,8 @@
   autocapitalize="off" spellcheck="false">
 
   <div class="modal-header">
-    <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR UNIDADE DE ENISNO</h5>
-    <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR UNIDADE DE ENISNO</h5>
+    <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR UNIDADE DE ENSINO</h5>
+    <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR UNIDADE DE ENSINO</h5>
     <button type="button" class="close" ng-click="vm.fecharModal()">
       <span aria-hidden="true">×</span>
     </button>
@@ -71,6 +71,11 @@
                     <option value="" selected disabled>Selecione</option>
                   </select>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                  Status: <div class="badge badge-{{vm.tipoStatus}}">{{ vm.statusUe | uppercase }}</div>
               </div>
             </div>
           </div>
