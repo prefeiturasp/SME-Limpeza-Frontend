@@ -14,6 +14,7 @@
 		service.urlImportacao = service.url + '/importar';
 		service.carregarComboDRE = carregarComboDRE;
 		service.carregarComboTipoEscola = carregarComboTipoEscola;
+		service.buscaUsuariosUe = buscaUsuariosUe;
 
 		return service;
 
@@ -25,6 +26,9 @@
 			return $http.get(service.url + '/combo-tipo-escola');
 		}
 
+		function buscaUsuariosUe(idUnidadeEscolar){
+			return $http.post(service.url + '/busca-usuarios-ue', {idUnidadeEscolar: idUnidadeEscolar});
+		}
 	}
 	
 })();

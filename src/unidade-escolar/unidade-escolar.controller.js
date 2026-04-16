@@ -6,9 +6,12 @@
     .module('app.unidade-escolar')
     .controller('UnidadeEscolarLista', UnidadeEscolarLista);
 
-  UnidadeEscolarLista.$inject = ['$window', '$rootScope', '$scope', '$location', 'controller', 'UnidadeEscolarRest', 'tabela', '$uibModal', 'DiretoriaRegionalUtils', 'EnderecoUtils'];
+  UnidadeEscolarLista.$inject = ['$window', '$rootScope', '$scope', '$location', 'controller', 'UnidadeEscolarRest', 'tabela', '$uibModal', 
+    'DiretoriaRegionalUtils', 'EnderecoUtils', 'UsuarioRest', 'UsuarioOrigemUtils', 'UsuarioCargoUtils', 'UsuarioStatusUtils', 
+    'PrestadorServicoUtils', 'ContratoUtils', 'UnidadeEscolarUtils'];
 
-  function UnidadeEscolarLista($window, $rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, DiretoriaRegionalUtils, EnderecoUtils) {
+  function UnidadeEscolarLista($window, $rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, 
+    DiretoriaRegionalUtils, EnderecoUtils, UsuarioRest, UsuarioOrigemUtils, UsuarioCargoUtils, UsuarioStatusUtils, PrestadorServicoUtils, ContratoUtils, UnidadeEscolarUtils) {
     /* jshint validthis: true */
 
     var vm = this;
@@ -31,16 +34,22 @@
     vm.fecharModalResponsavelLegal = fecharModalResponsavelLegal;
     vm.salvarResponsavelLegal = salvarResponsavelLegal;
     vm.removerResponsavelLegal = removerResponsavelLegal;
+    vm.abrirModalEditUsuario = abrirModalEditUsuario;
 
     vm.abrirMapa = abrirMapa;
 
     vm.irParaImportacao = irParaImportacao;
+    vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
+    
+    vm.listaUsuariosUE = [];
 
     iniciar();
 
     function iniciar() {
       carregarComboTipoEscola();
       carregarComboDiretoriaRegional();
+      carregarComboUsuarioOrigem();
+      carregarComboUsuarioStatus();
       montarTabela();
     }
 
@@ -108,10 +117,16 @@
     }
 
     function salvar(formulario) {
-
-      if (formulario.$invalid || !verificarLatitudeLongitude()) {
+      if (formulario.$invalid) {
         return;
       }
+
+      if (vm.modal && vm.modal.isUsuario) {
+        salvarUsuario();
+        return;
+      }
+
+      if (!verificarLatitudeLongitude()) return;
 
       if (vm.modal.isEditar) {
         dataservice.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
@@ -142,15 +157,29 @@
         keyboard: false
       });
 
+      buscaUsuariosUe(id);
+
       vm.modal.model = angular.isDefined(unidadeEscolar) ? angular.copy(unidadeEscolar) : {};
       vm.modal.model.id = id;
       vm.modal.isEditar = angular.isDefined(unidadeEscolar);
 
     }
 
+    function fecharModalUsuario() {
+      vm.modalEditUsu.close();
+      delete vm.modalEditUsu;
+      vm.modal = vm.modalUE;
+      delete vm.modalUE;
+      buscaUsuariosUe(vm.modal.model.id);
+    }
+
     function fecharModal() {
-      vm.modal.close();
-      delete vm.modal;
+      if (vm.modal && vm.modal.isUsuario) {
+        fecharModalUsuario();
+      } else if (vm.modal) {
+        vm.modal.close();
+        delete vm.modal;
+      }
     }
 
     function carregarComboTipoEscola() {
@@ -341,6 +370,145 @@
       $rootScope.$evalAsync(() => {
         $location.path('unidade-escolar/importar');
       });
+    }
+
+    function buscaUsuariosUe(idUnidadeEscolar){
+      
+      dataservice.buscaUsuariosUe(idUnidadeEscolar).then(success).catch(error);
+
+      function success(response) {
+        vm.listaUsuariosUE = controller.ler(response, 'data');
+      }
+
+      function error(response) {
+        console.log(response);
+      }
+    }
+
+    function abrirModalEditUsuario(idUsuario) {
+      UsuarioRest.buscar(idUsuario).then((response) => {
+        const usuario = controller.ler(response, 'data');
+        vm.modalUE = vm.modal;
+
+        vm.modalEditUsu = $uibModal.open({
+          templateUrl: 'src/usuario/usuario/usuario-form.html?' + new Date(),
+          backdrop: 'static',
+          scope: $scope,
+          size: 'lg',
+          keyboard: false
+        });
+
+        vm.modal = vm.modalEditUsu;
+        vm.modal.model = usuario;
+        vm.modal.isEditar = true;
+        vm.modal.isUsuario = true;
+
+        // Encadeia os carregamentos para garantir que a lógica dependente espere pelos dados
+        carregarComboUsuarioOrigem().then(() => {
+          evtChangeUsuarioOrigem();
+          carregarComboUsuarioStatus();
+          carregarComboUnidadeEscolarParaUsuario();
+          carregarComboContratoParaUsuario();
+        });
+      });
+    }
+
+    function carregarComboUsuarioOrigem() {
+      return UsuarioOrigemUtils.carregarCombo().then(success).catch(error);
+      function success(response) { 
+        vm.usuarioOrigemList = response.objeto; 
+        return response.objeto;
+      }
+      function error(err) { 
+        vm.usuarioOrigemList = []; 
+        return [];
+      }
+    }
+
+    function carregarComboUsuarioStatus() {
+      return UsuarioStatusUtils.carregarCombo().then(success).catch(error);
+      function success(response) { 
+        vm.usuarioStatusList = response.objeto; 
+        return response.objeto;
+      }
+      function error(response) { 
+        vm.usuarioStatusList = []; 
+        return [];
+      }
+    }
+
+    function evtChangeUsuarioOrigem() {
+      vm.origemSelecionada = (vm.usuarioOrigemList || []).find(origem => origem.id == vm.modal.model.idUsuarioOrigem);
+      carregarComboUsuarioCargo();
+      carregarComboOrigemDetalhe();
+      if (vm.modal && vm.modal.model) {
+        vm.modal.model.unidadeEscolarList = vm.modal.model.unidadeEscolarList || [];
+        vm.modal.model.contratoList = vm.modal.model.contratoList || [];
+      }
+    }
+
+    function carregarComboUsuarioCargo() {
+      const idUsuarioOrigem = vm.modal.model.idUsuarioOrigem;
+      if (!idUsuarioOrigem) return;
+      UsuarioCargoUtils.carregarCombo(idUsuarioOrigem).then(success).catch(error);
+      function success(response) { vm.usuarioCargoList = response.objeto; }
+      function error(response) { vm.usuarioCargoList = []; }
+    }
+
+    function carregarComboOrigemDetalhe() {
+      const promessa = (function() {
+        switch (vm.origemSelecionada?.codigo) {
+          case 'dre': return DiretoriaRegionalUtils.carregarComboTodos();
+          case 'ue': return UnidadeEscolarUtils.carregarComboTodos();
+          case 'ps': return PrestadorServicoUtils.carregarComboTodos();
+          default: return null;
+        }
+      })();
+
+      if (!promessa) return;
+
+      promessa.then(success).catch(error);
+
+      function success(response) {
+        vm.origemDetalheList = response.objeto;
+        if (vm.modal && vm.modal.model) {
+          const id = vm.modal.model.idOrigemDetalhe?.id || vm.modal.model.idOrigemDetalhe;
+          vm.modal.model.idOrigemDetalhe = angular.copy(vm.origemDetalheList.find(od => od.id == id));
+        }
+      }
+      function error(response) { vm.origemDetalheList = []; }
+    }
+
+    function carregarComboUnidadeEscolarParaUsuario() {
+      return UnidadeEscolarUtils.carregarComboDetalhadoTodos().then(success).catch(error);
+      function success(response) {
+        vm.unidadeEscolarLista = response.objeto;
+        if (vm.modal && vm.modal.model) {
+          vm.modal.model.unidadeEscolarList = vm.unidadeEscolarLista.filter(ue => vm.modal.model.unidadeEscolarPermissao?.includes(ue.id));
+        }
+      }
+      function error(response) { vm.unidadeEscolarLista = []; }
+    }
+
+    function carregarComboContratoParaUsuario() {
+      return ContratoUtils.carregarComboTodos().then(success).catch(error);
+      function success(response) {
+        vm.contratoLista = response.objeto;
+        if (vm.modal && vm.modal.model) {
+          vm.modal.model.contratoList = vm.contratoLista.filter(c => vm.modal.model.contratoPermissao?.includes(c.id));
+        }
+      }
+      function error(response) { vm.contratoLista = []; }
+    }
+
+    function salvarUsuario() {
+      vm.modal.model.idOrigemDetalhe = vm.modal.model.idOrigemDetalhe?.id || vm.modal.model.idOrigemDetalhe;
+      UsuarioRest.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
+      function success(response) {
+        controller.feed('success', 'Usuário salvo com sucesso.');
+        fecharModalUsuario();
+      }
+      function error(response) { controller.feedMessage(response); }
     }
 
   }
