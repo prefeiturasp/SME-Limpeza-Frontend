@@ -14,6 +14,10 @@
 		service.atualizarNoticia = atualizarNoticia;
 		service.buscaManutencaoSistema = buscaManutencaoSistema;
 		service.salvaManutencaoSistema = salvaManutencaoSistema;
+		service.buscarEmailSettings = buscarEmailSettings;
+		service.atualizarEmailSettings = atualizarEmailSettings;
+		service.buscaListaEmailsParaNotificacoes = buscaListaEmailsParaNotificacoes;
+		service.salvarEmailsParaNotificacoes = salvarEmailsParaNotificacoes;
 		
 		return service;
 
@@ -28,6 +32,22 @@
 		function salvaManutencaoSistema(manutencao) {
 			manutencao  = (manutencao) ? 1 : 0;
 			return $http.post(service.url + '/manutencao-sistema/', { manutencao:manutencao });
+		}
+
+		function buscarEmailSettings() {
+			return $http.get(service.url + '/email-settings');
+		}
+
+		function atualizarEmailSettings(settings) {
+			return $http.patch(service.url + '/email-settings', settings);
+		}
+
+		function buscaListaEmailsParaNotificacoes(emails) {
+			return $http.get(service.url + '/lista-emails-para-notificacoes');
+		}
+
+		function salvarEmailsParaNotificacoes(emails) {
+			return $http.post(service.url + '/emails-para-notificacoes', {emails: emails});
 		}
 		
 	}
