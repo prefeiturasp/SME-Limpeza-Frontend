@@ -169,7 +169,7 @@
     }
 
     function fecharModalUsuario() {
-      var idUnidadeEscolar = vm.modalUE.model.id;
+      let idUnidadeEscolar = vm.modalUE.model.id;
       vm.modalEditUsu.close();
       delete vm.modalEditUsu;
       vm.modal = vm.modalUE; // Restore vm.modal to the UE modal instance
