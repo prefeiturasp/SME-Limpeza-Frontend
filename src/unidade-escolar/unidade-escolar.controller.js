@@ -18,6 +18,7 @@
 
     vm.instancia = {};
     vm.tabela = {};
+    vm.listaUsuariosUE = [];
 
     vm.abrirModal = abrirModal;
     vm.fecharModal = fecharModal;
@@ -41,8 +42,6 @@
     vm.irParaImportacao = irParaImportacao;
     vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
     
-    vm.listaUsuariosUE = [];
-
     iniciar();
 
     function iniciar() {
@@ -166,11 +165,12 @@
     }
 
     function fecharModalUsuario() {
+      var idUnidadeEscolar = vm.modalUE.model.id;
       vm.modalEditUsu.close();
       delete vm.modalEditUsu;
-      vm.modal = vm.modalUE;
+      vm.modal = vm.modalUE; // Restore vm.modal to the UE modal instance
       delete vm.modalUE;
-      buscaUsuariosUe(vm.modal.model.id);
+      buscaUsuariosUe(idUnidadeEscolar);
     }
 
     function fecharModal() {
@@ -281,7 +281,6 @@
       EnderecoUtils.buscarCoordenadasPorCep(cep).then(success).catch(error);
 
       function success(response) {
-
         if (response.objeto.lat && response.objeto.lng) {
           vm.modal.model.latitude = response.objeto.lat;
           vm.modal.model.longitude = response.objeto.lng;
@@ -373,15 +372,12 @@
     }
 
     function buscaUsuariosUe(idUnidadeEscolar){
-      
       dataservice.buscaUsuariosUe(idUnidadeEscolar).then(success).catch(error);
-
-      function success(response) {
-        vm.listaUsuariosUE = controller.ler(response, 'data');
+      function success(response) { 
+        vm.listaUsuariosUE = controller.ler(response, 'data'); 
       }
-
-      function error(response) {
-        console.log(response);
+      function error(response) { 
+        vm.listaUsuariosUE = []; 
       }
     }
 
@@ -389,7 +385,6 @@
       UsuarioRest.buscar(idUsuario).then((response) => {
         const usuario = controller.ler(response, 'data');
         vm.modalUE = vm.modal;
-
         vm.modalEditUsu = $uibModal.open({
           templateUrl: 'src/usuario/usuario/usuario-form.html?' + new Date(),
           backdrop: 'static',
@@ -415,24 +410,24 @@
 
     function carregarComboUsuarioOrigem() {
       return UsuarioOrigemUtils.carregarCombo().then(success).catch(error);
-      function success(response) { 
-        vm.usuarioOrigemList = response.objeto; 
+      function success(response) {
+        vm.usuarioOrigemList = response.objeto;
         return response.objeto;
       }
-      function error(err) { 
-        vm.usuarioOrigemList = []; 
+      function error(err) {
+        vm.usuarioOrigemList = [];
         return [];
       }
     }
 
     function carregarComboUsuarioStatus() {
       return UsuarioStatusUtils.carregarCombo().then(success).catch(error);
-      function success(response) { 
-        vm.usuarioStatusList = response.objeto; 
+      function success(response) {
+        vm.usuarioStatusList = response.objeto;
         return response.objeto;
       }
-      function error(response) { 
-        vm.usuarioStatusList = []; 
+      function error(response) {
+        vm.usuarioStatusList = [];
         return [];
       }
     }
@@ -456,7 +451,7 @@
     }
 
     function carregarComboOrigemDetalhe() {
-      const promessa = (function() {
+      const promessa = (function () {
         switch (vm.origemSelecionada?.codigo) {
           case 'dre': return DiretoriaRegionalUtils.carregarComboTodos();
           case 'ue': return UnidadeEscolarUtils.carregarComboTodos();
@@ -464,11 +459,8 @@
           default: return null;
         }
       })();
-
       if (!promessa) return;
-
       promessa.then(success).catch(error);
-
       function success(response) {
         vm.origemDetalheList = response.objeto;
         if (vm.modal && vm.modal.model) {
@@ -510,7 +502,6 @@
       }
       function error(response) { controller.feedMessage(response); }
     }
-
   }
 
 })();

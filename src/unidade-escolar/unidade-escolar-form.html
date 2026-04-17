@@ -164,7 +164,7 @@
                 <thead>
                   <tr>
                     <th>Nome</th>
-                    <th>Pefil de Acesso</th>
+                    <th>Perfil de Acesso</th>
                     <th>E-mail</th>
                     <th>Situação</th>
                     <th class="text-right pr-0" style="width: 10%">Ações</th>
@@ -177,9 +177,9 @@
                     <td ng-bind="usuario.email"></td>
                     <td ng-bind="usuario.situacao"></td>
                     <td class="text-right pr-0">
-                      <a class="mr-1 btn btn-outline-primary btn-sm" href="#" ng-click="vm.abrirModalEditUsuario(usuario.id)">
+                      <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.abrirModalEditUsuario(usuario.id)">
                         <i class="icon-pencil"></i>
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
