@@ -26,6 +26,12 @@
     vm.desconsolidar = desconsolidar;
     vm.aprovar = aprovar;
     vm.reverterAprovacao = reverterAprovacao;
+    vm.abrirModalHistoricoBoletimMedicao = abrirModalHistoricoBoletimMedicao;
+    vm.fecharModalHistoricoBoletimMedicao = fecharModalHistoricoBoletimMedicao;
+
+    vm.historicoBoletimMedicaoList = [];
+    vm.retornaDataFormatada = retornaDataFormatada;
+
 
     iniciar();
 
@@ -288,6 +294,64 @@
     function fecharModalOcorrencias() {
       vm.modalOcorrencias.close();
       delete vm.modalOcorrencias;
+    }
+
+     // HISTÓRICO DE STATUS
+    function buscaListaHistoricoBoletimMedicao(){
+      let idRG = vm.dados.idRelatorioGerencial;
+
+      return dataservice.buscaHistoricoRG(idRG).then(function success(response) {
+        let dados = response.data.data;
+        if(dados.length > 0){
+          vm.historicoBoletimMedicaoList = dados;
+        }
+      }).catch(function error(err) {
+        controller.feed('error', 'Erro ao buscar historico de status da unidade escolar.');
+        throw err;
+      });
+
+    }
+
+    function abrirModalHistoricoBoletimMedicao() {
+
+      buscaListaHistoricoBoletimMedicao();
+
+      vm.modalHistoricoBoletimMedicao = $uibModal.open({
+        templateUrl: 'src/relatorio/relatorio-gerencial/relatorio-gerencial-detalhe/relatorio-gerencial-historico/relatorio-gerencial-tab-historico.html?' + new Date(),
+        backdrop: 'static',
+        scope: $scope,
+        size: 'lg',
+        keyboard: false,
+      });
+
+      setTimeout(function() {
+          $('#historicoBoletimMedicao').DataTable({
+          language: {
+              "sEmptyTable": "Nenhum registro encontrado",
+              "sInfo": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+              "oPaginate": {
+                  "sNext": "Próximo",
+                  "sPrevious": "Anterior",
+                  "sFirst": "Primeiro",
+                  "sLast": "Último"
+              }
+          },
+          pageLength: 10,
+          searching: false,
+          bLengthChange: false
+        });
+      }, 100);
+
+    }
+
+    function fecharModalHistoricoBoletimMedicao() {
+      vm.modalHistoricoBoletimMedicao.close();
+      delete vm.modalHistoricoBoletimMedicao;
+    }
+
+    function retornaDataFormatada(dataHora){
+      return moment(dataHora).format('DD/MM/YYYY - HH:mm');
     }
 
   }

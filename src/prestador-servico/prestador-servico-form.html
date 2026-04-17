@@ -29,7 +29,7 @@
                                     <div class="form-group">
                                         <label for="cnpj" class="obrigatorio">CNPJ</label>
                                         <input type="text" id="cnpj" name="cnpj" class="form-control" ng-model="vm.modal.model.cnpj" placeholder="__.___.___/____-__" 
-                                        ui-br-cnpj-mask ng-class="{'is-invalid': (formulario.cnpj.$dirty && formulario.cnpj.$invalid)}" required>
+                                        cnpj-mask ng-class="{'is-invalid': (formulario.cnpj.$dirty && formulario.cnpj.$invalid)}" required>
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="cep" class="obrigatorio">CEP</label>
-                                        <input type="text" id="cep" name="cep" class="form-control" ng-model="vm.modal.model.cep" ui-br-cep-mask 
+                                        <input type="text" id="cep" name="cep" class="form-control" ng-model="vm.modal.model.cep" ng-change="vm.buscarCep()" ui-br-cep-mask 
                                         placeholder="_____-___" ng-class="{'is-invalid': (formulario.cep.$dirty && formulario.cep.$invalid)}" required>
                                     </div>
                                 </div>

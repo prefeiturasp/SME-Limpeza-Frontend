@@ -12,6 +12,8 @@
 		var service = new RestUtils(ConfigRest.prestadorServico);
 		service.buscarDadosAcesso = buscarDadosAcesso;
 		service.alterarSenhaAplicativo = alterarSenhaAplicativo;
+		service.buscarCep = buscarCep;
+
 		return service;
 
 		function buscarDadosAcesso() {
@@ -20,6 +22,10 @@
 
 		function alterarSenhaAplicativo(senha) {
 			return $http.post(service.url + '/alterar-senha-aplicativo', { senhaAplicativo: senha });
+		}
+
+		function buscarCep(cep){
+			return $http.get('https://viacep.com.br/ws/' + cep + '/json/');
 		}
 
 	}

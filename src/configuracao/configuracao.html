@@ -137,6 +137,86 @@
 			</div>
 		</div>
 
+		<div class="row" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+			<div class="col-12">
+				<div class="card mb-3 mt-3">
+					<div class="card-body d-flex flex-column justify-content-between p-0">
+						<p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">CONFIGURAÇÕES DO SISTEMA</p>
+						<div class="tb-responsive">
+							<table class="table">
+									<thead>
+										<tr>
+											<th class="text-left">
+												<div class="badge badge-danger">ATIVAR/DESATIVAR MANUTENÇÃO DO SISTEMA</div>
+											</th>
+											<th>
+												<div class="toggle-switch text-right">
+													<input type="checkbox" id="toggle" class="checkbox-input" ng-model="vm.manutencaoSistema" ng-change="vm.evtChangeManutencao()"/>
+													<label for="toggle" class="checkbox-label">
+														<span class="slider"></span>
+													</label>
+												</div>
+											</th>
+										</tr>
+									</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+			<div class="col-12">
+				<div class="card mb-3 mt-3">
+					<div class="card-body d-flex flex-column justify-content-between p-0">
+						<p class="p-4 m-0 h5 uppercase text-bold text-white bg-primary">CONFIGURAÇÃO DO ENVIO DE E-MAIL</p>
+						<div class="tb-responsive">
+							<table class="table">
+									<thead>
+										<tr class="bg-light text-center">
+											<th class="text-left">Parâmetro / Informação</th>
+											<th class="text-left">Descrição / Valor</th>
+											<th class="text-right">Ativo / Inativo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="emailSet in vm.emailSettings" ng-if="emailSet.parametro !== 'EMAIL_NOTIFICACAO_LISTA_EMAILS'">
+											<td class="text-left" ng-bind="emailSet.parametro"></td>
+											<td class="text-left" ng-bind="emailSet.descricao"></td>
+											<td>
+												<div class="text-right">
+													<input type="checkbox" class="checkbox-input" id="toggle-email-{{$index}}" ng-model="emailSet.valor" ng-change="vm.evtChangeEmailSetting(emailSet)"/>
+													<label for="toggle-email-{{$index}}" class="checkbox-label">
+														<span class="slider"></span>
+													</label>
+												</div>
+											</td>
+										</tr>
+										<tr ng-repeat="emailSet in vm.emailSettings" ng-if="emailSet.parametro === 'EMAIL_NOTIFICACAO_LISTA_EMAILS'">
+											<td class="text-left col-4">E-MAILS PARA RECEBER NOTIFICAÇÕES DO SISTEMA</td>
+											<td class="text-right">
+												<textarea ng-model="vm.emailsParaNotificacoes" rows="3" style="width: 100%" class="form-control" ng-disabled="!emailSet.valor"></textarea>
+												<button class="btn btn-sm btn-success m-1" ng-click="vm.salvarEmailsParaNotificacoes()" ng-disabled="!emailSet.valor">Salvar Lista</button>
+											</td>
+											<td>
+												<div class="text-right">
+													<input type="checkbox" class="checkbox-input" id="toggle-email-{{$index}}" ng-model="emailSet.valor" ng-change="vm.evtChangeEmailSetting(emailSet)"/>
+													<label for="toggle-email-{{$index}}" class="checkbox-label">
+														<span class="slider"></span>
+													</label>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+							</table>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-12">
 				<div class="card mb-3 mt-3">

@@ -36,6 +36,17 @@
                                 </ui-select>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2">
+                            <div class="form-control">
+                                <label class="dois-pontos" for="descricaostatuscontrato">Status do Contrato</label>
+                                <ui-select id="sc" ng-model="vm.filtros.descricaostatuscontrato">
+                                    <ui-select-match allow-clear="true" placeholder="Todos">{{$select.selected.descricao}}</ui-select-match>
+                                    <ui-select-choices repeat="sc in vm.statusListContrato | filter: $select.search">
+                                        <span class="mb-0 d-block" ng-bind-html="sc.descricao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-4">

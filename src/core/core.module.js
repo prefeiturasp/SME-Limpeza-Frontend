@@ -36,7 +36,8 @@
 		'angular-inview',
 		'qrScanner',
 		'nemLogging',
-		'ui-leaflet'
+		'ui-leaflet',
+		'cnpjModule'
 	]);
 
 })();

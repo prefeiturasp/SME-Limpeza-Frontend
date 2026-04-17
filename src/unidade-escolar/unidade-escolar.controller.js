@@ -37,6 +37,9 @@
     vm.removerResponsavelLegal = removerResponsavelLegal;
     vm.abrirModalEditUsuario = abrirModalEditUsuario;
 
+    vm.tipoStatus = '';
+    vm.statusUe = '';
+
     vm.abrirMapa = abrirMapa;
 
     vm.irParaImportacao = irParaImportacao;
@@ -159,6 +162,7 @@
       buscaUsuariosUe(id);
 
       vm.modal.model = angular.isDefined(unidadeEscolar) ? angular.copy(unidadeEscolar) : {};
+      buscaStatusUePorId(id, vm.modal.model.idStatusUnidadeEscolar);
       vm.modal.model.id = id;
       vm.modal.isEditar = angular.isDefined(unidadeEscolar);
 
@@ -502,6 +506,28 @@
       }
       function error(response) { controller.feedMessage(response); }
     }
+
+    function buscaStatusUePorId(idUe, idStatusUe) {
+
+      dataservice.buscaStatusUePorId(idUe, idStatusUe).then(success).catch(error);
+
+      function success(response){
+        vm.statusUe = response.data.data.descricao;
+        switch(vm.statusUe){
+          case 'Ativa': vm.tipoStatus = 'success'; break;
+          case 'Inativa': vm.tipoStatus = 'Warning'; break;
+          case 'Suspensa': vm.tipoStatus = 'primary'; break;
+          case 'Encerrada': vm.tipoStatus = 'danger'; break;
+          default: vm.tipoStatus = 'light text-black';
+        }
+      }
+
+      function error(response) {
+        controller.feed('error', 'Erro ao consultar o status da UE.');
+      }
+
+    }
+
   }
 
 })();

@@ -1,0 +1,74 @@
+<form novalidate name="formulario" ng-submit="vm.edicaoOcorrenciaRetroativa(formulario)" autocomplete="off" autocorrect="off"
+  autocapitalize="off" spellcheck="false">
+
+  <div class="modal-header">
+    <h5 class="modal-title">EDIÇÃO DA OCORRÊNCIA RETROATIVA</h5>
+    <button type="button" class="close" ng-click="vm.fecharModalFormEdicaoOcorrenciaRetroativa()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body pt-3">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="contratoListEdit" class="obrigatorio">Contrato</label>
+          <select multiple size="5" class="form-control" id="contratoListEdit" name="contratoListEdit" disabled>
+            <option>{{vm.modelEdit.dre}}</option>
+          </select>
+        </div>
+      </div>
+    
+      <div class="col-6">
+        <div class="form-group">
+          <label for="unidadeEscolarList" class="obrigatorio">Unidade Escolar</label>
+          <select multiple size="5" class="form-control" id="unidadeEscolarList" name="unidadeEscolarList" disabled>
+            <option>{{vm.modelEdit.descricao}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="obrigatorio">Data Inicial</label>
+          <div class="d-flex align-items-center">
+            <input type="text" class="form-control mr-2" uib-datepicker-popup="dd/MM/yyyy" 
+            ng-model="vm.modelEdit.dataInicial" is-open="vm.popup1" ng-focus="focus4=true"
+            ng-click="vm.popup1 = true" datepicker-options="vm.datepickerOptions" required />
+            <div uib-timepicker ng-model="vm.modelEdit.dataInicial" show-meridian="false"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="obrigatorio">Data Final</label>
+          <div class="d-flex align-items-center">
+            <input type="text" class="form-control mr-2" uib-datepicker-popup="dd/MM/yyyy" ng-model="vm.modelEdit.dataFinal" is-open="vm.popup2" ng-click="vm.popup2 = true" datepicker-options="vm.datepickerOptions" required />
+            <div uib-timepicker ng-model="vm.modelEdit.dataFinal" show-meridian="false"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+           <div class="form-group">
+              <label for="motivo" class="obrigatorio">Motivo</label>
+              <textarea id="motivo" name="motivo" class="form-control" rows="7" ng-model="vm.modelEdit.motivo" required></textarea>
+            </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+          <label class="obrigatorio">Número máximo de Ocorrências a serem registradas</label>
+          <input type="number" class="form-control mr-2" ng-model="vm.modelEdit.quantidadeOcorrencias" min="1" ng-init="vm.model.quantidadeOcorrencias = 1" required/>
+          <input type="hidden" name="idOcorrenciaRetroativa" ng-model="vm.modelEdit.idOcorrenciaRetroativa" ng-init="vm.modelEdit.idOcorrenciaRetroativa"/>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-disabled="formulario.$invalid">Salvar</button>
+  </div>
+
+</form>
