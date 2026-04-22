@@ -73,7 +73,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" ng-if="vm.modal.isEditar">
               <div class="col-sm-12">
                   Status: <div class="badge badge-{{vm.tipoStatus}}">{{ vm.statusUe | uppercase }}</div>
               </div>
@@ -158,7 +158,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-if="vm.modal.isEditar">
       <div class="col-12">
         <div class="card">
           <div class="card-body">
