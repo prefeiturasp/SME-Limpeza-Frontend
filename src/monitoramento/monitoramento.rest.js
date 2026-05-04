@@ -18,6 +18,7 @@
 		service.comboUePorIdPrestadorServico = comboUePorIdPrestadorServico;
 		service.comboContratoPorIdUe = comboContratoPorIdUe;
 		service.comboPrestadorServicoPorIdUe = comboPrestadorServicoPorIdUe;
+		service.verificaSeDataEferiado = verificaSeDataEferiado;
 
 		return service;
 
@@ -47,6 +48,10 @@
 
 		function comboPrestadorServicoPorIdUe(idUe) {
 			return $http.post(service.url + '/comboPrestadorServicoPorIdUe', {idUe: idUe});
+		}
+
+		function verificaSeDataEferiado(idUnidadeEscolar, data) {
+			return $http.post(service.url + '/verificaSeDataEferiado', { idUnidadeEscolar: idUnidadeEscolar, data: data });
 		}
 
 	}

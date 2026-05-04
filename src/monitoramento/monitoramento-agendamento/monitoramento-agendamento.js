@@ -107,14 +107,38 @@
       vm.model.turnoList = vm.turnoList.filter(t => t.isSelected === true);
       vm.model.ambienteUnidadeEscolarList = vm.ambienteUnidadeEscolarList.filter(t => t.isSelected === true);
 
+      const ehExcepcional = await verificaDiaExcepicional(vm.model.data);
+
+      if (ehExcepcional) {
+        vm.model.arrDiaExcepcional = {
+          verificacao: true,
+          idUnidadeEscolar: $rootScope.usuario.unidadeEscolar.id, 
+          data: moment(vm.model.data).format('YYYY-MM-DD')
+        };
+      } else {
+        vm.model.arrDiaExcepcional = {
+          verificacao: false
+        };
+      }
+
+      vm.model.data = moment(vm.model.data).format('YYYY-MM-DD');
+
       dataservice.inserir(vm.model).then(success).catch(error);
 
       function success(response) {
-        controller.feed('success', 'Monitoramento agendado com com sucesso.');
-        fecharModal(true);
+        console.log(response);
+        if(response.data.data){
+          if(!response.data.data.resp){
+            controller.feed('error', response.data.msg);
+          } 
+        } else {
+          controller.feed('success', 'Monitoramento agendado com com sucesso.');
+          fecharModal(true);
+        } 
       }
 
       function error(response) {
+        console.log(response);
         controller.feed('error', 'Erro ao agendar monitoramento.');
       }
 
@@ -187,6 +211,44 @@
     function selecionarTodosAmbientes() {
       vm.flagTodosAmbientes = !Boolean(vm.flagTodosAmbientes);
       (vm.ambienteUnidadeEscolarList || []).map(_ => _.isSelected = vm.flagTodosAmbientes);
+    }
+
+    async function verificaDiaExcepicional(data) {
+      
+      if (!data) return false;
+
+      const dataMoment = moment(data);
+      const diaSemana = dataMoment.isoWeekday(); // 6 = Sábado, 7 = Domingo
+      const ehFinalSemana = diaSemana === 6 || diaSemana === 7;
+      let ehFeriado = false;
+
+      if (ehFinalSemana) {
+        return true;
+      }
+    
+      try {
+        const idUnidadeEscolar = $rootScope.usuario.unidadeEscolar.id;
+        if (!idUnidadeEscolar) return false;
+        const dataFormatada = dataMoment.format('YYYY-MM-DD');
+        const response = await dataservice.verificaSeDataEferiado(idUnidadeEscolar, dataFormatada);
+        function success(response) {
+          console.log(response.data);
+          if(response.data.data){
+            ehFeriado = true;
+          }
+        }
+        function error(response) {
+          console.log(response);
+        }
+        
+      } catch (error) {
+        return false;
+      }
+
+      if (ehFeriado) {
+        return true;
+      }
+
     }
 
   }
