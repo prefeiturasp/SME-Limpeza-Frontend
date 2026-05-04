@@ -108,7 +108,6 @@
       vm.model.ambienteUnidadeEscolarList = vm.ambienteUnidadeEscolarList.filter(t => t.isSelected === true);
 
       const ehExcepcional = await verificaDiaExcepicional(vm.model.data);
-
       if (ehExcepcional) {
         vm.model.arrDiaExcepcional = {
           verificacao: true,
@@ -126,7 +125,6 @@
       dataservice.inserir(vm.model).then(success).catch(error);
 
       function success(response) {
-        console.log(response);
         if(response.data.data){
           if(!response.data.data.resp){
             controller.feed('error', response.data.msg);
@@ -220,33 +218,23 @@
       const dataMoment = moment(data);
       const diaSemana = dataMoment.isoWeekday(); // 6 = Sábado, 7 = Domingo
       const ehFinalSemana = diaSemana === 6 || diaSemana === 7;
-      let ehFeriado = false;
-
       if (ehFinalSemana) {
         return true;
       }
-    
+
       try {
         const idUnidadeEscolar = $rootScope.usuario.unidadeEscolar.id;
         if (!idUnidadeEscolar) return false;
         const dataFormatada = dataMoment.format('YYYY-MM-DD');
         const response = await dataservice.verificaSeDataEferiado(idUnidadeEscolar, dataFormatada);
-        function success(response) {
-          console.log(response.data);
-          if(response.data.data){
-            ehFeriado = true;
-          }
-        }
-        function error(response) {
-          console.log(response);
+        if(response.data.data && response.data.data.idFeriado){
+          return true;
+        } else {
+          return false; 
         }
         
       } catch (error) {
         return false;
-      }
-
-      if (ehFeriado) {
-        return true;
       }
 
     }
