@@ -43,6 +43,9 @@
               <span class="badge badge-light text-black mt-3 pt-2 pb-2">
                 Cadastro: {{ vm.ocorrencia.dataHoraCadastro | date:'dd/MM/yyyy - HH:mm' }}
               </span>
+              <span class="badge badge-light text-black mt-3 pt-2 pb-2">
+                Autor da Ocorrência: {{ vm.ocorrencia.nomeUsuarioFiscal}}
+              </span>
               <span class="badge badge-light text-black mt-3 pt-2 pb-2" ng-if="vm.ocorrencia.dataHoraRemocao">
                 Remoção: {{ vm.ocorrencia.dataHoraRemocao | date:'dd/MM/yyyy - HH:mm' }}
               </span>
