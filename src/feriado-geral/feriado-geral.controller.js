@@ -9,7 +9,7 @@
 	function FeriadoGeralLista(SweetAlert, $scope, controller, dataservice, tabela, $uibModal, PrestadorServicoUtils) {
 		/* jshint validthis: true */
 
-		var vm = this;
+		let vm = this;
 		
 		vm.instancia = {};
 		vm.tabela = {};
