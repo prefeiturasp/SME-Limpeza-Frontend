@@ -20,7 +20,8 @@
 		'app.ocorrencia',
 		'app.relatorio',
 		'app.configuracao',
-		'app.cargo'
+		'app.cargo',
+		'app.feriado-geral'
 	]);
 
 })();
