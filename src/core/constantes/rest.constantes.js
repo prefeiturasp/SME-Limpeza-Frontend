@@ -38,6 +38,7 @@
     relatorioOcorrenciaFuncionario: 'relatorio/relatorio-ocorrencia-funcionario',
     relatorioEquipe: 'relatorio/relatorio-equipe',
     relatorioEquipeContrato: 'relatorio/relatorio-equipe-contrato',
+    feriadoGeral: 'feriado-geral',
     url: getURL()
   };
 
