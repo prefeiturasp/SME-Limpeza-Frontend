@@ -4,9 +4,9 @@
 	
 	angular.module('app.feriado-geral').controller('FeriadoGeralLista', FeriadoGeralLista);
 	
-	FeriadoGeralLista.$inject = ['SweetAlert', '$scope', 'controller', 'FeriadoGeralRest', 'tabela', '$uibModal', 'PrestadorServicoUtils'];
+	FeriadoGeralLista.$inject = ['SweetAlert', '$scope', 'controller', '$uibModal', 'PrestadorServicoUtils','FeriadoGeralRest', 'tabela'];
 	
-	function FeriadoGeralLista(SweetAlert, $scope, controller, dataservice, tabela, $uibModal, PrestadorServicoUtils) {
+	function FeriadoGeralLista(SweetAlert, $scope, controller, $uibModal, PrestadorServicoUtils, dataservice, tabela) {
 		/* jshint validthis: true */
 
 		let vm = this;
@@ -16,7 +16,7 @@
 		
 		vm.abrirModalFg = abrirModalFg;
 		vm.fecharModalFg = fecharModalFg;
-		vm.salvar = salvar;
+		vm.salvar = salvarFg;
 		vm.recarregarTabelaFg = recarregarTabelaFg;
 
 		vm.optionsDatePicker = {minMode: 'day'};
@@ -42,7 +42,7 @@
 
 			function criarColunasTabelaFg() {
 
-				var colunas = [
+				let colunas = [
 					{data: 'data', title: 'Data do Feriado', width: 20, renderWith: tabela.formatarData},
 					{data: 'descricao', title: 'Descrição'},
 					{data: 'recorrente', title: 'Recorrente', renderWith: tabela.booleanParaBadgeSimNao},
@@ -55,7 +55,7 @@
 
 			function criarOpcoesTabelaFg() {
 
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjetoFg);
+				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, removerFg, 'data', carregarObjetoFg);
 				criarColunasTabelaFg();
 
 				function ajax(data, callback, settings) {
@@ -72,7 +72,7 @@
 
 				}
 
-				function remover(id) {
+				function removerFg(id) {
 					
 					dataservice.remover(id).then(success).catch(error);
 
@@ -91,7 +91,7 @@
 
 		}
 
-		function salvar(formulario) {
+		function salvarFg(formulario) {
 
 			if(formulario.$invalid) {
 				return;
@@ -104,13 +104,13 @@
 			}
 
 			function success(response) {
-				controller.feed('success', 'Feriado salvo com sucesso.');
+				controller.feed('success', 'Feriado geral salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
 				fecharModalFg();
 			}
 
 			function error(response) {
-				controller.feed('error', 'Erro ao salvar feriado.');
+				controller.feed('error', 'Erro ao salvar feriado geral.');
 				controller.feedMessage(response);
 			}
 
