@@ -15,11 +15,21 @@
 		service.buscarMenu = buscarMenu;
 		service.alterarSenha = alterarSenha;
 		service.verificaVinculoContrato = verificaVinculoContrato;
+		service.exportar = exportar;
+		service.importar = importar;
 
 		return service;
 
 		function buscarMenu() {
 			return $http.get(service.url + '/menu');
+		}
+
+		function importar(dados) {
+			return $http.post(service.url + '/importar', dados);
+		}
+
+		function exportar(filtros) {
+			return $http.get(service.url + '/exportar', { params: filtros });
 		}
 
 		function alterarSenha(dados) {

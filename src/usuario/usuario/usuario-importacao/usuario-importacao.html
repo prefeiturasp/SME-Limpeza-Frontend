@@ -32,26 +32,28 @@
         </div>
 
         <botao-upload-arquivo id="upload" uploader="vm.uploader"
-          ng-if="vm.uploadUtils && !vm.listaImportacao.length > 0"></botao-upload-arquivo>
+          ng-if="vm.uploadUtils && vm.usuariosImportados.length === 0"></botao-upload-arquivo>
 
       </div>
     </div>
 
-    <div class="card mt-4" ng-if="vm.listaImportacao.length > 0">
+    <div class="card mt-4" ng-if="vm.usuariosImportados.length > 0">
       <div class="card-body p-0">
         <h4 class="card-title mx-4 mt-4 mb-2">Resumo da Importação</h4>
         <p class="card-description mx-4 mt-0">Verifique abaixo o resultado da importação de cada registro do
           arquivo carregado.</p>
-        <table class="table table-striped">
+        <table datatable="ng" dt-options="vm.dtOptions" class="table table-striped">
           <thead>
-            <th>Linha</th>
-            <th>Resultado</th>
-            <th>Nome do Usuário</th>
-            <th>E-mail do Usuário</th>
+            <tr>
+              <th>Linha</th>
+              <th>Resultado</th>
+              <th>Nome do Usuário</th>
+              <th>E-mail do Usuário</th>
+            </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="usuario in vm.listaImportacao track by $index">
-              <td>{{($index+1) | zpad:2}}</td>
+            <tr ng-repeat="usuario in vm.usuariosImportados track by $index">
+              <td>{{usuario.linha | zpad:2}}</td>
               <td class="uppercase text-{{usuario.classeResultado}}" style="font-weight: 600;">
                 {{usuario.mensagemResultado}}</td>
               <td>{{usuario.nome}}</td>
@@ -59,6 +61,19 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <button class="btn btn-light mr-2" ng-click="vm.usuariosImportados = []">
+                Cancelar
+            </button>
+            <!-- Botão de Confirmação -->
+            <button class="btn btn-success" 
+                    ng-click="vm.confirmarImportacao()" 
+                    ng-disabled="vm.carregando">
+                <i class="icon-check"></i> Confirmar e Salvar Alterações
+            </button>
+        </div>
+
       </div>
     </div>
 

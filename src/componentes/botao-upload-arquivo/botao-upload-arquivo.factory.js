@@ -57,9 +57,15 @@
 
         cfpLoadingBar.complete();
         vm.uploader.destroy();
-        iniciar();
-        controller.feed('error', response.msg ? response.msg : 'Houve um erro ao carregar o arquivo.');
-
+        iniciar()
+        if (response && response.msg && response.msg.includes('Importação bloqueada:')) {
+          localStorage.setItem('erroImportacaoBloqueada', response.msg);
+          vm.response = response;
+          $rootScope.$apply();
+        } else {
+          controller.feed('error', response.msg ? response.msg : 'Houve um erro ao carregar o arquivo.');
+        }
+        
       }
 
       async function onSuccessItem(item, response, status, headers) {
