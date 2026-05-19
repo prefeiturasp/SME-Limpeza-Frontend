@@ -14,10 +14,10 @@
 		vm.instancia = {};
 		vm.tabela = {};
 		
-		vm.abrirModal = abrirModal;
-		vm.fecharModal = fecharModal;
+		vm.abrirModalFg = abrirModalFg;
+		vm.fecharModalFg = fecharModalFg;
 		vm.salvar = salvar;
-		vm.recarregarTabela = recarregarTabela;
+		vm.recarregarTabelaFg = recarregarTabelaFg;
 
 		vm.optionsDatePicker = {minMode: 'day'};
 
@@ -26,21 +26,21 @@
 			{ label: 'Não', value: false }
 		];
 
-		iniciar();
+		iniciarTab();
 		
-		function iniciar() {
+		function iniciarTab() {
 			montarTabela();
 		}
 		
 		function montarTabela() {
 
-			criarOpcoesTabela();
+			criarOpcoesTabelaFg();
 
-			function carregarObjeto(aData) {
-				abrirModal(aData.id, aData);
+			function carregarObjetoFg(aData) {
+				abrirModalFg(aData.id, aData);
 			}
 
-			function criarColunasTabela() {
+			function criarColunasTabelaFg() {
 
 				var colunas = [
 					{data: 'data', title: 'Data do Feriado', width: 20, renderWith: tabela.formatarData},
@@ -53,10 +53,10 @@
 
 			}
 
-			function criarOpcoesTabela() {
+			function criarOpcoesTabelaFg() {
 
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjeto);
-				criarColunasTabela();
+				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjetoFg);
+				criarColunasTabelaFg();
 
 				function ajax(data, callback, settings) {
 
@@ -106,7 +106,7 @@
 			function success(response) {
 				controller.feed('success', 'Feriado salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
-				fecharModal();
+				fecharModalFg();
 			}
 
 			function error(response) {
@@ -116,7 +116,7 @@
 
 		}
 
-		function abrirModal(id, feriado) {
+		function abrirModalFg(id, feriado) {
 
 			vm.modal = $uibModal.open({
 				templateUrl: 'src/feriado-geral/feriado-geral-form.html?' + new Date(),
@@ -134,12 +134,12 @@
 
 		}
 
-		function fecharModal() {
+		function fecharModalFg() {
 			vm.modal.close();
 			delete vm.modal;
 		}
 
-		function recarregarTabela() {
+		function recarregarTabelaFg() {
 			tabela.recarregarDados(vm.instancia);
 		}
 
