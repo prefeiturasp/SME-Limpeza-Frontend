@@ -17,7 +17,9 @@
 		service.buscarEmailSettings = buscarEmailSettings;
 		service.atualizarEmailSettings = atualizarEmailSettings;
 		service.buscaListaEmailsParaNotificacoes = buscaListaEmailsParaNotificacoes;
+		service.buscaListaEmailsParaNotificacoesPs = buscaListaEmailsParaNotificacoesPs;
 		service.salvarEmailsParaNotificacoes = salvarEmailsParaNotificacoes;
+		service.salvarEmailsParaNotificacoesPs = salvarEmailsParaNotificacoesPs;
 		
 		return service;
 
@@ -46,8 +48,16 @@
 			return $http.get(service.url + '/lista-emails-para-notificacoes');
 		}
 
+		function buscaListaEmailsParaNotificacoesPs() {
+			return $http.get(service.url + '/lista-emails-para-notificacoes-ps');
+		}
+
 		function salvarEmailsParaNotificacoes(emails) {
 			return $http.post(service.url + '/emails-para-notificacoes', {emails: emails});
+		}
+
+		function salvarEmailsParaNotificacoesPs(model) {
+			return $http.post(service.url + '/emails-para-notificacoes-ps', model);
 		}
 		
 	}

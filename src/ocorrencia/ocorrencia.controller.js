@@ -7,10 +7,11 @@
     .controller('OcorrenciaLista', OcorrenciaLista);
 
   OcorrenciaLista.$inject = ['$rootScope', '$window', '$location', 'controller', 'OcorrenciaRest', 'tabela', '$uibModal',
-    'OcorrenciaTipoUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'SweetAlert', 'ContratoUtils', 'OcorrenciaRetroativaUtils'];
+    'OcorrenciaTipoUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'SweetAlert', 'ContratoUtils', 'OcorrenciaRetroativaUtils', 'UsuarioOrigemUtils'];
 
   function OcorrenciaLista($rootScope, $window, $location, controller, dataservice, tabela, $uibModal,
-    OcorrenciaTipoUtils, UnidadeEscolarUtils, PrestadorServicoUtils, SweetAlert, ContratoUtils, OcorrenciaRetroativaUtils) {
+    OcorrenciaTipoUtils, UnidadeEscolarUtils, PrestadorServicoUtils, SweetAlert, ContratoUtils, OcorrenciaRetroativaUtils, UsuarioOrigemUtils) {
+
     /* jshint validthis: true */
 
     var vm = this;
@@ -18,6 +19,9 @@
     vm.filtros = {};
     vm.instancia = {};
     vm.tabela = {};
+    vm.dreLista = []; 
+    vm.contratoListaPs = [];
+    vm.unidadeEscolarListMaster = []; // Lista mestre para filtros cumulativos
 
     vm.optionsDatePickerFiltro = {
       minMode: 'day',
@@ -38,9 +42,16 @@
       vm.filtros.dataFinal = new Date();
       vm.filtros.flagSomenteAtivos = 'true';
       carregarComboTipoOcorrencia();
-      carregarComboPrestadorServico();
       carregarComboUnidadeEscolar();
-      carregarComboContrato();
+
+      if ($rootScope.usuario.usuarioOrigem.codigo === 'ps') {
+        carregarComboContratoPs();
+        carregarComboDrePs();
+      } else {
+        carregarComboPrestadorServico();
+        carregarComboContrato();
+      }
+      
       montarTabela();
       verificaDatasOcorrenciasRetroativas();
     }
@@ -55,6 +66,7 @@
 
       function error(response) {
         vm.idOcorrenciaTipoLista = [];
+        vm.idOcorrenciaTipoList = [];
         controller.feed('error', 'Erro ao buscar combo de tipos de ocorrência.');
       }
 
@@ -81,10 +93,12 @@
 
       function success(response) {
         vm.unidadeEscolarList = response.objeto;
+        vm.unidadeEscolarListMaster = response.objeto;
       }
 
       function error(response) {
         vm.unidadeEscolarLista = [];
+        vm.unidadeEscolarList = [];
         controller.feed('error', 'Erro ao buscar combo de unidades escolares.');
       }
 
@@ -328,6 +342,34 @@
         
       }
 
+    }
+
+    function carregarComboContratoPs() {
+      ContratoUtils.carregarComboContratoPs($rootScope.usuario.idOrigemDetalhe).then(success).catch(error);
+
+      function success(response) {
+        const contratos = response.objeto;
+        vm.contratoLista = contratos;
+      }
+
+      function error(response) {
+        vm.contratoLista = [];
+        controller.feed('error', 'Erro ao buscar combo de contratos para o Prestador de Serviço.');
+      }
+    }
+
+    function carregarComboDrePs() {
+
+      UsuarioOrigemUtils.carregarComboDrePs($rootScope.usuario.idOrigemDetalhe).then(success).catch(error);
+
+      function success(response) {
+        vm.dreLista = response.objeto;
+      }
+
+      function error(response) {
+        vm.dreLista = [];
+        controller.feed('error', 'Erro ao buscar combo de DREs para o Prestador de Serviço.');
+      }
     }
 
   }

@@ -23,7 +23,13 @@
 		vm.salvarEmailSettings = salvarEmailSettings;
 		vm.evtChangeEmailSetting = evtChangeEmailSetting;
 		vm.emailsParaNotificacoes = [];
+		vm.emailAtivoPs = false;
+		vm.emailsParaNotificacoesPs = '';
+		vm.emailAtivoManualPs = false;
+		vm.emailsParaNotificacoesManualPs = '';
 		vm.buscaListaEmailsParaNotificacoes = buscaListaEmailsParaNotificacoes;
+		vm.buscaListaEmailsParaNotificacoesPs = buscaListaEmailsParaNotificacoesPs;
+		vm.salvarEmailsParaNotificacoesPs = salvarEmailsParaNotificacoesPs;
 		vm.salvarEmailsParaNotificacoes = salvarEmailsParaNotificacoes;
 
 		vm.optionsSummernote = {
@@ -49,7 +55,14 @@
 			carregarComboOcorrenciaTipo();
 			verificaManutencaoSistema();
 			buscarEmailSettings();
-			buscaListaEmailsParaNotificacoes();
+
+			if($rootScope.usuario.usuarioOrigem.codigo === 'ps'){
+				buscaListaEmailsParaNotificacoesPs();
+			} else {
+				buscaListaEmailsParaNotificacoes();
+			}
+	
+			
 		}
 
 		function buscar() {
@@ -195,6 +208,7 @@
 
 		function buscarEmailSettings() {
 			dataservice.buscarEmailSettings().then(function(response) {
+
 				vm.emailSettings = response.data.data.map(function(setting) {
 					return {
 						parametro: setting.parametro,
@@ -238,6 +252,7 @@
 				controller.feed('error', 'Hove um erro ao buscar a lista de emails para notificações.');
 			}
 		}
+
 		function salvarEmailsParaNotificacoes() {
 			dataservice.salvarEmailsParaNotificacoes(vm.emailsParaNotificacoes).then(success).catch(error);
 			function success(response) {	
@@ -246,6 +261,41 @@
 
 			function error(response) {
 				console.log(response);
+			}
+		}
+
+		function buscaListaEmailsParaNotificacoesPs(){
+			dataservice.buscaListaEmailsParaNotificacoesPs().then(success).catch(error);
+
+			function success(response) {
+				let retorno = controller.ler(response, 'data');
+				vm.emailsParaNotificacoesPs = (retorno.ocorrenciaEmails || '').replace(/;/g, '; ');
+				vm.emailAtivoPs = retorno.ocorrenciaAtivo;
+				vm.emailsParaNotificacoesManualPs = (retorno.manualEmails || '').replace(/;/g, '; ');
+				vm.emailAtivoManualPs = retorno.manualAtivo;
+			}
+
+			function error(response) {
+				controller.feed('error', 'Houve um erro ao buscar a lista de e-mails do Prestador.');
+			}
+		}
+
+		function salvarEmailsParaNotificacoesPs() {
+			const payload = {
+				ocorrenciaEmails: vm.emailsParaNotificacoesPs,
+				ocorrenciaAtivo: vm.emailAtivoPs,
+				manualEmails: vm.emailsParaNotificacoesManualPs,
+				manualAtivo: vm.emailAtivoManualPs
+			};
+
+			dataservice.salvarEmailsParaNotificacoesPs(payload).then(success).catch(error);
+
+			function success(response) {
+				controller.feed('success', 'Lista de e-mails salva no servidor com sucesso.');
+			}
+
+			function error(response) {
+				controller.feed('error', 'Houve um erro ao processar a lista de e-mails.');
 			}
 		}
 	}
