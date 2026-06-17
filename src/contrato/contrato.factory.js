@@ -65,10 +65,13 @@
 
     function carregarComboContratoPs(idPrestadorServico) {
 
-      return dataservice.carregarComboContratoPs(idPrestadorServico).then(success).catch(error);
+      return dataservice
+      .carregarComboContratoPs(idPrestadorServico)
+      .then(success).catch(error);
 
       function success(response) {
-        return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
+        return utils
+        .criarRetornoPromise(true, utils.ler(response, 'data'));
       }
 
       function error(response) {
