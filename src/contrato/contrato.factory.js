@@ -15,9 +15,10 @@
       buscarVencimentoProximo: buscarVencimentoProximo,
       carregarCombo: carregarCombo,
       carregarComboTodos: carregarComboTodos,
-      carregarComboEquipe: carregarComboEquipe
+      carregarComboEquipe: carregarComboEquipe,
+      carregarComboContratoPs: carregarComboContratoPs
     };
-
+    
     return service;
 
     function buscar(id) {
@@ -51,6 +52,20 @@
     function carregarCombo() {
 
       return dataservice.carregarCombo().then(success).catch(error);
+
+      function success(response) {
+        return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
+      }
+
+      function error(response) {
+        return utils.criarRetornoPromise(false, []);
+      }
+
+    }
+
+    function carregarComboContratoPs(idPrestadorServico) {
+
+      return dataservice.carregarComboContratoPs(idPrestadorServico).then(success).catch(error);
 
       function success(response) {
         return utils.criarRetornoPromise(true, utils.ler(response, 'data'));

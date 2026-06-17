@@ -80,21 +80,7 @@
                 </ui-select>
               </div>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 my-2" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
-              <div class="form-control">
-                <label for="contrato" class="dois-pontos">Contrato</label>
-                <ui-select id="contrato" ng-model="vm.filtros.contrato">
-                  <ui-select-match allow-clear="true" placeholder="Todos">
-                    {{$select.selected.codigo}} - {{$select.selected.descricao}}
-                  </ui-select-match>
-                  <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
-                    <span class="mb-0 d-block" ng-bind-html="contrato.descricao | highlight: $select.search"></span>
-                    <small class="my-2">Código:</small>
-                    <small class="my-2" ng-bind-html="contrato.codigo | highlight: $select.search"></small>
-                  </ui-select-choices>
-                </ui-select>
-              </div>
-            </div>
+
             <div class="col-sm-12 col-md-6 col-lg-2 my-2">
               <div class="form-control">
                 <label for="respondido" class="dois-pontos">Respondido</label>
@@ -105,6 +91,57 @@
                 </select>
               </div>
             </div>
+            
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+              <div class="form-control">
+                <label for="contrato" class="dois-pontos">Contrato</label>
+                <ui-select id="contrato" ng-model="vm.filtros.contrato" multiple>
+                  <ui-select-match placeholder="Todos">
+                    {{$item.codigo}} - {{$item.descricao}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
+                    <span class="mb-0 d-block" ng-bind-html="contrato.descricao | highlight: $select.search"></span>
+                    <small class="my-2">Código:</small>
+                    <small class="my-2" ng-bind-html="contrato.codigo | highlight: $select.search"></small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo === 'ps'">
+              <div class="form-control">
+                <label for="contrato" class="dois-pontos">Contrato</label>
+                <ui-select id="contrato" ng-model="vm.filtros.contrato" multiple>
+                  <ui-select-match placeholder="Todos">
+                    {{$item.codigo}} - {{$item.descricao}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
+                    <span class="mb-0 d-block" ng-bind-html="contrato.descricao | highlight: $select.search"></span>
+                    <small class="my-2">Código:</small>
+                    <small class="my-2" ng-bind-html="contrato.codigo | highlight: $select.search"></small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 my-2" ng-if="usuario.usuarioOrigem.codigo === 'ps'">
+              <div class="form-control">
+                <label for="dre" class="dois-pontos">DREs</label>
+                <ui-select id="dre" ng-model="vm.filtros.dre" 
+                           on-select="vm.filtrarUes()" 
+                           on-remove="vm.filtrarUes()" multiple>
+                  <ui-select-match placeholder="Todos">
+                    {{$item.codigo}} - {{$item.descricao}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="dre in vm.dreLista | filter: $select.search">
+                    <span class="mb-0 d-block" ng-bind-html="dre.descricao | highlight: $select.search"></span>
+                    <small class="my-2">Código:</small>
+                    <small class="my-2" ng-bind-html="dre.codigo | highlight: $select.search"></small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+
             <div class="col-sm-12 col-md-6 col-lg-12 my-2" ng-if="usuario.usuarioOrigem.codigo !== 'ue'">
               <div class="form-control">
                 <label for="eu" class="dois-pontos">Unidade Escolar</label>

@@ -10,8 +10,14 @@
 	function dataservice($http, RestUtils, ConfigRest) {
 		
 		var service = new RestUtils(ConfigRest.usuarioOrigem);
-		
+
+		service.carregarComboDrePs = carregarComboDrePs;
+
 		return service;
+
+		function carregarComboDrePs(idPrestadorServico) {
+			return $http.get(service.url + '/combo-dre-ps/' + idPrestadorServico);
+		}
 
 	}
 	

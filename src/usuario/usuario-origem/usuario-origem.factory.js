@@ -10,7 +10,8 @@
 	function UsuarioOrigemUtils(utils, dataservice) {
 
 		var service = {
-			carregarCombo: carregarCombo
+			carregarCombo: carregarCombo,
+			carregarComboDrePs: carregarComboDrePs
 		};
 
 		return service;
@@ -28,6 +29,19 @@
 			}
 
 		}
-		
+
+		function carregarComboDrePs(idPrestadorServico) {
+
+			return dataservice.carregarComboDrePs(idPrestadorServico).then(success).catch(error);
+	
+			function success(response) {	
+				return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
+			}
+
+			function error(response) {
+				return utils.criarRetornoPromise(false, []);
+			}
+		}
+
 	}
 })();
