@@ -110,8 +110,8 @@
 
             <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo === 'ps'">
               <div class="form-control">
-                <label for="contrato" class="dois-pontos">Contrato</label>
-                <ui-select id="contrato" ng-model="vm.filtros.contrato" multiple>
+                <label for="contratos" class="dois-pontos">Contrato</label>
+                <ui-select id="contratos" ng-model="vm.filtros.contrato" multiple>
                   <ui-select-match placeholder="Todos">
                     {{$item.codigo}} - {{$item.descricao}}
                   </ui-select-match>
