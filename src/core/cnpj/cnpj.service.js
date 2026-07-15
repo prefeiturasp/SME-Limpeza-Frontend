@@ -3,41 +3,69 @@
 
     function CnpjService() {
 
-        function charToValue(char) {
-            if (/[\d]/.test(char)) {
-                return parseInt(char, 10);
-            }
-            // Letras A-Z → 10-35
-            return char.charCodeAt(0) - 55;
-        }
+        /**
+         * Valida um CNPJ alfanumérico conforme a Receita Federal.
+         * Aceita CNPJ numérico tradicional e alfanumérico.
+         *
+         * Exemplos válidos de formato:
+         * 12.345.678/0001-95
+         * AB.CDE.FGH/01IJ-35
+         */
+        function validarCNPJAlfanumerico(cnpj) {
+            if (!cnpj) return false;
 
-        this.validar = function (cnpj) {
+            // Remove caracteres que não sejam letras ou números
+            cnpj = cnpj.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-            if (!cnpj || cnpj.length !== 14)
+            // Deve possuir 14 caracteres
+            if (cnpj.length !== 14)
                 return false;
 
-            let base = cnpj.substring(0, 12);
-            let dvInformado = cnpj.substring(12);
+            const corpo = cnpj.substring(0, 12);
+            const dvInformado = cnpj.substring(12);
 
-            let pesos1 = [5,4,3,2,9,8,7,6,5,4,3,2];
-            let pesos2 = [6].concat(pesos1);
+            const pesosDV1 = [5,4,3,2,9,8,7,6,5,4,3,2];
+            const pesosDV2 = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+
+            function valorCaracter(c) {
+                if (c >= '0' && c <= '9')
+                    return c.charCodeAt(0) - 48;
+
+                if (c >= 'A' && c <= 'Z')
+                    return c.charCodeAt(0) - 48;
+
+                return -1;
+            }
 
             function calcularDV(base, pesos) {
                 let soma = 0;
 
-                for (let i = 0; i < pesos.length; i++) {
-                    soma += charToValue(base[i]) * pesos[i];
+                for (let i = 0; i < base.length; i++) {
+                    const valor = valorCaracter(base[i]);
+
+                    if (valor < 0)
+                        return null;
+
+                    soma += valor * pesos[i];
                 }
 
-                let resto = soma % 11;
+                const resto = soma % 11;
                 return resto < 2 ? 0 : 11 - resto;
             }
 
-            let dv1 = calcularDV(base, pesos1);
-            let dv2 = calcularDV(base + dv1, pesos2);
+            const dv1 = calcularDV(corpo, pesosDV1);
+            if (dv1 === null) return false;
 
-            return dvInformado === ('' + dv1 + dv2);
+            const dv2 = calcularDV(corpo + dv1, pesosDV2);
+            if (dv2 === null) return false;
+
+            return dvInformado === `${dv1}${dv2}`;
+        }
+
+        this.validar = function (cnpj) {
+            return validarCNPJAlfanumerico(cnpj);
         };
+
     }
 
     angular
