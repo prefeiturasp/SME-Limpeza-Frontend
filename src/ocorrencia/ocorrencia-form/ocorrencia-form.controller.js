@@ -192,8 +192,6 @@
           configurarDateDisabled({ mesEncerrado: null, diasHabilitados: diasHabilitados, minDate: minDateByDiasRet, maxDate: maxDateOriginal });
 
           const hoje = moment();
-          const mesAtual = parseInt(hoje.format('MM'), 10);
-          const anoAtual = parseInt(hoje.format('YYYY'), 10);
 
           const mesAnteriorMoment = hoje.clone().subtract(1, 'month');
           const mesAnterior = parseInt(mesAnteriorMoment.format('MM'), 10);
