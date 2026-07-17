@@ -182,13 +182,8 @@
 
       return ConfiguracaoUtils.buscar('DIAS_RET_OCORRENCIA')
         .then(response => {
-          let minDate = moment();
-          for (let d = 0; d < response.objeto.valor; d++) {
-            minDate = minDate.subtract(1, 'days');
-            while (minDate.isoWeekday() === 6 || minDate.isoWeekday() === 7) {
-              minDate = minDate.subtract(1, 'days');
-            }
-          }
+          const diasParaRetroceder = response.objeto.valor;
+          const minDate = moment().subtract(diasParaRetroceder, 'days');
           minDateByDiasRet = minDate.clone();
           vm.optionsDatePicker.minDate = minDate.clone();
           vm.optionsDatePicker.maxDate = moment();
