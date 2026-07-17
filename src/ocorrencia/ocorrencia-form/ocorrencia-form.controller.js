@@ -182,13 +182,8 @@
 
       return ConfiguracaoUtils.buscar('DIAS_RET_OCORRENCIA')
         .then(response => {
-          let minDate = moment();
-          for (let d = 0; d < response.objeto.valor; d++) {
-            minDate = minDate.subtract(1, 'days');
-            while (minDate.isoWeekday() === 6 || minDate.isoWeekday() === 7) {
-              minDate = minDate.subtract(1, 'days');
-            }
-          }
+          const diasParaRetroceder = response.objeto.valor;
+          const minDate = moment().subtract(diasParaRetroceder, 'days');
           minDateByDiasRet = minDate.clone();
           vm.optionsDatePicker.minDate = minDate.clone();
           vm.optionsDatePicker.maxDate = moment();
@@ -197,8 +192,6 @@
           configurarDateDisabled({ mesEncerrado: null, diasHabilitados: diasHabilitados, minDate: minDateByDiasRet, maxDate: maxDateOriginal });
 
           const hoje = moment();
-          const mesAtual = parseInt(hoje.format('MM'), 10);
-          const anoAtual = parseInt(hoje.format('YYYY'), 10);
 
           const mesAnteriorMoment = hoje.clone().subtract(1, 'month');
           const mesAnterior = parseInt(mesAnteriorMoment.format('MM'), 10);
