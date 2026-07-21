@@ -1,5 +1,4 @@
-<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off"
-  autocapitalize="off" spellcheck="false">
+<form novalidate name="formulario" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
   <div class="modal-header">
     <h5 class="modal-title">CADASTRAR OCORRÊNCIA</h5>
@@ -109,7 +108,7 @@
             </div>
             <div class="mt-4" ng-if="vm.model.arquivoList.length > 0">
               <div class="d-flex align-items-center py-3 border-bottom" ng-repeat="arquivo in vm.model.arquivoList">
-                <img class="img-sm rounded-circle" src="data:image/jpg;base64,{{arquivo.base64}}">
+                <img class="img-sm rounded-circle" ng-src="data:image/jpg;base64,{{arquivo.base64}}">
                 <div class="ml-3">
                   <h6 class="mb-1" ng-bind="arquivo.filename"></h6>
                   <small class="text-muted mb-0"><i class="icon-location-pin-outline mr-1"></i>{{ arquivo.filesize /
@@ -166,7 +165,8 @@
 
   <div class="modal-footer">
     <img src="src/layout/img/gifs/loading.gif" width="40" id="imgSalvarOcorrencia" style="display:none;">
-    <button type="submit" class="btn btn-success" id="btnSalvarOcorrencia" ng-disabled="!vm.verificarFormulario(formulario)">Salvar</button>
+    <button type="button" class="btn btn-success" id="btnSalvarOcorrencia" ng-click="vm.salvar(formulario)"
+      ng-disabled="!vm.verificarFormulario(formulario)">Saalvar</button>
   </div>
 
 </form>
