@@ -307,21 +307,20 @@
       }
 
       let retornoVerificacao = filtraDataHoraOcorrenciaRetroativa(vm.model);
+      let retroativa = localStorage.getItem('OcorrenciaRetroativa');
 
       if(!retornoVerificacao){
         exibeEscondeBtn();
-        return;
-      }
-
-      let retroativa = localStorage.getItem('OcorrenciaRetroativa');
-      if (retroativa) {
-        let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
-        if (idOcorrenciaRetroativa) {
-          vm.model.idOcorrenciaRetroativa = idOcorrenciaRetroativa;
-        }
-        vm.model.flagOcorrenciaRetroativa = true;
       } else {
-        vm.model.flagOcorrenciaRetroativa = false;
+        if (retroativa) {
+          let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
+          if (idOcorrenciaRetroativa) {
+            vm.model.idOcorrenciaRetroativa = idOcorrenciaRetroativa;
+          }
+          vm.model.flagOcorrenciaRetroativa = true;
+        } else {
+          vm.model.flagOcorrenciaRetroativa = false;
+        }
       }
 
       dataservice.inserir(vm.model).then(success).catch(error);
