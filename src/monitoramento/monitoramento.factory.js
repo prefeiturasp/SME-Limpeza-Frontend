@@ -15,6 +15,8 @@
 			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato,
 			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
 			comboUePorIdPrestadorServico: comboUePorIdPrestadorServico,
+			comboUePorIdContratoList: comboUePorIdContratoList,
+			comboContratoPorIdUeList: comboContratoPorIdUeList,
 			comboContratoPorIdUe: comboContratoPorIdUe,
 			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe
 		};
@@ -41,6 +43,12 @@
 			});
 		}
 
+		function comboUePorIdContratoList(idContratoList){
+			return dataservice.comboUePorIdContratoList(idContratoList).then(function (response) {
+				return response.data;
+			});
+		}
+
 		function comboPrestadorServicoPorIdContrato(idContrato){
 			return dataservice.comboPrestadorServicoPorIdContrato(idContrato).then(function (response) {
 				return response.data;
@@ -55,6 +63,12 @@
 
 		function comboUePorIdPrestadorServico(idPrestadorServico){
 			return dataservice.comboUePorIdPrestadorServico(idPrestadorServico).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboContratoPorIdUeList(idUeList) {
+			return dataservice.comboContratoPorIdUeList(idUeList).then(function (response) {
 				return response.data;
 			});
 		}

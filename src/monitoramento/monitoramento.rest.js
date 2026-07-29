@@ -16,9 +16,12 @@
 		service.comboPrestadorServicoPorIdContrato = comboPrestadorServicoPorIdContrato;
 		service.comboContratoPorIdPrestadorServico = comboContratoPorIdPrestadorServico;
 		service.comboUePorIdPrestadorServico = comboUePorIdPrestadorServico;
+		service.comboUePorIdContratoList = comboUePorIdContratoList;
+		service.comboContratoPorIdUeList = comboContratoPorIdUeList;
 		service.comboContratoPorIdUe = comboContratoPorIdUe;
 		service.comboPrestadorServicoPorIdUe = comboPrestadorServicoPorIdUe;
 		service.verificaSeDataEferiado = verificaSeDataEferiado;
+		service.exportar = exportar;
 
 		return service;
 
@@ -29,6 +32,10 @@
 		function comboUePorIdContrato(idContrato){
 			return $http.post(service.url + '/comboUePorIdContrato', {idContrato: idContrato});
 		}	
+
+		function comboUePorIdContratoList(idsContratoList){
+			return $http.post(service.url + '/comboUePorIdContratoList', {idsContratoList: idsContratoList});
+		}
 
 		function comboPrestadorServicoPorIdContrato(idContrato){
 			return $http.post(service.url + '/comboPrestadorServicoPorIdContrato', {idContrato: idContrato});
@@ -46,12 +53,20 @@
 			return $http.post(service.url + '/comboContratoPorIdUe', {idUe: idUe});
 		}
 
+		function comboContratoPorIdUeList(idUeList) {
+			return $http.post(service.url + '/comboContratoPorIdUeList', {idUeList: idUeList});
+		}
+
 		function comboPrestadorServicoPorIdUe(idUe) {
 			return $http.post(service.url + '/comboPrestadorServicoPorIdUe', {idUe: idUe});
 		}
 
 		function verificaSeDataEferiado(idUnidadeEscolar, data) {
 			return $http.post(service.url + '/verificaSeDataEferiado', { idUnidadeEscolar: idUnidadeEscolar, data: data });
+		}
+
+		function exportar(filtros) {
+			return $http.post(service.url + '/exportar-agendamento-manual', filtros, { responseType: 'arraybuffer' });
 		}
 
 	}

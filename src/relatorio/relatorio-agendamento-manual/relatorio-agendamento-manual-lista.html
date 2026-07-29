@@ -1,7 +1,68 @@
 <div class="card">
   <div class="card-body p-0">
-    <h4 class="card-title m-4">RELATÓRIO DE AGENDAMENTOS MANUAIS</h4>
-    <hr>
+    <h4 class="card-title m-4">RELATÓRIO DE AGENDAMENTOS MANUAIS
+        <div class="text-right">
+        <button type="button" class="btn btn-outline-info btn-sm" ng-click="vm.exportar()">
+          Exportar
+          <i class="icon-cloud-download ml-1"></i>
+        </button>
+      </div>
+    </h4>
+    <uib-accordion class="accordion accordion-solid-header accordion-custom" ng-if="usuario.usuarioOrigem.codigo == 'sme' && usuario.usuarioCargo.id == '6' || usuario.usuarioOrigem.codigo == 'dre' && usuario.usuarioCargo.id == '1'">
+            <div uib-accordion-group is-open="vm.isFilterOpen">
+                <uib-accordion-heading>
+                    Filtros de busca
+                </uib-accordion-heading>
+                <form novalidate autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <div class="row">
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+
+                            <div class="form-control">
+                                <label for="contrato" class="dois-pontos">Contrato</label>
+                                <ui-select id="contrato" ng-model="vm.filtros.contrato" ng-change="vm.evtChangeFilter()" multiple>
+                                <ui-select-match placeholder="Todos">
+                                    {{$item.codigo}} - {{$item.descricao}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
+                                    <span class="mb-0 d-block" ng-bind-html="contrato.descricao | highlight: $select.search"></span>
+                                    <small class="my-2">Código:</small>
+                                    <small class="my-2" ng-bind-html="contrato.codigo | highlight: $select.search"></small>
+                                </ui-select-choices>
+                                </ui-select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 my-2">
+                            <div class="form-control">
+                                <label for="eu" class="dois-pontos">Unidade Escolar</label>
+                                <ui-select id="eu" name="turnoList" ng-model="vm.filtros.unidadeEscolar" class="form-control" multiple>
+                                <ui-select-match placeholder="Todos">
+                                    {{$item.codigo}} - {{$item.descricao}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="ue in vm.unidadeEscolarList | filter: $select.search track by ue.codigo">
+                                    <span class="mb-0 d-block" ng-bind-html="ue.descricao | highlight: $select.search"></span>
+                                    <small class="my-2" ng-bind-html="ue.codigo | highlight: $select.search"></small>
+                                    <small class="my-2"> - </small>
+                                    <small class="my-2" ng-bind-html="ue.tipo | highlight: $select.search"></small>
+                                </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <button type="button" class="btn btn-primary"
+                                ng-click="vm.recarregarTabela()">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </uib-accordion>
+
+        <hr>
     <div class="row">
       <div class="col-12">
         <lista></lista>
