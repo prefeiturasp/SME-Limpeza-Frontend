@@ -16,25 +16,25 @@
 		vm.instancia = {};
 		vm.tabela = {};
 		vm.isFilterOpen = true;
-		vm.recarregarTabela = recarregarTabela;
-		vm.evtChangeFilter = evtChangeFilter;
-		vm.exportar = exportar;
+		vm.recarregarTabela = recarregarTabelaAgendamentoManual;
+		vm.evtChangeFilter = evtChangeFilterAgendamentoManual;
+		vm.exportar = exportarRelatorioAgendamentoManual;
 
 		iniciar();
 
 		function iniciar() {
-			carregarComboUnidadeEscolar();
+			carregarComboUnidadeEscolarAgendamentoManual();
 			if ($rootScope.usuario.usuarioOrigem.codigo === 'sme') {
-				carregarComboContrato();
+				carregarComboContratoAgendamentoManual();
 			}
-			montarTabela();
+			montarTabelaAgendamentoManual();
 		}
 
-		function montarTabela() {
+		function montarTabelaAgendamentoManual() {
 
-			criarOpcoesTabela();
+			criarOpcoesTabelaAgendamentoManual();
 
-			function criarColunasTabela() {
+			function criarColunasTabelaAgendamentoManual() {
 				var colunas = [
 					{data: 'contrato', title: 'DRE/Contrato', renderWith: tabela.formatarContrato},
 					{data: 'unidadeEscolar.descricao', title: 'Unidade Escolar'},
@@ -43,12 +43,12 @@
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
 			}
 
-			function criarOpcoesTabela() {
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, null, 'data');
-				vm.tabela.opcoes.withOption('rowCallback', rowCallback);
-				criarColunasTabela();
+			function criarOpcoesTabelaAgendamentoManual() {
+				vm.tabela.opcoes = tabela.criarTabela(ajaxFn, vm, null, 'data');
+				vm.tabela.opcoes.withOption('rowCallback', rowCallbackFn);
+				criarColunasTabelaAgendamentoManual();
 
-				function ajax(data, callback, settings) {
+				function ajaxFn(data, callback, settings) {
 
 					const filtrosParaApi = angular.copy(vm.filtros);
 					if (filtrosParaApi.contrato && filtrosParaApi.contrato.length > 0) {
@@ -67,20 +67,20 @@
 
 				}
 
-				function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+				function rowCallbackFn(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
 				}
 
 			}
 		}
 
-		function recarregarTabela() {
+		function recarregarTabelaAgendamentoManual() {
 			tabela.recarregarDados(vm.instancia, true);
 		}
 
-		function carregarComboUnidadeEscolar() {
+		function carregarComboUnidadeEscolarAgendamentoManual() {
 
-			UnidadeEscolarUtils.carregarComboTodos().then(success).catch(error);
+			return UnidadeEscolarUtils.carregarComboTodos().then(success).catch(error);
 
 			function success(response) {
 				vm.unidadeEscolarList = response.objeto;
@@ -93,7 +93,7 @@
 
 		}
 
-		function carregarComboContrato() {
+		function carregarComboContratoAgendamentoManual() {
 			ContratoUtils.carregarCombo().then(success).catch(error);
 
 			function success(response) {
@@ -106,7 +106,7 @@
 			}
 		}
 
-		function buscaComboUePorIdContratoFiltrado(idsContrato){
+		function buscaComboUePorIdContratoFiltradoAgendamentoManual(idsContrato){
 			MonitoramentoUtils.comboUePorIdContratoList(idsContrato).then(function (response) {
 				vm.unidadeEscolarList = response.data || [];
 			}).catch(function () {
@@ -114,30 +114,30 @@
 			});
 		}
 
-		function evtChangeFilter() {
+		function evtChangeFilterAgendamentoManual() {
 			const contratos = vm.filtros.contrato || [];
 			if (contratos.length > 0) {
 				let idsContrato = contratos.map(c => c.id);
-				buscaComboUePorIdContratoFiltrado(idsContrato);
+				buscaComboUePorIdContratoFiltradoAgendamentoManual(idsContrato);
 			} else {
-				carregarComboUnidadeEscolar();
+				carregarComboUnidadeEscolarAgendamentoManual();
 			}
 		}
 
-		    function exportar() {
+		    function exportarRelatorioAgendamentoManual() {
 
 				dataservice.exportar(vm.filtros).then(success).catch(error);
 				function success(response) {
-					const data = response.data;
-					const a = document.createElement("a");
-					document.body.appendChild(a);
-					a.style = "display: none";
-					const file = new Blob([data], { type: 'application/csv', endings: 'native' });
+					const dados = response.data;
+					const eleA = document.createElement("a");
+					document.body.appendChild(eleA);
+					eleA.style = "display: none";
+					const file = new Blob([dados], { type: 'application/csv', endings: 'native' });
 					const fileUrl = window.URL.createObjectURL(file);
-					a.href = fileUrl;
+					eleA.href = fileUrl;
 					// O nome do arquivo será definido pelo cabeçalho Content-Disposition do back-end
-					a.download = `relatorio-agendamento-manual-${moment().format('DDMMyyyyHHmmss')}.csv`;
-					a.click();
+					eleA.download = `relatorio-agendamento-manual-${moment().format('DDMMyyyyHHmmss')}.csv`;
+					eleA.click();
 				}
 				function error(response) {
 					controller.feed('error', 'Houve um erro ao exportar o relatório.');
