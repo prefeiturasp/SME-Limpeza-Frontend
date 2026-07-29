@@ -13,11 +13,11 @@
 		let service = new RestUtils(ConfigRest.monitoramento);
 		service.tabelaDatasAgendamentoManual = tabelaDatasAgendamentoManual;
 		service.comboUePorIdContrato = comboUePorIdContrato;
+		service.comboUePorIdContratoList = comboUePorIdContratoList;
+		service.comboContratoPorIdUeList = comboContratoPorIdUeList;
 		service.comboPrestadorServicoPorIdContrato = comboPrestadorServicoPorIdContrato;
 		service.comboContratoPorIdPrestadorServico = comboContratoPorIdPrestadorServico;
 		service.comboUePorIdPrestadorServico = comboUePorIdPrestadorServico;
-		service.comboUePorIdContratoList = comboUePorIdContratoList;
-		service.comboContratoPorIdUeList = comboContratoPorIdUeList;
 		service.comboContratoPorIdUe = comboContratoPorIdUe;
 		service.comboPrestadorServicoPorIdUe = comboPrestadorServicoPorIdUe;
 		service.verificaSeDataEferiado = verificaSeDataEferiado;

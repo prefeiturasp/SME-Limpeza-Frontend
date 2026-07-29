@@ -12,29 +12,25 @@
 		var service = {
 			buscar: buscar,
 			comboUePorIdContrato: comboUePorIdContrato,
-			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato,
-			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
 			comboUePorIdPrestadorServico: comboUePorIdPrestadorServico,
 			comboUePorIdContratoList: comboUePorIdContratoList,
-			comboContratoPorIdUeList: comboContratoPorIdUeList,
+			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
 			comboContratoPorIdUe: comboContratoPorIdUe,
-			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe
+			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe,
+			comboContratoPorIdUeList: comboContratoPorIdUeList,
+			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato
 		};
 
 		return service;
 
 		function buscar(id) {
-
 			return dataservice.buscar(id).then(success).catch(error);
-
 			function success(response) {
 				return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
 			}
-
 			function error(response) {
 				return utils.criarRetornoPromise(false, {});
 			}
-
 		}
 
 		function comboUePorIdContrato(idContrato){

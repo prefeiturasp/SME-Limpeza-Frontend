@@ -12,13 +12,13 @@
 
 		var vm = this;
 		
-		vm.instancia = {};
 		vm.filtros = {};
+		vm.instancia = {};
 		vm.tabela = {};
 		vm.isFilterOpen = true;
-		vm.recarregatabela = recarregatabela;
-		vm.exportar = exportar;
+		vm.recarregarTabela = recarregarTabela;
 		vm.evtChangeFilter = evtChangeFilter;
+		vm.exportar = exportar;
 
 		iniciar();
 
@@ -44,12 +44,12 @@
 			}
 
 			function criarOpcoesTabela() {
-
 				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, null, 'data');
 				vm.tabela.opcoes.withOption('rowCallback', rowCallback);
 				criarColunasTabela();
 
 				function ajax(data, callback, settings) {
+
 					const filtrosParaApi = angular.copy(vm.filtros);
 					if (filtrosParaApi.contrato && filtrosParaApi.contrato.length > 0) {
 						filtrosParaApi.contrato = filtrosParaApi.contrato.map(c => ({ id: c.id }));
@@ -64,6 +64,7 @@
 					function error(response) {
 						callback(tabela.vazia());
 					}
+
 				}
 
 				function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -73,7 +74,7 @@
 			}
 		}
 
-		function recarregatabela() {
+		function recarregarTabela() {
 			tabela.recarregarDados(vm.instancia, true);
 		}
 
@@ -115,34 +116,33 @@
 
 		function evtChangeFilter() {
 			const contratos = vm.filtros.contrato || [];
-		
 			if (contratos.length > 0) {
 				let idsContrato = contratos.map(c => c.id);
 				buscaComboUePorIdContratoFiltrado(idsContrato);
 			} else {
 				carregarComboUnidadeEscolar();
 			}
-
 		}
 
-		function exportar() {
-			dataservice.exportar(vm.filtros).then(success).catch(error);
-			function success(response) {
-				const data = response.data;
-				const a = document.createElement("a");
-				document.body.appendChild(a);
-				a.style = "display: none";
-				const file = new Blob([data], { type: 'application/csv', endings: 'native' });
-				const fileUrl = window.URL.createObjectURL(file);
-				a.href = fileUrl;
-				// O nome do arquivo será definido pelo cabeçalho Content-Disposition do back-end
-				a.download = `relatorio-agendamento-manual-${moment().format('DDMMyyyyHHmmss')}.csv`;
-				a.click();
+		    function exportar() {
+
+				dataservice.exportar(vm.filtros).then(success).catch(error);
+				function success(response) {
+					const data = response.data;
+					const a = document.createElement("a");
+					document.body.appendChild(a);
+					a.style = "display: none";
+					const file = new Blob([data], { type: 'application/csv', endings: 'native' });
+					const fileUrl = window.URL.createObjectURL(file);
+					a.href = fileUrl;
+					// O nome do arquivo será definido pelo cabeçalho Content-Disposition do back-end
+					a.download = `relatorio-agendamento-manual-${moment().format('DDMMyyyyHHmmss')}.csv`;
+					a.click();
+				}
+				function error(response) {
+					controller.feed('error', 'Houve um erro ao exportar o relatório.');
+				}
 			}
-			function error(response) {
-				controller.feed('error', 'Houve um erro ao exportar o relatório.');
-			}
-		}
 
 	}
 	
