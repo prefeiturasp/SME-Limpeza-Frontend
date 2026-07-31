@@ -7,15 +7,16 @@
     .controller('OcorrenciaDetalheController', OcorrenciaDetalheController);
 
   OcorrenciaDetalheController.$inject = ['$rootScope', '$scope', '$interval', 'controller', '$routeParams', '$uibModal', '$location',
-    'OcorrenciaRest', 'OcorrenciaMensagemUtils', 'SweetAlert', '$window'];
+    'OcorrenciaRest', 'OcorrenciaMensagemUtils', 'SweetAlert', '$window', 'OcorrenciaUtils'];
 
   function OcorrenciaDetalheController($rootScope, $scope, $interval, controller, $routeParams, $uibModal, $location,
-    dataservice, OcorrenciaMensagemUtils, SweetAlert, $window) {
+    dataservice, OcorrenciaMensagemUtils, SweetAlert, $window, OcorrenciaUtils) {
     /* jshint validthis: true */
 
     var vm = this;
 
     vm.mensagemList = [];
+    vm.historicoOcorrenciaList = [];
     vm.encerrar = encerrar;
     vm.reabrir = reabrir;
     vm.visualizarImagens = visualizarImagens;
@@ -35,8 +36,23 @@
       buscarOcorrencia();
       buscarMensagens();
       iniciarInterval();
+      buscaHistoricoOcorrencia();
 
     }
+
+    function buscaHistoricoOcorrencia() {
+       OcorrenciaUtils.buscaHistoricoOcorrencia(vm.idOcorrencia).then(success).catch(error);
+
+      function success(response) {
+        vm.historicoOcorrenciaList = response.objeto;
+      }
+
+      function error(response) {
+        controller.feed('error', 'Erro ao buscar histórico da ocorrência.');
+      }
+
+    }
+
 
     function buscarOcorrencia() {
 
@@ -165,6 +181,7 @@
         controller.feed('success', 'Ocorrência encerrada com sucesso.');
         buscarOcorrencia();
         buscarMensagens();
+        buscaHistoricoOcorrencia();
       }
 
       function error(response) {
@@ -197,6 +214,7 @@
         controller.feed('success', 'Ocorrência reaberta com sucesso.');
         buscarOcorrencia();
         buscarMensagens();
+        buscaHistoricoOcorrencia();
       }
 
       function error(response) {
