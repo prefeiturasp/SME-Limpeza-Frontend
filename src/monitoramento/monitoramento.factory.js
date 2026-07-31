@@ -12,31 +12,35 @@
 		var service = {
 			buscar: buscar,
 			comboUePorIdContrato: comboUePorIdContrato,
-			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato,
-			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
 			comboUePorIdPrestadorServico: comboUePorIdPrestadorServico,
+			comboUePorIdContratoList: comboUePorIdContratoList,
+			comboContratoPorIdPrestadorServico: comboContratoPorIdPrestadorServico,
 			comboContratoPorIdUe: comboContratoPorIdUe,
-			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe
+			comboPrestadorServicoPorIdUe: comboPrestadorServicoPorIdUe,
+			comboContratoPorIdUeList: comboContratoPorIdUeList,
+			comboPrestadorServicoPorIdContrato: comboPrestadorServicoPorIdContrato
 		};
 
 		return service;
 
 		function buscar(id) {
-
 			return dataservice.buscar(id).then(success).catch(error);
-
 			function success(response) {
 				return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
 			}
-
 			function error(response) {
 				return utils.criarRetornoPromise(false, {});
 			}
-
 		}
 
 		function comboUePorIdContrato(idContrato){
 			return dataservice.comboUePorIdContrato(idContrato).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboUePorIdContratoList(idContratoList){
+			return dataservice.comboUePorIdContratoList(idContratoList).then(function (response) {
 				return response.data;
 			});
 		}
@@ -55,6 +59,12 @@
 
 		function comboUePorIdPrestadorServico(idPrestadorServico){
 			return dataservice.comboUePorIdPrestadorServico(idPrestadorServico).then(function (response) {
+				return response.data;
+			});
+		}
+
+		function comboContratoPorIdUeList(idUeList) {
+			return dataservice.comboContratoPorIdUeList(idUeList).then(function (response) {
 				return response.data;
 			});
 		}

@@ -18,6 +18,7 @@
     service.exportar = exportar;
     service.buscarUltimos = buscarUltimos;
     service.comboUesPorIdContrato = comboUesPorIdContrato;
+    service.buscaHistoricoOcorrencia = buscaHistoricoOcorrencia;
 
     return service;
 
@@ -46,10 +47,14 @@
 			let arrIdsContrato = idsContratos['idContratoList'];
 
 			$http.post(`${service.url}/ocorrencia-retroativa/comboTodasUesPorIdContrato/`, arrIdsContrato).then(function (response) {
-        console.log(response.data);
 				return response.data;
 			});
 		}
+
+
+    function buscaHistoricoOcorrencia(idOcorrencia) {
+      return $http.get(`${service.url}/historico-ocorrencia/${idOcorrencia}`);
+    } 
 
   }
 
