@@ -78,11 +78,12 @@
                       <li><strong>Telefone:</strong> {{vm.modalUnidadeEscolar.model.descricao}}</li>
                       <li><strong>E-mail:</strong> {{vm.modalUnidadeEscolar.model.descricao}}</li>
                       <li><strong>DRE:</strong> {{vm.modalUnidadeEscolar.model.diretoriaRegional.descricao}}</li>
-                      <li ng-if="vm.modalUnidadeEscolar.model.flagAtivo"><strong>Situação:</strong>
-                        <div class="badge badge-success badge-pill">Ativo</div>
-                      </li>
-                      <li ng-if="!vm.modalUnidadeEscolar.model.flagAtivo"><strong>Situação:</strong>
-                        <div class="badge badge-danger badge-pill">Inativo</div>
+                      <li class="li-status-line">
+                        <span><strong>Status:</strong> {{vm.modalUnidadeEscolar.model.statusDescricao}}</span>
+                        <button type="button" class="btn btn-outline-primary btn-sm li-status-btn"
+                          ng-click="vm.editarStatusUE(vm.modalUnidadeEscolar.model)">
+                          <i class="icon-pencil"></i>
+                        </button>
                       </li>
                     </ul>
                   </div>

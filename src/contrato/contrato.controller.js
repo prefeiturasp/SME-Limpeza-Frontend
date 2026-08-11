@@ -8,11 +8,11 @@
 
   ContratoLista.$inject = ['SweetAlert', '$scope', '$timeout', 'controller', 'ContratoRest', 'tabela',
     '$uibModal', 'PrestadorServicoUtils', 'UnidadeEscolarUtils', 'BotaoUploadArquivoUtils',
-    'DiretoriaRegionalUtils', 'moment', 'CargoUtils'];
+    'DiretoriaRegionalUtils', 'moment', 'CargoUtils', 'UnidadeEscolarStatusUtils'];
 
   function ContratoLista(SweetAlert, $scope, $timeout, controller, dataservice, tabela,
     $uibModal, PrestadorServicoUtils, UnidadeEscolarUtils, BotaoUploadArquivoUtils,
-    DiretoriaRegionalUtils, moment, CargoUtils) {
+    DiretoriaRegionalUtils, moment, CargoUtils, UnidadeEscolarStatusUtils) {
     /* jshint validthis: true */
 
     var vm = this;
@@ -48,11 +48,16 @@
     vm.salvarCargo = salvarCargo;
     vm.fecharModalCargo = fecharModalCargo;
     vm.removerCargo = removerCargo;
+    vm.editarCargo = editarCargo;
 
     vm.getTotalEquipe = getTotalEquipe;
     vm.persistirContrato = persistirContrato;
 
-    vm.editarCargo = editarCargo;
+    vm.editarStatusUE = editarStatusUE;
+    vm.fecharModalStatusUE = fecharModalStatusUE;
+    vm.salvarStatusUE = salvarStatusUE;
+    vm.carregarComboStatus = carregarComboStatus;
+    vm.reconciliarStatusComLista = reconciliarStatusComLista;
 
     iniciar();
 
@@ -532,6 +537,11 @@
       delete vm.modalCargo;
     }
 
+    function fecharModalStatusUE() {
+      vm.modalStatusUE.close();
+      delete vm.modalStatusUE;
+    }
+
     function salvarReajuste(formularioReajuste) {
 
       if (formularioReajuste.$invalid) {
@@ -670,6 +680,154 @@
       vm.modalCargo.index = indice;
 
       vm.modalCargo.model = angular.copy(cargo);
+    }
+
+    function carregarComboStatus() {
+      return UnidadeEscolarStatusUtils.carregarCombo()
+        .then(function success(response) {
+          vm.statusList = response && (response.objeto || response.data) ? (response.objeto || response.data) : (response || []);
+          if (!Array.isArray(vm.statusList)) vm.statusList = [];
+          return vm.statusList;
+        })
+        .catch(function error(err) {
+          vm.statusList = [];
+          controller.feed('error', 'Erro ao buscar combo de status.');
+          throw err;
+        });
+    }
+
+    function reconciliarStatusComLista() {
+      if (!vm.modalStatusUE || !vm.modalStatusUE.model) return;
+      if (!Array.isArray(vm.statusList) || vm.statusList.length === 0) return;
+
+      var m = vm.modalStatusUE.model;
+      var statusId = null;
+      if (m.idStatusUnidadeEscolar != null) statusId = m.idStatusUnidadeEscolar;
+      else if (m.status && m.status.id != null) statusId = m.status.id;
+      else if (typeof m.status === 'number' || typeof m.status === 'string') statusId = m.status;
+
+      if (statusId == null) {
+        m.status = null;
+        return;
+      }
+
+      var encontrado = vm.statusList.find(function (s) {
+        var sid = s && (s.id != null ? s.id : s.Id);
+        return sid != null && String(sid) === String(statusId);
+      });
+
+      if (encontrado) {
+        try {
+          if (!('descricao' in encontrado) && ('nome' in encontrado)) encontrado.descricao = encontrado.nome;
+        } catch (e) { }
+
+        $timeout(function () {
+          m.status = encontrado;
+          m.idStatusUnidadeEscolar = encontrado.id != null ? encontrado.id : (encontrado.Id || null);
+        }, 0);
+      } else {
+        console.warn('reconciliarStatusComLista: não encontrou statusList para id', statusId, '— statusList:', vm.statusList);
+        m.status = null;
+      }
+    }
+
+    function editarStatusUE(indice, unidadeEscolar) {
+      if (angular.isObject(indice) && !unidadeEscolar) {
+        unidadeEscolar = indice;
+        indice = null;
+      }
+
+      if (!unidadeEscolar && (indice !== null && indice !== undefined)) {
+        if (vm.modal && vm.modal.model && Array.isArray(vm.modal.model.unidadeEscolarLista)) {
+          unidadeEscolar = vm.modal.model.unidadeEscolarLista[indice];
+        } else {
+          console.warn('editarStatusUE: indice fornecido mas vm.modal.model.unidadeEscolarLista não disponível.');
+        }
+      }
+
+      vm.modalStatusUE = $uibModal.open({
+        templateUrl: 'src/contrato/contrato-form-status-unidade-escolar.html?' + new Date(),
+        backdrop: 'static',
+        scope: $scope,
+        size: 'md',
+        keyboard: false,
+      });
+
+      vm.modalStatusUE.index = (indice || null);
+
+      if (!unidadeEscolar) {
+        console.warn('editarStatusUE: nenhum objeto unidadeEscolar foi passado/buscado — abrindo modal com model vazio.');
+      }
+
+      vm.modalStatusUE.model = {
+        id: unidadeEscolar.id,
+        idStatusUnidadeEscolar: unidadeEscolar.idStatusUnidadeEscolar,
+        motivoStatus: unidadeEscolar.motivoStatus
+      };
+
+      var carregar = (vm.statusList && vm.statusList.length) ? Promise.resolve(vm.statusList) : carregarComboStatus();
+
+      carregar.then(function () {
+        reconciliarStatusComLista();
+      }).catch(function (err) {
+        console.error('Erro ao carregar statusList no editarStatusUE:', err);
+        reconciliarStatusComLista();
+      });
+    }
+
+    function salvarStatusUE(formularioStatusUE) {
+
+      if (formularioStatusUE.$invalid) {
+        return;
+      }
+
+      let unidade = null;
+      let unidadeIndex = vm.modalStatusUE.index;
+
+      if (vm.modal &&
+        vm.modal.model &&
+        Array.isArray(vm.modal.model.unidadeEscolarLista) &&
+        unidadeIndex != null) {
+
+        unidade = vm.modal.model.unidadeEscolarLista[unidadeIndex];
+      }
+
+      if (!unidade && vm.modalUnidadeEscolar && vm.modalUnidadeEscolar.model) {
+        unidade = vm.modalUnidadeEscolar.model;
+        if (vm.modal && vm.modal.model && Array.isArray(vm.modal.model.unidadeEscolarLista)) {
+          const idx = vm.modal.model.unidadeEscolarLista.findIndex(u => String(u.id) === String(unidade.id));
+          if (idx >= 0) {
+            unidadeIndex = idx;
+            vm.modal.model.unidadeEscolarLista[idx] = unidade;
+          }
+        }
+      }
+
+      if (!unidade) {
+        console.error("salvarStatusUE: unidade não encontrada.");
+        controller.feed("error", "Não foi possível localizar a unidade escolar.");
+        return;
+      }
+
+      unidade.idStatusUnidadeEscolar = vm.modalStatusUE.model.idStatusUnidadeEscolar || null;
+      unidade.motivoStatus = vm.modalStatusUE.model.motivoStatus || null;
+
+      const statusObj = vm.statusList.find(s => s.id === unidade.idStatusUnidadeEscolar);
+      unidade.statusDescricao = statusObj ? statusObj.descricao : null;
+
+      persistirContrato({
+        mensagemSucesso: 'Status da unidade escolar atualizado com sucesso.'
+      })
+        .then(() => {
+          fecharModalStatusUE();
+          if (vm.modalUnidadeEscolar && unidadeIndex != null) {
+            vm.modalUnidadeEscolar.model = vm.modal.model.unidadeEscolarLista[unidadeIndex];
+          }
+        })
+        .catch((err) => {
+          console.error("Erro ao persistir contrato:", err);
+          controller.feedMessage(err);
+        });
     }
   }
 

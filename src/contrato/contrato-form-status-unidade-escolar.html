@@ -1,0 +1,62 @@
+<form novalidate name="formularioStatusUE" 
+      ng-submit="vm.salvarStatusUE(formularioStatusUE)"
+      autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false">
+
+  <div class="modal-header">
+    <h5 class="modal-title">EDITAR STATUS</h5>
+    <button type="button" class="close" ng-click="vm.fecharModalStatusUE()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body bg-white">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label class="obrigatorio">Status</label>
+
+          <ui-select ng-model="vm.modalStatusUE.model.idStatusUnidadeEscolar"
+                     theme="bootstrap"
+                     close-on-select="true"
+                     ng-required="true">
+
+            <ui-select-match placeholder="Selecione um status">
+              {{$select.selected.descricao}}
+            </ui-select-match>
+
+            <ui-select-choices repeat="s.id as s in vm.statusList | filter: $select.search">
+              <span ng-bind-html="s.descricao | highlight: $select.search"></span>
+            </ui-select-choices>
+
+          </ui-select>
+        </div>
+      </div>
+      <div class="col-12"
+           ng-if="vm.modalStatusUE.model.idStatusUnidadeEscolar == 2 ||
+                  vm.modalStatusUE.model.idStatusUnidadeEscolar == 3 ||
+                  vm.modalStatusUE.model.idStatusUnidadeEscolar == 4">
+
+        <div class="form-group">
+          <label>Motivo (opcional)</label>
+          <input type="text"
+                 class="form-control"
+                 name="motivoStatus"
+                 ng-model="vm.modalStatusUE.model.motivoStatus">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button"
+            class="btn btn-default"
+            ng-click="vm.fecharModalStatusUE()">Cancelar</button>
+
+    <button type="submit"
+            class="btn btn-success"
+            ng-disabled="formularioStatusUE.$invalid">
+      Salvar
+    </button>
+  </div>
+</form>

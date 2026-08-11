@@ -956,6 +956,25 @@ strong {
     justify-content: flex-end;
 }
 
+.li-status-line {
+  display: -webkit-inline-box;
+  align-items: center;
+  /* centraliza verticalmente */
+  gap: 8px;
+  /* espaço natural entre texto e botão */
+  padding: 6px 0;
+}
+
+.li-status-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  /* Ajuste para ficar harmonioso */
+  width: 28px;
+  padding: 0;
+}
+
 
 /* CHECKBOX IN TOGGLE*/
 .checkbox-input {

@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular.module('app.contrato', [
-		
+		'app.unidade-escolar-status'
 	]);
 
 })();
