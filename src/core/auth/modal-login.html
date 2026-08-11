@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h5 class="modal-title">LOGIN PARA ADMINISTRADORES DO SISTEMA</h5>
+    <button type="button" class="close" ng-click="vm.fechaModalLoginAdmin()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<div class="modal-body bg-white">
+
+    <form novalidate ng-submit="vm.entrar()" name="formulario" autocomplete="off" autocorrect="off"
+        autocapitalize="off" spellcheck="false">
+
+        <p>Informe suas credenciais abaixo para acessar o sistema.</p>
+
+        <div class="form-group">
+            <label id="email" class="dois-pontos">E-mail</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="icon-user"></i>
+                    </span>
+                </div>
+                <input type="email" id="email" name="email" class="form-control" ng-model="vm.model.email"
+                    placeholder="Digite seu e-mail aqui" ng-class="{'is-invalid': (formulario.email.$dirty && formulario.email.$invalid)}" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label id="senha" class="dois-pontos">
+                Senha
+            </label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="icon-lock"></i>
+                    </span>
+                </div>
+                <input type="password" id="senha" name="senha" class="form-control"
+                    placeholder="Digite sua senha aqui" ng-model="vm.model.senha"
+                    ng-class="{'is-invalid': (formulario.senha.$dirty && formulario.senha.$invalid)}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block" ng-disabled="formulario.$invalid">ACESSAR</button>
+        </div>
+
+    </form>
+ </div>
