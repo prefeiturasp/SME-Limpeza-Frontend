@@ -107,11 +107,13 @@
       vm.model.turnoList = vm.turnoList.filter(t => t.isSelected === true);
       vm.model.ambienteUnidadeEscolarList = vm.ambienteUnidadeEscolarList.filter(t => t.isSelected === true);
 
-      const ehExcepcional = await verificaDiaExcepicional(vm.model.data);
+      const idUe = verificaPerfil();
+
+      const ehExcepcional = await verificaDiaExcepicional(vm.model.data, idUe);
       if (ehExcepcional) {
         vm.model.arrDiaExcepcional = {
           verificacao: true,
-          idUnidadeEscolar: $rootScope.usuario.unidadeEscolar.id, 
+          idUnidadeEscolar: idUe, 
           data: moment(vm.model.data).format('YYYY-MM-DD')
         };
       } else {
@@ -212,7 +214,7 @@
 
   }
 
-  async function verificaDiaExcepicional(data) {
+  async function verificaDiaExcepicional(data, idUe) {
       
       if (!data) return false;
 
@@ -224,7 +226,7 @@
       }
 
       try {
-        const idUnidadeEscolar = $rootScope.usuario.unidadeEscolar.id;
+        const idUnidadeEscolar = idUe;
         if (!idUnidadeEscolar) return false;
         const dataFormatada = dataMoment.format('YYYY-MM-DD');
         const response = await dataservice.verificaSeDataEferiado(idUnidadeEscolar, dataFormatada);
@@ -238,6 +240,17 @@
         return false;
       }
 
+    }
+
+    function verificaPerfil(){
+      let idUE = '';
+        if ($rootScope.usuario.usuarioOrigem.codigo == 'ue') {
+          idUE = $rootScope.usuario.unidadeEscolar.id;
+        } else if ($rootScope.usuario.usuarioOrigem.codigo == 'dre') {
+          idUE = vm.model.unidadeEscolar.id;
+        }
+        console.log(idUE);
+        return idUE;
     }
 
 })();
