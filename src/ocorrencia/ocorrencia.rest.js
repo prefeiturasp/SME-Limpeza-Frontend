@@ -17,6 +17,7 @@
     service.buscarPrestadoresComReincidencia = buscarPrestadoresComReincidencia;
     service.exportar = exportar;
     service.buscarUltimos = buscarUltimos;
+    service.comboUesPorIdContrato = comboUesPorIdContrato;
 
     return service;
 
@@ -39,6 +40,16 @@
     function buscarUltimos() {
       return $http.get(`${service.url}/ultimos`);
     }
+
+    function comboUesPorIdContrato(idsContratos) {
+
+			let arrIdsContrato = idsContratos['idContratoList'];
+
+			$http.post(`${service.url}/ocorrencia-retroativa/comboTodasUesPorIdContrato/`, arrIdsContrato).then(function (response) {
+        console.log(response.data);
+				return response.data;
+			});
+		}
 
   }
 

@@ -6,9 +6,9 @@
     .module('ocorrencia.ocorrencia-form')
     .controller('OcorrenciaForm', OcorrenciaForm);
 
-  OcorrenciaForm.$inject = ['$scope', '$rootScope', 'controller', '$uibModal', 'OcorrenciaRest', 'OcorrenciaVariavelUtils', 'ConfiguracaoUtils', 'ContratoUtils', 'RelatorioGerencialRest'];
+  OcorrenciaForm.$inject = ['$scope', '$rootScope', 'controller', '$uibModal', 'OcorrenciaRest', 'OcorrenciaVariavelUtils', 'ConfiguracaoUtils', 'ContratoUtils', 'RelatorioGerencialRest', 'OcorrenciaRetroativaUtils'];
 
-  function OcorrenciaForm($scope, $rootScope, controller, $uibModal, dataservice, OcorrenciaVariavelUtils, ConfiguracaoUtils, ContratoUtils, RelatorioGerencialRest) {
+  function OcorrenciaForm($scope, $rootScope, controller, $uibModal, dataservice, OcorrenciaVariavelUtils, ConfiguracaoUtils, ContratoUtils, RelatorioGerencialRest, OcorrenciaRetroativaUtils) {
     /*jslint evil: true */
 
     var vm = this;
@@ -23,6 +23,8 @@
     vm.verificarFormulario = verificarFormulario;
 
     vm.salvar = salvar;
+
+    vm.dadosOcorrenciaRetroativa = {};
 
     vm.optionsDatePicker = {
       minMode: 'day',
@@ -44,7 +46,6 @@
 
       carregarConfiguracao();
       carregarComboOcorrenciaVariavel();
-
     }
 
     function extrairLinhasRelatorio(res) {
@@ -65,13 +66,29 @@
     }
 
     function configurarDateDisabled(params) {
-      vm.optionsDatePicker = vm.optionsDatePicker || {};
 
+      vm.optionsDatePicker = vm.optionsDatePicker || {};
+      
       const feriadosSet = new Set((params?.feriados || []).map(d => moment(d).format('YYYY-MM-DD')));
+      const diasHabilitadosSet = new Set((params?.diasHabilitados || []).map(d => moment(d).format('YYYY-MM-DD')));
+      const minDate = params?.minDate ? moment(params.minDate) : null;
+      const maxDate = params?.maxDate ? moment(params.maxDate) : null;
 
       vm.optionsDatePicker.dateDisabled = function (data) {
         if (!data || data.mode !== 'day') return false;
         const m = moment(data.date);
+
+        if (diasHabilitadosSet.has(m.format('YYYY-MM-DD'))) {
+          return false;
+        }
+
+        // Bloqueia dias fora do intervalo original permitido (gap criado pela expansão do calendário)
+        if (minDate && m.isBefore(minDate, 'day')) {
+          return true;
+        }
+        if (maxDate && m.isAfter(maxDate, 'day')) {
+          return true;
+        }
 
         if (params?.mesEncerrado) {
           if (m.year() === params.mesEncerrado.ano && m.month() === params.mesEncerrado.mesIndex) {
@@ -80,11 +97,88 @@
         }
 
         return false;
-      };
+      }
     }
 
+    function habilitaDatasOcorrenciaRetroativa() {
+      let dadosOcorrenciaRetroativa = JSON.parse(localStorage.getItem('datasOcorrenciasRetroativas'));
+
+      if (dadosOcorrenciaRetroativa && dadosOcorrenciaRetroativa.length > 0) {
+        return gerarIntervaloDatas(dadosOcorrenciaRetroativa[0].dataInicial, dadosOcorrenciaRetroativa[0].dataFinal);
+      }
+      return [];
+    }
+
+    function gerarIntervaloDatas(dataInicial, dataFinal) {
+      var datas = [];
+      var dataAtual = moment(dataInicial);
+      var dataFim = moment(dataFinal);
+
+      while (dataAtual.isSameOrBefore(dataFim)) {
+        datas.push(dataAtual.format('YYYY-MM-DD'));
+        dataAtual.add(1, 'days');
+      }
+      return datas;
+    }
+
+    function buscaIdOcorrenciaRetroativaLocalStorage(){
+      let dadosOcorrenciaRetroativa = JSON.parse(localStorage.getItem('datasOcorrenciasRetroativas'));
+      if (dadosOcorrenciaRetroativa && dadosOcorrenciaRetroativa.length > 0){
+        return dadosOcorrenciaRetroativa[0].idOcorrenciaRetroativa;
+      } else {
+        return null;
+      }
+    }
+
+    function filtraDataHoraOcorrenciaRetroativa(dadosFormulario) {
+
+      let dadosOcorrenciaRetroativa = JSON.parse(localStorage.getItem('datasOcorrenciasRetroativas'));
+
+      if (!dadosOcorrenciaRetroativa || dadosOcorrenciaRetroativa.length === 0) {
+        return false;
+      }
+
+      var registro = dadosOcorrenciaRetroativa[0];
+      var dataHoraInicial = moment(registro.dataInicial + ' ' + registro.horaInicial, 'YYYY-MM-DD HH:mm');
+      var dataHoraFinal = moment(registro.dataFinal + ' ' + registro.horaFinal, 'YYYY-MM-DD HH:mm');
+      var dataHoraSelecionada = moment(dadosFormulario.data);
+        
+      if (dataHoraSelecionada.isSameOrAfter(dataHoraInicial) && dataHoraSelecionada.isSameOrBefore(dataHoraFinal)) {
+        localStorage.setItem('OcorrenciaRetroativa', 'true');
+        return true;
+      } else {
+        if (dataHoraSelecionada.isAfter(dataHoraFinal)) {
+
+          let dataFormSelecionada = moment(dadosFormulario.data).format('YYYY-MM-DD');
+          let dataFinalPermitida = moment(registro.dataFinal).format('YYYY-MM-DD');
+
+          let horaFinalPermitida = registro.horaFinal;
+          
+          if(dataFormSelecionada === dataFinalPermitida){
+            if (moment(dadosFormulario.data).format('HH:mm') > horaFinalPermitida){
+              controller.feed('warning', 'Selecione uma data e hora entre ' + dataHoraInicial.format('DD/MM/YYYY HH:mm') + ' e ' + dataHoraFinal.format('DD/MM/YYYY HH:mm') + ', para esta "Ocorrência Retroativa".');
+              return false;
+            } else {
+              localStorage.setItem('OcorrenciaRetroativa', 'true');
+              return true;
+            }
+          } else {
+            return true;
+          }
+
+        } else {
+          controller.feed('warning', 'Selecione uma data e hora entre ' + dataHoraInicial.format('DD/MM/YYYY HH:mm') + ' e ' + dataHoraFinal.format('DD/MM/YYYY HH:mm') + ', para esta "Ocorrência Retroativa".');
+          return false;
+        }
+      }
+
+    }
+      
+
     function carregarConfiguracao() {
+      
       let minDateByDiasRet = null;
+      const diasHabilitados = habilitaDatasOcorrenciaRetroativa();
 
       return ConfiguracaoUtils.buscar('DIAS_RET_OCORRENCIA')
         .then(response => {
@@ -98,8 +192,9 @@
           minDateByDiasRet = minDate.clone();
           vm.optionsDatePicker.minDate = minDate.clone();
           vm.optionsDatePicker.maxDate = moment();
+          const maxDateOriginal = vm.optionsDatePicker.maxDate.clone();
 
-          configurarDateDisabled({ mesEncerrado: null });
+          configurarDateDisabled({ mesEncerrado: null, diasHabilitados: diasHabilitados, minDate: minDateByDiasRet, maxDate: maxDateOriginal });
 
           const hoje = moment();
           const mesAtual = parseInt(hoje.format('MM'), 10);
@@ -127,12 +222,14 @@
               if (rangeAlcancaPrevMonth) {
                 configurarDateDisabled({
                   mesEncerrado: { ano: anoMesAnterior, mesIndex: mesAnteriorMoment.month() },
+                  diasHabilitados: diasHabilitados,
+                  minDate: minDateByDiasRet,
+                  maxDate: maxDateOriginal
                 });
               }
             }
           });
-        })
-        .then(resCurr => {
+        }).then(resCurr => {
           const rowsCurr = extrairLinhasRelatorio(resCurr);
 
           if (rowsCurr.length > 0) {
@@ -145,6 +242,20 @@
             }
           } else {
             vm.optionsDatePicker.minDate = minDateByDiasRet;
+          }
+
+          if (diasHabilitados && diasHabilitados.length > 0) {
+            diasHabilitados.forEach(function (dia) {
+              var mDia = moment(dia);
+              if (mDia.isValid()) {
+                if (vm.optionsDatePicker.minDate && mDia.isBefore(vm.optionsDatePicker.minDate, 'day')) {
+                  vm.optionsDatePicker.minDate = mDia.clone();
+                }
+                if (vm.optionsDatePicker.maxDate && mDia.isAfter(vm.optionsDatePicker.maxDate, 'day')) {
+                  vm.optionsDatePicker.maxDate = mDia.clone();
+                }
+              }
+            });
           }
         })
         .catch(err => {
@@ -193,9 +304,29 @@
         return;
       }
 
+      let retornoVerificacao = filtraDataHoraOcorrenciaRetroativa(vm.model);
+
+      if(!retornoVerificacao){
+        return;
+      }
+
+      let retroativa = localStorage.getItem('OcorrenciaRetroativa');
+      if (retroativa) {
+        let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
+        if (idOcorrenciaRetroativa) {
+          vm.model.idOcorrenciaRetroativa = idOcorrenciaRetroativa;
+        }
+        vm.model.flagOcorrenciaRetroativa = true;
+      } else {
+        vm.model.flagOcorrenciaRetroativa = false;
+      }
+
       dataservice.inserir(vm.model).then(success).catch(error);
 
       function success(response) {
+        if(retroativa){
+          deletaOcorrenciaRetroativaLocalStorage();
+        }
         controller.feed('success', 'Ocorrência salva com sucesso.');
         fecharModal();
       }
@@ -205,6 +336,11 @@
         controller.feedMessage(response);
       }
 
+    }
+
+    function deletaOcorrenciaRetroativaLocalStorage(){
+      localStorage.removeItem('OcorrenciaRetroativa');
+      localStorage.removeItem('datasOcorrenciasRetroativas');
     }
 
     function expandirImagem(index) {

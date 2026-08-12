@@ -1,0 +1,54 @@
+<div class="modal-header">
+<h5 class="modal-title">DETALHES DA OCORRÊNCIA RETROATIVA</h5>
+<button type="button" class="close" ng-click="vm.fechaModalDetalhesOcorrenciaRetroativa()">
+    <span aria-hidden="true">×</span>
+</button>
+</div>
+
+<div class="modal-body bg-white">
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-inverse-secondary">
+                <div class="card-body">
+                    <h5 class="card-title text-black">OCORRÊNCIA HABILITADA EM: {{vm.detalhesOcorrenciaRetroativa.dataHoraCriacao | date:'dd/MM/yyyy HH:mm'}}
+                    </h5>
+                    <small class="text-black"><strong>Cadastrado realizado por:</strong> {{vm.detalhesOcorrenciaRetroativa.usuario}}</small>
+                    <hr>
+                    <ul class="list-arrow text-black">
+                        <li><strong>Data Inicial:</strong> {{vm.detalhesOcorrenciaRetroativa.dataInicial | date:'dd/MM/yyyy HH:mm'}}</li>
+                        <li><strong>Data Final:</strong> {{vm.detalhesOcorrenciaRetroativa.dataFinal | date:'dd/MM/yyyy HH:mm'}}</li>
+                        <hr>
+                        <li><strong>DRE:</strong> {{vm.detalhesOcorrenciaRetroativa.dre}}</li>
+                        <li><strong>Contrato:</strong> {{vm.detalhesOcorrenciaRetroativa.codigo}}</li>
+                        <li><strong>Unidade Escolar:</strong> {{vm.detalhesOcorrenciaRetroativa.descricao}}</li>
+                        <hr>
+                        <li ng-if="vm.detalhesOcorrenciaRetroativa.prestadorServico"><strong>Regitrado por:</strong> {{vm.detalhesOcorrenciaRetroativa.prestadorServico}}</li>
+                        <li class="li-status-line">
+                            <span>
+                                <strong>Status:</strong> 
+                                <span class="badge badge-light text-black mt-1 pt-2 pb-2">
+                                    <strong>{{vm.retornaStatusOcorrenciaRetroativa(vm.detalhesOcorrenciaRetroativa.statusOcorrenciaRetroativa)}}</strong>
+                                </span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6" ng-if="vm.detalhesOcorrenciaRetroativa.idOcorrencia">
+            <div class="card card-inverse-secondary">
+                <div class="card-body">
+                    <h5 class="card-title text-black">OCORRÊNCIA</h5>
+                    <hr>
+                    <ul class="list-arrow text-black">
+                        <li>
+                            <strong>Visualizar detalhes da Ocorrência:</strong> 
+                            <a class="btn btn-outline-primary btn-sm" href="ocorrencia/detalhe/{{vm.detalhesOcorrenciaRetroativa.idOcorrencia}}" target="_blank"><i class="icon-eye"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
