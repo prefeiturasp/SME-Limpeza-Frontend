@@ -14,7 +14,14 @@
       <div class="col-sm-12 col-md-6 col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Dados Gerais</h4>
+            <h4 class="card-title">Dados Gerais
+              <div class="text-right">
+                <button type="button" class="btn btn-outline-success btn-sm" ng-click="vm.abrirModalHistoricoEU()">
+                  Histórico de Status
+                  <i class="icon-eye ml-1"></i>
+                </button>
+              </div>
+            </h4>
             <div class="row mt-4">
               <div class="col-12">
                 <div class="form-group">
@@ -78,11 +85,12 @@
                       <li><strong>Telefone:</strong> {{vm.modalUnidadeEscolar.model.descricao}}</li>
                       <li><strong>E-mail:</strong> {{vm.modalUnidadeEscolar.model.descricao}}</li>
                       <li><strong>DRE:</strong> {{vm.modalUnidadeEscolar.model.diretoriaRegional.descricao}}</li>
-                      <li ng-if="vm.modalUnidadeEscolar.model.flagAtivo"><strong>Situação:</strong>
-                        <div class="badge badge-success badge-pill">Ativo</div>
-                      </li>
-                      <li ng-if="!vm.modalUnidadeEscolar.model.flagAtivo"><strong>Situação:</strong>
-                        <div class="badge badge-danger badge-pill">Inativo</div>
+                      <li class="li-status-line">
+                        <span><strong>Status:</strong> {{vm.modalUnidadeEscolar.model.statusDescricao}}</span>
+                        <button type="button" class="btn btn-outline-primary btn-sm li-status-btn"
+                          ng-click="vm.editarStatusUE(vm.modalUnidadeEscolar.model)">
+                          <i class="icon-pencil"></i>
+                        </button>
                       </li>
                     </ul>
                   </div>

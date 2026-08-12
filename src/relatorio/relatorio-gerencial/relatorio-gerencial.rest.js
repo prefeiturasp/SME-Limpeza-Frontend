@@ -18,6 +18,7 @@
     service.aprovar = aprovar;
     service.reverterAprovacao = reverterAprovacao;
     service.atualizarValorBruto = atualizarValorBruto;
+    service.buscaHistoricoRG = buscaHistoricoRG;
 
     return service;
 
@@ -43,6 +44,10 @@
 
     function atualizarValorBruto(idRelatorioGerencial, data) {
       return $http.patch(service.url + '/valor-bruto/' + idRelatorioGerencial, data);
+    }
+
+    function buscaHistoricoRG(idRelatorioGerencial) {
+      return $http.post(service.url + '/historicoRG/'+ idRelatorioGerencial);
     }
 
   }

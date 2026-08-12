@@ -21,6 +21,7 @@
 		'app.relatorio',
 		'app.configuracao',
 		'app.cargo',
+		'app.feriado-geral'
 	]);
 
 })();

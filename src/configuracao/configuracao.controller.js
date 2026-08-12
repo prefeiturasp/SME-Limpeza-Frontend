@@ -19,6 +19,12 @@
 		vm.salvarNoticia = salvarNoticia;
 		vm.manutencaoSistema = false;
 		vm.evtChangeManutencao = evtChangeManutencao;
+		vm.emailSettings = [];
+		vm.salvarEmailSettings = salvarEmailSettings;
+		vm.evtChangeEmailSetting = evtChangeEmailSetting;
+		vm.emailsParaNotificacoes = [];
+		vm.buscaListaEmailsParaNotificacoes = buscaListaEmailsParaNotificacoes;
+		vm.salvarEmailsParaNotificacoes = salvarEmailsParaNotificacoes;
 
 		vm.optionsSummernote = {
 			height: 300,
@@ -42,6 +48,8 @@
 			buscarNoticia();
 			carregarComboOcorrenciaTipo();
 			verificaManutencaoSistema();
+			buscarEmailSettings();
+			buscaListaEmailsParaNotificacoes();
 		}
 
 		function buscar() {
@@ -151,7 +159,6 @@
 				controller.feed('error', 'Hove um erro ao atualizar o conteúdo de notícias.');
 				buscarNoticia();
 			}
-
 		}
 
 		function verificaManutencaoSistema(){
@@ -186,6 +193,60 @@
 
 		}
 
-	}
+		function buscarEmailSettings() {
+			dataservice.buscarEmailSettings().then(function(response) {
+				vm.emailSettings = response.data.data.map(function(setting) {
+					return {
+						parametro: setting.parametro,
+						valor: setting.valor === 1 ? true : false,
+						descricao: setting.descricao
+					};
+				});
+			}).catch(function() {
+				controller.feed('error', 'Erro ao buscar as configurações de e-mail.');
+			});
+		}
 
+		function salvarEmailSettings() {
+			let payload = vm.emailSettings.map(function(setting) {
+				return {
+					parametro: setting.parametro,
+					valor: setting.valor ? '1' : '0'
+				};
+			});
+
+			dataservice.atualizarEmailSettings(payload).then(function() {
+				controller.feed('success', 'Configurações de e-mail salvas com sucesso!');
+			}).catch(function(error) {
+				controller.feedMessage(error);
+			});
+		}
+
+
+		function evtChangeEmailSetting(opcao){
+			salvarEmailSettings();
+		}
+
+		function buscaListaEmailsParaNotificacoes(){
+			dataservice.buscaListaEmailsParaNotificacoes().then(success).catch(error);
+
+			function success(response) {
+				let retorno = controller.ler(response, 'data');
+				vm.emailsParaNotificacoes = retorno.descricao;
+			}
+			function error(response) {
+				controller.feed('error', 'Hove um erro ao buscar a lista de emails para notificações.');
+			}
+		}
+		function salvarEmailsParaNotificacoes() {
+			dataservice.salvarEmailsParaNotificacoes(vm.emailsParaNotificacoes).then(success).catch(error);
+			function success(response) {	
+				controller.feed('success', 'Lista de emails atualizada com sucesso.');
+			}
+
+			function error(response) {
+				console.log(response);
+			}
+		}
+	}
 })();

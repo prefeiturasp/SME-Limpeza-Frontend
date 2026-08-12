@@ -12,6 +12,7 @@
 		
 		let service = new RestUtils(ConfigRest.monitoramento);
 		service.tabelaDatasAgendamentoManual = tabelaDatasAgendamentoManual;
+		service.verificaSeDataEferiado = verificaSeDataEferiado;
 
 		return service;
 
@@ -19,6 +20,9 @@
 			return $http.get(service.url + '/tabela-datas-agendamento-manual?' + data);
 		}
 
+		function verificaSeDataEferiado(idUnidadeEscolar, data) {
+			return $http.post(service.url + '/verificaSeDataEferiado', { idUnidadeEscolar: idUnidadeEscolar, data: data });
+		}
 	}
 	
 })();
