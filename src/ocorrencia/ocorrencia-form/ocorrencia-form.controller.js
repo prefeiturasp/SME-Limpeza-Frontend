@@ -298,42 +298,52 @@
       }
     }
 
-    function salvar(formulario) {
+     function exibeEscondeBtn() {
+       let imgBtnSalvar = $("#imgSalvarOcorrencia, #btnSalvarOcorrencia");
+       imgBtnSalvar.toggle();
+    }
+
+        function salvar(formulario) {
+
+      exibeEscondeBtn();
 
       if (formulario.$invalid) {
+        exibeEscondeBtn();
         return;
       }
 
       let retornoVerificacao = filtraDataHoraOcorrenciaRetroativa(vm.model);
+      let retroativa = localStorage.getItem('OcorrenciaRetroativa');
 
       if(!retornoVerificacao){
-        return;
-      }
-
-      let retroativa = localStorage.getItem('OcorrenciaRetroativa');
-      if (retroativa) {
-        let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
-        if (idOcorrenciaRetroativa) {
-          vm.model.idOcorrenciaRetroativa = idOcorrenciaRetroativa;
-        }
-        vm.model.flagOcorrenciaRetroativa = true;
+        exibeEscondeBtn();
       } else {
-        vm.model.flagOcorrenciaRetroativa = false;
+        if (retroativa) {
+          let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
+          if (idOcorrenciaRetroativa) {
+            vm.model.idOcorrenciaRetroativa = idOcorrenciaRetroativa;
+          }
+          vm.model.flagOcorrenciaRetroativa = true;
+        } else {
+          vm.model.flagOcorrenciaRetroativa = false;
+        }
       }
 
       dataservice.inserir(vm.model).then(success).catch(error);
 
       function success(response) {
+
         if(retroativa){
           deletaOcorrenciaRetroativaLocalStorage();
           $rootScope.verificaDatasOcorrenciasRetroativas();
         }
+        exibeEscondeBtn();
         controller.feed('success', 'Ocorrência salva com sucesso.');
         fecharModal();
       }
 
       function error(response) {
-        console.log(response);
+        exibeEscondeBtn();
         controller.feedMessage(response);
       }
 
