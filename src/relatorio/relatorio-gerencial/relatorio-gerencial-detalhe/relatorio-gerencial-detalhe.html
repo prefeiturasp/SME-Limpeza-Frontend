@@ -1,12 +1,19 @@
 <div class="card" id="to-export">
   <div class="card-body">
 
-    <h4 class="card-title">
-      BOLETIM DE MEDIÇÃO
-      <button type="button" class="btn btn-outline-info d-print-none" onclick="window.print();">
-        <i class="icon-printer mr-1"></i>Imprimir
-      </button>
-    </h4>
+    <div class="row">
+      <div class="col-6">
+        <h4 class="card-title">BOLETIM DE MEDIÇÃO</h4>
+      </div>
+      <div class="col-6 text-right">
+        <button type="button" class="btn btn-outline-success" ng-click="vm.abrirModalHistoricoBoletimMedicao()">
+          <i class="icon-eye ml-1"></i>Histórico
+        </button>
+        <button type="button" class="btn btn-outline-info d-print-none" onclick="window.print();">
+          <i class="icon-printer mr-1"></i>Imprimir
+        </button>
+      </div>
+    </div>
 
     <hr>
 
