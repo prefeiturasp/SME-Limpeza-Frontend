@@ -244,7 +244,6 @@
 
     function verificaPerfil(){
       let infoUsuario = JSON.parse(localStorage.getItem('ngStorage-usuario'));
-      console.log(infoUsuario);
       let idUE = '';
         if (infoUsuario.usuarioOrigem.codigo == 'ue') {
           idUE = infoUsuario.unidadeEscolar.id;
