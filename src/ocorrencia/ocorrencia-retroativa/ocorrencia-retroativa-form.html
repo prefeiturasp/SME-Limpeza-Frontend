@@ -10,10 +10,10 @@
 
   <div class="modal-body pt-3">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <div class="form-group">
           <label for="contratoList" class="obrigatorio">Contrato</label>
-          <select multiple class="form-control" id="contratoList" name="contratoList"
+          <select multiple size="15" class="form-control" id="contratoList" name="contratoList"
             ng-model="vm.model.contratoList"
             ng-options="c as c.descricao for c in vm.contratoList track by c.id"
             ng-change="vm.evtChangeContrato()"
@@ -22,15 +22,13 @@
           <small class="form-text text-muted">Segure Ctrl (ou Cmd) para selecionar múltiplos contratos.</small>
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
+    
+      <div class="col-6">
         <div class="form-group">
           <label for="unidadeEscolarList" class="obrigatorio">Unidade Escolar</label>
-          <select multiple class="form-control" id="unidadeEscolarList" name="unidadeEscolarList"
+          <select multiple size="15" class="form-control" id="unidadeEscolarList" name="unidadeEscolarList"
             ng-model="vm.model.unidadeEscolarList"
-            ng-options="ue as ue.descricao for ue in vm.unidadeEscolarListFiltered track by ue.id" required>
+            ng-options="ue as ue.codigo + ' - ' + ue.descricao + ' - ' + ue.contrato for ue in vm.unidadeEscolarListFiltered track by ue.id" required>
           </select>
           <small class="form-text text-muted">Segure Ctrl (ou Cmd) para selecionar múltiplas UEs.</small>
         </div>
@@ -38,7 +36,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-3">
         <div class="form-group">
           <label class="obrigatorio">Data Inicial</label>
           <div class="d-flex align-items-center">
@@ -47,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-3">
         <div class="form-group">
           <label class="obrigatorio">Data Final</label>
           <div class="d-flex align-items-center">
@@ -56,14 +54,18 @@
           </div>
         </div>
       </div>
+      <div class="col-md-6">
+           <div class="form-group">
+              <label for="motivo" class="obrigatorio">Motivo</label>
+              <textarea id="motivo" name="motivo" class="form-control" rows="7" ng-model="vm.model.motivo" required></textarea>
+            </div>
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-12">
-        <div class="form-group">
-          <label for="motivo" class="obrigatorio">Motivo</label>
-          <textarea id="motivo" name="motivo" class="form-control" rows="3" ng-model="vm.model.motivo" required></textarea>
-        </div>
+      <div class="col-6">
+          <label class="obrigatorio">Número máximo de Ocorrências a serem registradas</label>
+          <input type="number" class="form-control mr-2" ng-model="vm.model.quantidadeOcorrencias" min="1" ng-init="vm.model.quantidadeOcorrencias = 1" required/>
       </div>
     </div>
   </div>

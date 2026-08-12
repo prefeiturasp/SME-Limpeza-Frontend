@@ -326,6 +326,7 @@
       function success(response) {
         if(retroativa){
           deletaOcorrenciaRetroativaLocalStorage();
+          $rootScope.verificaDatasOcorrenciasRetroativas();
         }
         controller.feed('success', 'Ocorrência salva com sucesso.');
         fecharModal();
