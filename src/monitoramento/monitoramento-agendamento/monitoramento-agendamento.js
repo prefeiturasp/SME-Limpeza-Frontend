@@ -243,13 +243,14 @@
     }
 
     function verificaPerfil(){
+      let infoUsuario = JSON.parse(localStorage.getItem('ngStorage-usuario'));
+      console.log(infoUsuario);
       let idUE = '';
-        if ($rootScope.usuario.usuarioOrigem.codigo == 'ue') {
-          idUE = $rootScope.usuario.unidadeEscolar.id;
-        } else if ($rootScope.usuario.usuarioOrigem.codigo == 'dre') {
+        if (infoUsuario.usuarioOrigem.codigo == 'ue') {
+          idUE = infoUsuario.unidadeEscolar.id;
+        } else if (infoUsuario.usuarioOrigem.codigo == 'dre') {
           idUE = vm.model.unidadeEscolar.id;
         }
-        console.log(idUE);
         return idUE;
     }
 
