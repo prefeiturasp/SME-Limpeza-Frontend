@@ -9,7 +9,7 @@
                 <img src="src/layout/img/logo-sme/logo-preto-vertical.png" class="img-fluid">
               </div>
             <form novalidate ng-submit="vm.entrar()" name="formulario" autocomplete="off" autocorrect="off"
-                autocapitalize="off" spellcheck="false">
+                autocapitalize="off" spellcheck="false" ng-if="vm.exibeFormLogin">
                 <h3 class="mr-auto">Olá, seja bem-vindo!</h3>
                 <p class="mb-5 mr-auto">Para acessar o sistema, informe suas credenciais abaixo.</p>
 
@@ -47,6 +47,12 @@
                 </div>
 
             </form>
+
+            <div ng-if="vm.exibeMsgManutencao" class="text-center">
+                <img src="src/layout/img/manutencao.png" class="img-fluid" width="70%" alt="Sistema em Manutenção">
+                <p>Login para <a href="" ng-click="vm.abrirModalLoginAdmin()">Administradores do Sistema</a></p>
+            </div>
+            
         </div>
     </div>
 </div>
