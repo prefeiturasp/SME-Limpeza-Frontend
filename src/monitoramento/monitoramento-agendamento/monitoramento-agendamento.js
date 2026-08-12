@@ -230,7 +230,7 @@
         if (!idUnidadeEscolar) return false;
         const dataFormatada = dataMoment.format('YYYY-MM-DD');
         const response = await dataservice.verificaSeDataEferiado(idUnidadeEscolar, dataFormatada);
-        if(response.data.data && response.data.data.idFeriado){
+        if(response.data.data && response.data.data.id){
           return true;
         } else {
           return false; 
