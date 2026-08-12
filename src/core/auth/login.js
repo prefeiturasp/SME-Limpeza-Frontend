@@ -15,7 +15,6 @@
     vm.entrar = entrar;
     vm.abrirModalLoginAdmin = abrirModalLoginAdmin;
     vm.fechaModalLoginAdmin = fechaModalLoginAdmin;
-    vm.urlImgManutencao = 'http://' + window.location.host + '/src/layout/img/manutencao.png';
 
     iniciar();
 
