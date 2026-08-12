@@ -8,11 +8,11 @@
 
   ContratoLista.$inject = ['SweetAlert', '$scope', '$timeout', 'controller', 'ContratoRest', 'tabela',
     '$uibModal', 'PrestadorServicoUtils', 'UnidadeEscolarUtils', 'BotaoUploadArquivoUtils',
-    'DiretoriaRegionalUtils', 'moment', 'CargoUtils', 'UnidadeEscolarStatusUtils'];
+    'DiretoriaRegionalUtils', 'moment', 'CargoUtils', 'UnidadeEscolarStatusUtils','ContratoStatusUtils'];
 
   function ContratoLista(SweetAlert, $scope, $timeout, controller, dataservice, tabela,
     $uibModal, PrestadorServicoUtils, UnidadeEscolarUtils, BotaoUploadArquivoUtils,
-    DiretoriaRegionalUtils, moment, CargoUtils, UnidadeEscolarStatusUtils) {
+    DiretoriaRegionalUtils, moment, CargoUtils, UnidadeEscolarStatusUtils, ContratoStatusUtils) {
     /* jshint validthis: true */
 
     var vm = this;
@@ -52,17 +52,26 @@
 
     vm.getTotalEquipe = getTotalEquipe;
     vm.persistirContrato = persistirContrato;
-
+    
+    // Unidade Escolar Status
     vm.editarStatusUE = editarStatusUE;
     vm.fecharModalStatusUE = fecharModalStatusUE;
     vm.salvarStatusUE = salvarStatusUE;
     vm.carregarComboStatus = carregarComboStatus;
     vm.reconciliarStatusComLista = reconciliarStatusComLista;
+    
+    // Contrato Status
+    vm.editarStatusContrato = editarStatusContrato;
+    vm.fecharModalStatusContrato = fecharModalStatusContrato;
+    vm.salvarStatusContrato = salvarStatusContrato;
+    vm.carregarComboStatusContrato = carregarComboStatusContrato;
+    vm.reconciliarStatusComListaContrato = reconciliarStatusComListaContrato;
 
     iniciar();
 
     function iniciar() {
       carregarComboPrestadorServico();
+      carregarComboStatusContrato();
       montarTabela();
     }
 
@@ -97,6 +106,7 @@
           { data: 'codigo', title: 'Código' },
           { data: 'descricao', title: 'Descrição' },
           { data: 'prestadorServico', title: 'Prestador de Serviço', renderWith: tabela.formatarPrestadorServico },
+          { data: 'descricaostatuscontrato', title: 'Status', renderWith: tabela.formatarStatusContrato },
           { data: 'dataInicial', title: 'Data Inicial', cssClass: 'text-right', renderWith: tabela.formatarData },
           { data: 'dataFinal', title: 'Data Final', cssClass: 'text-right', renderWith: tabela.formatarData },
           {
@@ -646,21 +656,20 @@
         return Promise.resolve({ skipped: true });
       }
 
-      return dataservice.atualizar(vm.modal.model.id, vm.modal.model)
-        .then((response) => {
-          controller.feed('success', mensagemSucesso);
-          if (tabela && typeof tabela.recarregarDados === 'function') {
-            tabela.recarregarDados(vm.instancia);
-          }
-          if (fecharModalPrincipal) {
-            fecharModal();
-          }
-          return response;
-        })
-        .catch((err) => {
-          controller.feedMessage(err);
-          throw err;
-        });
+      return dataservice.atualizar(vm.modal.model.id, vm.modal.model).then((response) => {
+        console.log(response);
+        controller.feed('success', mensagemSucesso);
+        if (tabela && typeof tabela.recarregarDados === 'function') {
+          tabela.recarregarDados(vm.instancia);
+        }
+        if (fecharModalPrincipal) {
+          fecharModal();
+        }
+        return response;
+      }).catch((err) => {
+        controller.feedMessage(err);
+        throw err;
+      });
     }
 
     function editarCargo(indice, cargo) {
@@ -829,6 +838,125 @@
           controller.feedMessage(err);
         });
     }
+    
+    // STATUS CONTRATO
+    function fecharModalStatusContrato() {
+      vm.modalStatusContrato.close();
+      delete vm.modalStatusContrato;
+    }
+
+    function editarStatusContrato(indice, contrato) {
+      
+      if (angular.isObject(indice) && !contrato) {
+        contrato = indice;
+        indice = null;
+      }
+
+      if (!contrato && (indice !== null && indice !== undefined)) {
+        if (vm.modal && vm.modal.model && Array.isArray(vm.modal.model.contratoLista)) {
+          contrato = vm.modal.model.contratoLista[indice];
+        } else {
+          console.warn('editarStatusContrato: indice fornecido mas vm.modal.model.contratoLista não disponível.');
+        }
+      }
+
+      vm.modalStatusContrato = $uibModal.open({
+        templateUrl: 'src/contrato/contrato-form-status.html?' + new Date(),
+        backdrop: 'static',
+        scope: $scope,
+        size: 'md',
+        keyboard: false,
+      });
+
+      vm.modalStatusContrato.index = (indice || null);
+
+      if (!contrato) {
+        console.warn('editarStatusContrato: nenhum objeto contrato foi passado/buscado — abrindo modal com model vazio.');
+      }
+
+      vm.modalStatusContrato.model = {
+        id: contrato.id,
+        idStatusContrato: contrato.idStatusContrato,
+        motivoStatusContrato: contrato.motivostatuscontrato
+      };
+
+      var carregar = (vm.statusListContrato && vm.statusListContrato.length) ? Promise.resolve(vm.statusListContrato) : carregarComboStatusContrato();
+
+      carregar.then(function () {
+        reconciliarStatusComListaContrato();
+      }).catch(function (err) {
+        console.error('Erro ao carregar statusListContrato no editarStatusContrato:', err);
+        reconciliarStatusComListaContrato();
+      });
+    }
+
+    function salvarStatusContrato(formularioStatusContrato) {
+
+      if (formularioStatusContrato.$invalid) {
+        return;
+      }
+
+      let contrato = vm.modal.model;
+      contrato.idStatusContrato = vm.modalStatusContrato.model.idStatusContrato;
+      contrato.motivoStatusContrato = vm.modalStatusContrato.model.motivoStatusContrato || null;
+
+      let nomeStatus = '';
+      angular.forEach(vm.statusListContrato, function(value, key){
+          if(value.id == contrato.idStatusContrato)
+            nomeStatus = value.descricao;
+      });
+
+      persistirStatusContrato({mensagemSucesso: 'Status do contrato atualizado com sucesso.'}).then(function success(response) {
+          fecharModalStatusContrato();
+          vm.modal.model.idstatuscontrato = vm.modal.model.idStatusContrato;
+          vm.modal.model.descricaostatuscontrato = nomeStatus;
+          vm.modal.model.motivostatuscontrato = vm.modal.model.motivoStatusContrato;
+        }).catch((err) => {
+          console.error("Erro ao persistir contrato:", err);
+          controller.feedMessage(err);
+        });
+    }
+
+    function carregarComboStatusContrato() {
+      return ContratoStatusUtils.carregarComboStatusContrato().then(function success(response) {
+          vm.statusListContrato = response && (response.objeto || response.data) ? (response.objeto || response.data) : (response || []);
+          if (!Array.isArray(vm.statusListContrato)) vm.statusListContrato = [];
+          return vm.statusListContrato;
+        }).catch(function error(err) {
+          vm.statusListContrato = [];
+          controller.feed('error', 'Erro ao buscar combo de status do contrato.');
+          throw err;
+        });
+    }
+
+    function reconciliarStatusComListaContrato() {
+      if (!vm.modalStatusContrato || !vm.modalStatusContrato.model) return;
+      if (!Array.isArray(vm.statusListContrato) || vm.statusListContrato.length === 0) return;
+      var m = vm.modal.model;
+      vm.modalStatusContrato.model.idStatusContrato = m.idstatuscontrato;
+      vm.modalStatusContrato.model.motivoStatusContrato = m.motivostatuscontrato;
+    }
+
+    function persistirStatusContrato({ mensagemSucesso = 'Status do contrato salvo com sucesso.' } = {}) {
+      const temId = !!(vm && vm.modal && vm.modal.model && vm.modal.model.id);
+
+      if (!temId) {
+        return Promise.resolve({ skipped: true });
+      }
+
+      return ContratoStatusUtils.atualizarStatusContrato(vm.modal.model).then((response) => {
+        controller.feed('success', mensagemSucesso);
+        if (tabela && typeof tabela.recarregarDados === 'function') {
+          recarregarTabela();
+        }
+        return response;
+      }).catch((err) => {
+        controller.feedMessage(err);
+        throw err;
+      });
+    }
+
+
   }
 
 })();

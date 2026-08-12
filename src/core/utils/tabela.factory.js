@@ -53,6 +53,7 @@
       evtRemover: evtRemover,
       booleanParaBadgeAtivoEncerrado: booleanParaBadgeAtivoEncerrado,
       formatarContrato: formatarContrato,
+      formatarStatusContrato: formatarStatusContrato
     };
 
     return service;
@@ -153,9 +154,7 @@
 
       angular.forEach(colunas, function (value, key) {
 
-        var column = DTColumnBuilder
-          .newColumn(value[0])
-          .withTitle(value[1]);
+        var column = DTColumnBuilder.newColumn(value[0]).withTitle(value[1]);
 
         if (value.length >= 3) {
           if (value[2] !== null) {
@@ -261,6 +260,10 @@
 
     function formatarData(valor) {
       return valor == null ? '-' : moment(valor).format('DD/MM/YYYY');
+    }
+
+    function formatarStatusContrato(valor){
+      return valor == null ? '-' : valor.trim();
     }
 
     function formatarHora(valor) {

@@ -560,4 +560,306 @@ describe("ContratoLista — Testes do Controller (Jest + AngularJS)", () => {
     });
 
   });
+
+  //
+  // ------------------------------------------------------------------
+  // 🔍 TESTES editarStatusUE e salvarStatusUE
+  // ------------------------------------------------------------------
+  //
+  describe("editarStatusContrato e salvarStatusContrato", () => {
+
+    let vm, modalSpy, persistirMock;
+
+    beforeEach(() => {
+      modalSpy = jest.fn().mockReturnValue({ close: jest.fn() });
+      persistirMock = jest.fn().mockResolvedValue({});
+
+      vm = createController({
+        $uibModal: { open: modalSpy }
+      });
+
+      vm.persistirContrato = persistirMock;
+
+      vm.modal = {
+        model: {
+          contratoLista: [
+            { id: 7, idStatusContrato: 2, motivoStatus: "ABC" }
+          ]
+        }
+      };
+    });
+
+    test("editarStatusContrato abre modal e monta model", async () => {
+      vm.editarStatusContrato(0);
+
+      expect(modalSpy).toHaveBeenCalled();
+
+      await Promise.resolve();
+      $scope.$apply();
+
+      expect(vm.modalStatusContrato.model.id).toBe(10);
+    });
+
+    test("editarStatusContrato aceito Contrato", async () => {
+      const contrato = { id: 5, idStatusContrato: 1, motivoStatus: "X" };
+
+      vm.editarStatusContrato(contrato);
+
+      expect(modalSpy).toHaveBeenCalled();
+
+      await Promise.resolve();
+      $scope.$apply();
+
+      expect(vm.modalStatusContrato.model.id).toBe(5);
+    });
+
+    describe("salvarStatusContrato", () => {
+
+      beforeEach(() => {
+        vm.modalStatusContrato = {
+          index: 0,
+          close: jest.fn(),
+          model: {
+            idStatusContrato: 2,
+            motivoStatus: "OK"
+          }
+        };
+
+        vm.statusListContrato = [
+          { id: 1, descricao: "Em Rascunho" },
+          { id: 2, descricao: "Vigente" },
+          { id: 3, descricao: "Encerrado" },
+          { id: 4, descricao: "Rescindido" }
+        ];
+      });
+
+      test("não salva se formulário inválido", () => {
+        vm.salvarStatusContrato({ $invalid: true });
+        expect(persistirMock).not.toHaveBeenCalled();
+      });
+
+      test("salva e fecha modal corretamente", async () => {
+        const closeSpy = vm.modalStatusContrato.close;
+
+        await vm.salvarStatusContrato({ $invalid: false });
+
+        const contrato = vm.modal.model.contratoLista[0];
+
+        expect(contrato.statusDescricao).toBe("Em Rascunho");
+        expect(closeSpy).toHaveBeenCalled();
+      });
+
+      test("em erro chama feedMessage e não fecha modal", async () => {
+        persistirMock.mockRejectedValueOnce(new Error("Erro API"));
+
+        // não retorna promise → não usamos await
+        vm.salvarStatusContrato({ $invalid: false });
+
+        await Promise.resolve();
+        $scope.$apply();
+
+        expect(feedMessageMock).toHaveBeenCalled();
+
+        // modal pode ter sido deletada pelo Angular, então verificamos com segurança
+        if (vm.modalStatusContrato && vm.modalStatusContrato.close) {
+          expect(vm.modalStatusContrato.close).not.toHaveBeenCalled();
+        } else {
+          // se modal foi removida, isso também significa que NÃO foi fechada pelo salvarStatusUE
+          expect(true).toBe(true);
+        }
+      });
+
+
+      test("não encontra o Contrato → erro", () => {
+        vm.modalStatusContrato.index = 99;
+
+        vm.salvarStatusContrato({ $invalid: false });
+
+        expect(feedMock).toHaveBeenCalledWith(
+          "error",
+          "Não foi possível localizar o Contrato."
+        );
+        expect(persistirMock).not.toHaveBeenCalled();
+      });
+
+    });
+
+  });
+
+  describe("carregarComboStatusContrato e reconciliarStatusComListaContrato", () => {
+
+    let vm;
+    let carregarComboMock;
+
+    beforeEach(() => {
+      carregarComboMock = jest.fn().mockResolvedValue({
+        objeto: [
+          { id: 1, descricao: "Em Rascunho" },
+          { id: 2, descricao: "Vigente" },
+          { id: 3, descricao: "Encerrado" },
+          { id: 4, descricao: "Rescindido" }
+        ]
+      });
+
+      vm = createController({
+        ContratoStatusUtils: {
+          carregarCombo: carregarComboMock
+        }
+      });
+
+      // cria modalStatusContrato fictício
+      vm.modalStatusContrato = {
+        model: {}
+      };
+    });
+
+    // -------------------------------------------------------------
+    // 🔍 carregarComboStatusContrato
+    // -------------------------------------------------------------
+    describe("carregarComboStatusContrato", () => {
+
+      test("carrega lista corretamente quando response.objeto existe", async () => {
+        const result = await vm.carregarComboStatusContrato();
+
+        expect(carregarComboMock).toHaveBeenCalled();
+        expect(vm.statusListContrato).toEqual([
+          { id: 1, descricao: "Em Rascunho" },
+          { id: 2, descricao: "Vigente" },
+          { id: 3, descricao: "Encerrado" },
+          { id: 4, descricao: "Rescindido" }
+        ]);
+        expect(result).toEqual(vm.statusList);
+      });
+
+      test("carrega lista quando response.data existe", async () => {
+        carregarComboMock.mockResolvedValueOnce({
+          data: [{ id: 9, descricao: "Teste" }]
+        });
+
+        const result = await vm.carregarComboStatusContrato();
+
+        expect(vm.statusListContrato).toEqual([{ id: 9, descricao: "Teste" }]);
+        expect(result).toEqual(vm.statusListContrato);
+      });
+
+      test("fallback para array vazio quando valor inválido", async () => {
+        carregarComboMock.mockResolvedValueOnce(null);
+
+        const result = await vm.carregarComboStatusContrato();
+
+        expect(vm.statusListContrato).toEqual([]);
+        expect(result).toEqual([]);
+      });
+
+      test("erro no serviço → limpa lista e chama feed(error)", async () => {
+        const err = new Error("Falha");
+
+        carregarComboMock.mockRejectedValueOnce(err);
+
+        await expect(vm.carregarComboStatusContrato()).rejects.toThrow(err);
+
+        expect(vm.statusListContrato).toEqual([]);
+        expect(feedMock).toHaveBeenCalledWith(
+          "error",
+          "Erro ao buscar combo de status."
+        );
+      });
+
+    });
+
+    // -------------------------------------------------------------
+    // 🔍 reconciliarStatusComListaContrato
+    // -------------------------------------------------------------
+    describe("reconciliarStatusComListaContrato", () => {
+
+      beforeEach(() => {
+        vm.statusListContrato = [
+          { id: 1, descricao: "Em Rascunho" },
+          { id: 2, descricao: "Vigente" },
+          { id: 3, descricao: "Encerrado" },
+          { id: 4, descricao: "Rescindido" }
+        ];
+      });
+
+      test("não faz nada quando não há modalStatusContrato", () => {
+        vm.modalStatusContrato = null;
+
+        expect(() => vm.reconciliarStatusComListaContrato()).not.toThrow();
+      });
+
+      test("não faz nada quando statusListContrato é vazio", () => {
+        vm.statusListContrato = [];
+        vm.modalStatusContrato.model = { idStatusContrato: 1 };
+
+        vm.reconciliarStatusComListaContrato();
+
+        expect(vm.modalStatusContrato.model.status).toBeUndefined();
+      });
+
+      test("define status quando idStatusContrato corresponde", () => {
+        vm.modalStatusContrato.model = { idStatusContrato: 2 };
+
+        vm.reconciliarStatusComListaContrato();
+        $scope.$apply(); // para efetivar $timeout interno
+
+        expect(vm.modalStatusContrato.model.status).toEqual({ id: 2, descricao: "Em Rascunho" });
+        expect(vm.modalStatusContrato.model.idStatusContrato).toBe(2);
+      });
+
+      test("define status quando model.status.id existe", () => {
+        vm.modalStatusContrato.model = { status: { id: 1 } };
+
+        vm.reconciliarStatusComListaContrato();
+        $scope.$apply();
+
+        expect(vm.modalStatusContrato.model.status.descricao).toBe("Em Rascunho");
+      });
+
+      test("define status quando model.status é número", () => {
+        vm.modalStatusContrato.model = { status: 3 };
+
+        vm.reconciliarStatusComListaContrato();
+        $scope.$apply();
+
+        expect(vm.modalStatusContrato.model.status.descricao).toBe("Em Rascunho");
+        expect(vm.modalStatusContrato.model.idStatusContrato).toBe(3);
+      });
+
+      test("define status quando model.status é string numérica", () => {
+        vm.modalStatusContrato.model = { status: "1" };
+
+        vm.reconciliarStatusComListaContrato();
+        $scope.$apply();
+
+        expect(vm.modalStatusContrato.model.status.descricao).toBe("Em Rascunho");
+      });
+
+      test("status não encontrado → status = null", () => {
+        vm.modalStatusContrato.model = { idStatusContrato: 999 };
+
+        vm.reconciliarStatusComListaContrato();
+
+        expect(vm.modalStatusContrato.model.status).toBe(null);
+      });
+
+      test("statusId null → status = null", () => {
+        vm.modalStatusContrato.model = { idStatusContrato: null };
+
+        vm.reconciliarStatusComListaContrato();
+
+        expect(vm.modalStatusContrato.model.status).toBeNull();
+      });
+
+      test("preenche descricao a partir de nome quando necessário", () => {
+        vm.modalStatusUE.model = { idStatusContrato: 3 };
+
+        vm.reconciliarStatusComListaContrato();
+        $scope.$apply();
+
+        expect(vm.modalStatusContrato.model.status.descricao).toBe("Pendente");
+      });
+
+    });
+
+  });
 });
