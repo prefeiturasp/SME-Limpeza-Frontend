@@ -20,14 +20,54 @@
       var url = base + '/atualizarStatusContrato';
       console.log('[ContratoStatusUtils] POST', url);
 
-      let idContrato = data.id;
-      let idStatusContrato = data.idStatusContrato;
-      let motivoStatusContrato = data.motivoStatusContrato;
+      var dados = {
+        idContrato: data.id,
+        idStatusContrato: data.idStatusContrato,
+        motivoStatusContrato: data.motivoStatusContrato
+      };
+      
+      return $http.post(url, dados).then(function (response) {
+        return response.data;
+      });
+    };
+
+    this.buscaHistoricoStatusContrato = function (idContrato) {
+      var url = base + '/historicoStatusContrato';
+      console.log('[ContratoHistoricoStatusUtils] POST', url);
+     
+      var dados = {
+        idContrato: idContrato
+      };
+      
+      return $http.post(url, dados).then(function (response) {
+        return response.data;
+      });
+    };
+
+
+    this.buscarIdUsuPorEmail = function (emailUsu) {
+      var url = base + '/buscarIdUsuPorEmail';
+      console.log('[BuscarIdUsuPorEmailUtils] POST', url);
+
+       var dados = {
+        emailUsu: emailUsu
+      };
+
+      return $http.post(url, dados).then(function (response) {
+        return response.data;
+      });
+    };
+
+    this.salvaHistoricoStatusContrato = function (data) {
+      var url = base + '/salvaHistoricoStatusContrato';
+      console.log('[HistoricoStatusContratoUtils] POST', url);
 
       var dados = {
-        idContrato: idContrato,
-        idStatusContrato: idStatusContrato,
-        motivoStatusContrato: motivoStatusContrato
+        idContrato: data.idContrato,
+        statusAntigo: data.statusAntigo,
+        statusNovo: data.statusNovo,
+        motivoStatus: data.motivoStatus,
+        idUsu: data.idUsu
       };
       
       return $http.post(url, dados).then(function (response) {
