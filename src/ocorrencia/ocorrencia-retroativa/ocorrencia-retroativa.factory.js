@@ -115,6 +115,7 @@
       
       var url = base + '/buscaOcorrenciaRetroativaAbertaUE';
 
+      return $http.post(url, idsUnidadeEscolarList).then(function (response) {
         return response.data;
       });
 
