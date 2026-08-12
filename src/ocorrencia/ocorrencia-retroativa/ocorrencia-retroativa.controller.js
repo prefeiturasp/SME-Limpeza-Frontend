@@ -24,6 +24,7 @@
 
     vm.recarregarTabela = recarregarTabela;
     vm.abrirModalOcorrenciaRetroativa = abrirModalOcorrenciaRetroativa;
+    vm.fecharModalOcorrenciaRetroativa = fecharModalOcorrenciaRetroativa;
     vm.abrirModalDetalhesOcorrenciaRetroativa = abrirModalDetalhesOcorrenciaRetroativa;
     vm.fechaModalDetalhesOcorrenciaRetroativa = fechaModalDetalhesOcorrenciaRetroativa;
 
