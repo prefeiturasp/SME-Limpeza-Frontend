@@ -83,7 +83,6 @@
         }
         function error(response) {
           controller.feedMessage(response);
-          console.log(response.data);
         }
       }
 
