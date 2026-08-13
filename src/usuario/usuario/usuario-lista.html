@@ -93,6 +93,23 @@
                 </select>
               </div>
             </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2" ng-if="usuario.usuarioOrigem.codigo === 'sme'">
+              <div class="form-control">
+                <label for="contrato" class="dois-pontos">Contrato</label>
+                <ui-select id="contrato" ng-model="vm.filtros.contrato" multiple>
+                  <ui-select-match placeholder="Todos">
+                    {{$item.codigo}} - {{$item.descricao}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="contrato in vm.contratoLista | filter: $select.search">
+                    <span class="mb-0 d-block" ng-bind-html="contrato.descricao | highlight: $select.search"></span>
+                    <small class="my-2">Código:</small>
+                    <small class="my-2" ng-bind-html="contrato.codigo | highlight: $select.search"></small>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            
           </div>
           <div class="row mt-2">
             <div class="col-4">
