@@ -203,8 +203,16 @@
         criarColunasTabela();
 
         function ajax(data, callback, settings) {
+          
+          vm.filtros.idContratoList = null;
 
-          dataservice.tabela(tabela.criarParametros(data, vm.filtros)).then(success).catch(error);
+          if(vm.filtros.contrato != null) {
+            vm.filtros.idContratoList = vm.filtros.contrato.map(c => c.id);
+          }
+
+          let params = tabela.criarParametros(data, vm.filtros);
+
+          dataservice.tabela(params).then(success).catch(error);
 
           function success(response) {
             callback(controller.lerRetornoDatatable(response));
