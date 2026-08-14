@@ -10,7 +10,7 @@
 		/* jshint validthis: true */
 		var vm = this;
 		
-		vm.filtros = {};
+		vm.filtros = { dreContrato: null };
 		vm.instancia = {};
 		vm.tabela = {};
 
@@ -29,6 +29,7 @@
 			montarTabelaUsuario();
 			carregaComboUsuarioOrigem();
 			carregaComboUsuarioStatus();
+			carregaComboContratoDre();
 		}
 		
 		function montarTabelaUsuario() {
@@ -42,7 +43,7 @@
 
 			function criarColunasTabelaUsuario() {
 				let colunas = [
-					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
+					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {						
 						return `<div class="py-3">
 									<h5>${data.nome}</h5>
 									<small>${data.email || '-'}</small>
@@ -69,6 +70,15 @@
 				}
 
 				colunas.push(
+					{data: '', title: 'Dre/Contrato', width: 20, cssClass: 'text-left', renderWith: (v1, v2, data) => {
+						if (data.contratoCodigo) {
+							return `<div class="py-3">
+									<h5>${data.contratoDescricao}</h5>
+									<small>${data.contratoCodigo}</small>
+								</div>`;
+						}
+						return '-';
+					}},
 					{data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
 						return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
 					}},
@@ -135,11 +145,27 @@
 
 			UsuarioStatusUtils.carregarCombo().then(success).catch(error);
 			function success(response) {
+				vm.filtros.idUsuarioStatus = 1;
 				vm.usuarioStatusList = response.objeto;
 			}
 			function error(response) {
 				vm.usuarioStatusList = [];
 				controller.feed('error', 'Houve um erro ao carregar a relação de status.');
+			}
+
+		}
+
+		function carregaComboContratoDre() {
+
+			ContratoUtils.carregarCombo().then(success).catch(error);
+
+			function success(response) {
+				vm.contratoLista = response.objeto;
+			}
+
+			function error(response) {
+				vm.contratoLista = [];
+				controller.feed('error', 'Erro ao buscar combo de contratos.');
 			}
 
 		}
