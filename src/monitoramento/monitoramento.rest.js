@@ -13,6 +13,12 @@
 		let service = new RestUtils(ConfigRest.monitoramento);
 		service.tabelaDatasAgendamentoManual = tabelaDatasAgendamentoManual;
 		service.verificaSeDataEferiado = verificaSeDataEferiado;
+		service.comboUePorIdContrato = comboUePorIdContrato;
+		service.comboPrestadorServicoPorIdContrato = comboPrestadorServicoPorIdContrato;
+		service.comboContratoPorIdPrestadorServico = comboContratoPorIdPrestadorServico;
+		service.comboUePorIdPrestadorServico = comboUePorIdPrestadorServico;
+		service.comboContratoPorIdUe = comboContratoPorIdUe;
+		service.comboPrestadorServicoPorIdUe = comboPrestadorServicoPorIdUe;
 
 		return service;
 
@@ -22,6 +28,30 @@
 
 		function verificaSeDataEferiado(idUnidadeEscolar, data) {
 			return $http.post(service.url + '/verificaSeDataEferiado', { idUnidadeEscolar: idUnidadeEscolar, data: data });
+		}
+
+		function comboUePorIdContrato(idContrato){
+			return $http.post(service.url + '/comboUePorIdContrato', {idContrato: idContrato});
+		}	
+
+		function comboPrestadorServicoPorIdContrato(idContrato){
+			return $http.post(service.url + '/comboPrestadorServicoPorIdContrato', {idContrato: idContrato});
+		}
+
+		function comboContratoPorIdPrestadorServico(idPrestadorServico){
+			return $http.post(service.url + '/comboContratoPorIdPrestadorServico', {idPrestadorServico: idPrestadorServico});
+		}
+
+		function comboUePorIdPrestadorServico(idPrestadorServico){
+			return $http.post(service.url + '/comboUePorIdPrestadorServico', {idPrestadorServico: idPrestadorServico});
+		}
+
+		function comboContratoPorIdUe(idUe) {
+			return $http.post(service.url + '/comboContratoPorIdUe', {idUe: idUe});
+		}
+
+		function comboPrestadorServicoPorIdUe(idUe) {
+			return $http.post(service.url + '/comboPrestadorServicoPorIdUe', {idUe: idUe});
 		}
 	}
 	
