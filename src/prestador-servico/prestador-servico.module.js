@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular.module('app.prestador-servico', [
-
+		'app.core'
 	]);
 
 })();
