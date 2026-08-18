@@ -7,15 +7,16 @@
 	.controller('UsuarioController', UsuarioController);
 	
 	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
-		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
+		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils', 'moment'];
 	
 	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
-		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, PrestadorServicoUtils, ContratoUtils, UnidadeEscolarUtils) {
+		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, PrestadorServicoUtils, ContratoUtils, UnidadeEscolarUtils, moment) {
 		/* jshint validthis: true */
 
 		var vm = this;
 		
 		vm.filtros = {};
+		vm.filtros.idUsuarioStatus = 1;
 		vm.instancia = {};
 		vm.tabela = {};
 
@@ -26,6 +27,7 @@
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
 		vm.recarregarTabelaUsuario = recarregarTabelaUsuario;
 		vm.irParaImportacaoUsuario = irParaImportacaoUsuario;
+		vm.exportar = exportar;
 		
 		init();
 		
@@ -313,6 +315,25 @@
 			$rootScope.$evalAsync(() => {
 				$location.path('usuario/importar');
 			});
+		}
+
+		function exportar() {
+			const filtros = angular.copy(vm.filtros);
+			if (filtros.idOrigemDetalhe && filtros.idOrigemDetalhe.id) {
+				filtros.idOrigemDetalhe = { id: filtros.idOrigemDetalhe.id };
+			}
+			dataservice.exportar({ filters: filtros }).then(success).catch(error);
+
+			function success(response) {
+				const arquivo = controller.ler(response, 'data');
+				if (arquivo) {
+					controller.downloadArquivo(arquivo);
+				}
+			}
+
+			function error(response) {
+				controller.feed('error', 'Houve um erro ao exportar a lista de usuários.');
+			}
 		}
 
 	}

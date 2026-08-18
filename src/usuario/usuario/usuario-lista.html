@@ -8,6 +8,10 @@
           Importar
           <i class="icon-cloud-upload ml-1"></i>
         </button>
+        <button type="button" class="btn btn-outline-info btn-sm" ng-click="vm.exportar()">
+          Exportar
+          <i class="icon-share-alt ml-1"></i>
+        </button>
         <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModalUsuario()">
           Adicionar
           <i class="icon-plus ml-1"></i>
@@ -76,6 +80,17 @@
                       ng-bind-html="(vm.origemSelecionada.codigo == 'ps' ? (origemDetalhe.cnpj | brCnpj) : (origemDetalhe.codigo + ' - ' + origemDetalhe.tipo)) | highlight: $select.search"></small>
                   </ui-select-choices>
                 </ui-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2">
+               <div class="form-control">
+                <label class="dois-pontos" for="status">Situação</label>
+                <select class="form-control" name="status" id="status" ng-model="vm.filtros.idUsuarioStatus"
+                  ng-options="status.id as status.descricao for status in vm.usuarioStatusList">
+                  <option value="">Todos</option>
+                </select>
               </div>
             </div>
           </div>
