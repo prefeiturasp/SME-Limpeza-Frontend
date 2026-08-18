@@ -75,6 +75,8 @@
 
     vm.retornaDataFormatada = retornaDataFormatada;
 
+    vm.exportarUEContrato = exportarUEContrato;
+
     iniciar();
 
     function iniciar() {
@@ -1167,6 +1169,23 @@
           controller.feed('error', 'Erro ao salvar o histórico de status da unidade.');
         }
       }
+    }
+
+    function exportarUEContrato(){
+
+      dataservice.exportarUEContrato(vm.modal.model.id).then(success).catch(error);
+
+      function success(response) { 
+        const arquivo = controller.ler(response, 'data');
+        if (arquivo) {
+          controller.downloadArquivo(arquivo);
+        }
+      }
+
+      function error(response) {
+        controller.feed('error', 'Houve um erro ao exportar as Unidades Escolares do contrato.');
+      }
+       
     }
 
 
