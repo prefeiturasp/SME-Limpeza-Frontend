@@ -14,8 +14,9 @@
       buscar: buscar,
       buscarVencimentoProximo: buscarVencimentoProximo,
       carregarCombo: carregarCombo,
+      carregarComboEquipe: carregarComboEquipe,
       carregarComboTodos: carregarComboTodos,
-      carregarComboEquipe: carregarComboEquipe
+      carregarComboContratoPs: carregarComboContratoPs
     };
 
     return service;
@@ -78,6 +79,23 @@
 
     function carregarComboEquipe(data) {
       return dataservice.carregarComboEquipe(data);
+    }
+
+    function carregarComboContratoPs(idPrestadorServico) {
+
+      return dataservice
+      .carregarComboContratoPs(idPrestadorServico)
+      .then(success).catch(error);
+
+      function success(response) {
+        return utils
+        .criarRetornoPromise(true, utils.ler(response, 'data'));
+      }
+
+      function error(response) {
+        return utils.criarRetornoPromise(false, []);
+      }
+
     }
 
   }

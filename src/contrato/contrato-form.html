@@ -109,7 +109,7 @@
              <div class="row">
               <div class="col-6">
                 <div class="form-group">
-                  <label for="modelo" class="obrigatorio">Limite de Dias Excepicionais</label>
+                  <label for="modelo" class="obrigatorio">Limite de Dias Excepicionais - Anual</label>
                   <input type="number" class="form-control" id="limiteDiasExcepcionais" name="limiteDiasExcepcionais" ng-model="vm.modal.model.limiteDiasExcepcionais">
                 </div>
               </div>
@@ -206,6 +206,9 @@
           <div class="card-body">
             <h4 class="card-title">Unidades Escolares
               <div class="text-right">
+                 <button type="button" class="btn btn-outline-warning btn-sm" ng-click="vm.exportarUEContrato()">
+                  Exportar UE's
+                </button>
                 <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.abrirModalImportacaoUE()">
                   Importar UE's
                 </button>

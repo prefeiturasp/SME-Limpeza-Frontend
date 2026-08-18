@@ -3,12 +3,16 @@
 
     <h4 class="card-title m-4">USUÁRIOS
       <div class="text-right">
-        <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.irParaImportacao()"
+        <button type="button" class="btn btn-outline-primary btn-sm" ng-click="vm.irParaImportacaoUsuario()"
           ng-if="usuario.usuarioOrigem.codigo !== 'ps'">
           Importar
           <i class="icon-cloud-upload ml-1"></i>
         </button>
-        <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModal()">
+        <button type="button" class="btn btn-outline-info btn-sm" ng-click="vm.exportar()">
+          Exportar
+          <i class="icon-share-alt ml-1"></i>
+        </button>
+        <button type="button" class="btn btn-success btn-sm" ng-click="vm.abrirModalUsuario()">
           Adicionar
           <i class="icon-plus ml-1"></i>
         </button>
@@ -79,10 +83,21 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 my-2">
+               <div class="form-control">
+                <label class="dois-pontos" for="status">Situação</label>
+                <select class="form-control" name="status" id="status" ng-model="vm.filtros.idUsuarioStatus"
+                  ng-options="status.id as status.descricao for status in vm.usuarioStatusList">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+            </div>
+          </div>
           <div class="row mt-2">
             <div class="col-4">
               <button type="button" class="btn btn-primary" ng-disabled="formFiltro.$invalid"
-                ng-click="vm.recarregarTabela()">Filtrar</button>
+                ng-click="vm.recarregarTabelaUsuario()">Filtrar</button>
             </div>
           </div>
         </form>

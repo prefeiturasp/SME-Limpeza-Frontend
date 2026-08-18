@@ -14,6 +14,9 @@
 
     service.buscarVencimentoProximo = buscarVencimentoProximo;
     service.carregarComboEquipe = carregarComboEquipe;
+    service.exportarUEContrato = exportarUEContrato;
+    service.carregarComboPs = carregarComboPs;
+    service.carregarComboContratoPs = carregarComboContratoPs;
 
     service.urlImportacaoUE = service.url + '/carregar-arquivo-unidade-escolar';
     service.urlImportacaoCargo = service.url + '/carregar-arquivo-cargo';
@@ -27,6 +30,18 @@
 
     function carregarComboEquipe(data) {
       return $http.get(service.url + '/combo-equipe?' + $httpParamSerializer(data));
+    }
+
+    function exportarUEContrato(idContrato){
+      return $http.post(service.url + '/exportar-ue-contrato', {idContrato:idContrato});
+    }
+
+    function carregarComboPs(idPrestadorServico) {
+      return $http.get(service.url + '/combo-ps/' + idPrestadorServico);
+    }
+
+    function carregarComboContratoPs(idPrestadorServico) {
+      return $http.get(service.url + '/combo-contrato-ps/' + idPrestadorServico);
     }
 
   }

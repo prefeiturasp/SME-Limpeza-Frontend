@@ -298,17 +298,17 @@
       }
     }
 
-     function exibeEscondeBtn() {
+    function exibeEscondeBtn() {
        let imgBtnSalvar = $("#imgSalvarOcorrencia, #btnSalvarOcorrencia");
        imgBtnSalvar.toggle();
     }
 
-        function salvar(formulario) {
+    function salvar(formulario) {
 
-      exibeEscondeBtn();
+       exibeEscondeBtn();
 
       if (formulario.$invalid) {
-        exibeEscondeBtn();
+         exibeEscondeBtn();
         return;
       }
 
@@ -316,7 +316,7 @@
       let retroativa = localStorage.getItem('OcorrenciaRetroativa');
 
       if(!retornoVerificacao){
-        exibeEscondeBtn();
+         exibeEscondeBtn();
       } else {
         if (retroativa) {
           let idOcorrenciaRetroativa = buscaIdOcorrenciaRetroativaLocalStorage();
@@ -337,14 +337,14 @@
           deletaOcorrenciaRetroativaLocalStorage();
           $rootScope.verificaDatasOcorrenciasRetroativas();
         }
-        exibeEscondeBtn();
-        controller.feed('success', 'Ocorrência salva com sucesso.');
-        fecharModal();
+         exibeEscondeBtn();
+         controller.feed('success', 'Ocorrência salva com sucesso.');
+         fecharModal();
       }
 
       function error(response) {
-        exibeEscondeBtn();
-        controller.feedMessage(response);
+         exibeEscondeBtn();
+         controller.feedMessage(response);
       }
 
     }

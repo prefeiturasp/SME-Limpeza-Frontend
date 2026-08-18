@@ -1,10 +1,10 @@
-<form novalidate name="formulario" ng-submit="vm.salvar(formulario)" autocomplete="off" autocorrect="off"
+<form novalidate name="formulario" ng-submit="vm.salvarUsuario(formulario)" autocomplete="off" autocorrect="off"
   autocapitalize="off" spellcheck="false">
 
   <div class="modal-header">
     <h5 class="modal-title" ng-if="vm.modal.isEditar">EDITAR USUÁRIO</h5>
     <h5 class="modal-title" ng-if="!vm.modal.isEditar">CADASTRAR USUÁRIO</h5>
-    <button type="button" class="close" ng-click="vm.fecharModal()">
+    <button type="button" class="close" ng-click="vm.fecharModalUsuario()">
       <span aria-hidden="true">×</span>
     </button>
   </div>

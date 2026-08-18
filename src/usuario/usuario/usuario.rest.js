@@ -14,6 +14,9 @@
 		service.urlImportacao = service.url + '/importar';
 		service.buscarMenu = buscarMenu;
 		service.alterarSenha = alterarSenha;
+		service.verificaVinculoContrato = verificaVinculoContrato;
+		service.exportar = exportar;
+		service.importar = importar;
 
 		return service;
 
@@ -24,6 +27,18 @@
 		function alterarSenha(dados) {
             return $http.post(service.url + '/alterar-senha', dados);
         }
+
+		function verificaVinculoContrato(email) {
+			return $http.get(service.url + '/verifica-vinculo-contrato/' + email);
+		}
+
+		function importar(dados) {
+			return $http.post(service.url + '/importar', dados);
+		}
+
+		function exportar(filtros) {
+			return $http.get(service.url + '/exportar', { params: filtros });
+		}
 
 	}
 	
