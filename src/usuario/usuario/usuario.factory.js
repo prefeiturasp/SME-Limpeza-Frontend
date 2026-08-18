@@ -11,7 +11,8 @@
 
 		var service = {
 			buscarMenu: buscarMenu,
-			alterarSenha: alterarSenha
+			alterarSenha: alterarSenha,
+			verificaVinculoContrato: verificaVinculoContrato
 		};
 
 		return service;
@@ -33,6 +34,10 @@
 		function alterarSenha(dados) {
             return dataservice.alterarSenha(dados);
         }
+
+		function verificaVinculoContrato(email) {
+			return dataservice.verificaVinculoContrato(email);
+		}
 		
 	}
 	

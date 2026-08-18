@@ -14,6 +14,7 @@
 		service.urlImportacao = service.url + '/importar';
 		service.buscarMenu = buscarMenu;
 		service.alterarSenha = alterarSenha;
+		service.verificaVinculoContrato = verificaVinculoContrato;
 
 		return service;
 
@@ -24,6 +25,10 @@
 		function alterarSenha(dados) {
             return $http.post(service.url + '/alterar-senha', dados);
         }
+
+		function verificaVinculoContrato(email) {
+			return $http.get(service.url + '/verifica-vinculo-contrato/' + email);
+		}
 
 	}
 	

@@ -51,11 +51,13 @@
       formatarPrestadorServico: formatarPrestadorServico,
       formatarUnidadeEscolar: formatarUnidadeEscolar,
       evtRemover: evtRemover,
+      evtDesativar: evtDesativar,
       booleanParaBadgeAtivoEncerrado: booleanParaBadgeAtivoEncerrado,
       formatarContrato: formatarContrato,
       formatarStatusContrato: formatarStatusContrato,
       formatarStatusContratoRetroativo: formatarStatusContratoRetroativo,
-      criarBotoesTabOcorrenciaRetroativa: criarBotoesTabOcorrenciaRetroativa
+      criarBotoesTabOcorrenciaRetroativa: criarBotoesTabOcorrenciaRetroativa,
+      criarBotaoPadraoListaUsuarios: criarBotaoPadraoListaUsuarios
     };
 
     return service;
@@ -224,6 +226,11 @@
           carregarObjeto(aData);
         });
 
+        $('.desativar', nRow).off('click');
+        $('.desativar', nRow).on('click', function () {
+          evtDesativar(aData, remover);
+        });
+
         if (newCallback) {
           /*jshint validthis: true */
           newCallback.apply(this, arguments);
@@ -246,6 +253,25 @@
         closeOnConfirm: true,
       }, function (isConfirm) { if (isConfirm) remover(aData.id); });
 
+    }
+
+    function evtDesativar(aData, desativar) {
+
+      if(aData.usuarioStatus.descricao == 'Ativo'){
+        SweetAlert.swal({
+          title: "Tem certeza?",
+          text: "Você irá desativar este usuário!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#fc7b02',
+          cancelButtonColor: '#ff4081',
+          confirmButtonText: "Desativar",
+          cancelButtonText: 'Cancelar',
+          closeOnConfirm: true,
+        }, function (isConfirm) { if (isConfirm) desativar(aData.id); });
+      } else {
+        controller.feed('warning', 'Este usuário já está desativado!');
+      }
     }
 
     function recarregarDados(dtInstance) {
@@ -331,6 +357,10 @@
               <button class="btn btn-outline-danger btn-sm remover" title="Remover">
                 <i class="icon-trash"></i>
               </button>`;
+    }
+
+    function criarBotaoPadraoListaUsuarios() {
+      return `<button class="mr-1 btn btn-outline-primary btn-sm editar"><i class="icon-pencil"></i></button><button class="btn btn-outline-warning btn-sm desativar"><i class="icon-ban"></i></button>`;
     }
 
   }

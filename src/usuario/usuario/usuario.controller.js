@@ -10,7 +10,7 @@
 		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils'];
 	
 	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
-		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, UnidadeEscolarUtils, PrestadorServicoUtils, ContratoUtils) {
+		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, PrestadorServicoUtils, ContratoUtils, UnidadeEscolarUtils) {
 		/* jshint validthis: true */
 
 		var vm = this;
@@ -19,40 +19,40 @@
 		vm.instancia = {};
 		vm.tabela = {};
 
-		vm.abrirModal = abrirModal;
-		vm.fecharModal = fecharModal;
-		vm.salvar = salvar;
+		vm.abrirModalUsuario = abrirModalUsuario;
+		vm.fecharModalUsuario = fecharModalUsuario;
+		vm.salvarUsuario = salvarUsuario;
 
 		vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
-		vm.recarregarTabela = recarregarTabela;
-		vm.irParaImportacao = irParaImportacao;
+		vm.recarregarTabelaUsuario = recarregarTabelaUsuario;
+		vm.irParaImportacaoUsuario = irParaImportacaoUsuario;
 		
-		iniciar();
+		init();
 		
-		function iniciar() {
-			montarTabela();
-			carregarComboUsuarioOrigem();
-			carregarComboUsuarioStatus();
+		function init() {
+			montarTabelaUsuario();
+			carregaComboUsuarioOrigem();
+			carregaComboUsuarioStatus();
 		}
 		
-		function montarTabela() {
+		function montarTabelaUsuario() {
 
-			criarOpcoesTabela();
+			criarOpcoesdaTabela();
 
-			function carregarObjeto(aData) {
+			function carregarObjetoDados(aData) {
 				dataservice.buscar(aData.id).then((response) => {
-					abrirModal(aData.id, controller.ler(response, 'data'));
+					abrirModalUsuario(aData.id, controller.ler(response, 'data'));
 				});
 			}
 
-			function criarColunasTabela() {
+			function criarColunasTabelaUsuario() {
 
 				let colunas = [
 					{data: '', title: 'Nome do Usuário', renderWith: (v1, v2, data) => {
 						return `
 							<div class="py-3">
-              	<h5>${data.nome}</h5>
-                <small>${data.email || '-'}</small>
+              					<h5>${data.nome}</h5>
+                				<small>${data.email || '-'}</small>
 							</div>
 						`;
 					}}
@@ -80,17 +80,17 @@
 					{data: 'usuarioStatus', title: 'Situação', renderWith: (usuarioStatus) => {
 						return `<div class="badge ${usuarioStatus.classeLabel}">${usuarioStatus.descricao}</div>`;
 					}},
-					{data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadrao}
+					{data: 'id', title: 'Ações', width: 15, cssClass: 'text-right', renderWith: tabela.criarBotaoPadraoListaUsuarios}
 				);
 
 				vm.tabela.colunas = tabela.adicionarColunas(colunas);
 
 			}
 
-			function criarOpcoesTabela() {
+			function criarOpcoesdaTabela() {
 
-				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, remover, 'data', carregarObjeto);
-				criarColunasTabela();
+				vm.tabela.opcoes = tabela.criarTabela(ajax, vm, desativar, 'data', carregarObjetoDados);
+				criarColunasTabelaUsuario();
 
 				function ajax(data, callback, settings) {
 
@@ -106,17 +106,17 @@
 
 				}
 
-				function remover(id) {
+				function desativar(id) {
 					
 					dataservice.remover(id).then(success).catch(error);
 
 					function success(response) {
-						controller.feed('success', 'Registro removido com sucesso.');
+						controller.feed('success', 'Usuário(a) desativado(a) com sucesso.');
 						tabela.recarregarDados(vm.instancia);
 					}
 
 					function error(response) {
-						controller.feed('error', 'Erro ao remover registro.');				
+						controller.feed('error', 'Erro ao desativar o usuário.');				
 					}
 
 				}
@@ -125,7 +125,7 @@
 
 		}
 
-		function carregarComboUsuarioOrigem() {
+		function carregaComboUsuarioOrigem() {
 
 			UsuarioOrigemUtils.carregarCombo().then(success).catch(error);
 
@@ -138,14 +138,13 @@
 			}
 
 			function error(err) {
-				console.log(err);
 				vm.usuarioOrigemList = [];
 				controller.feed('error', 'Houve um erro ao carregar a relação de origem.');
 			}
 
 		}
 
-		function carregarComboUsuarioStatus() {
+		function carregaComboUsuarioStatus() {
 
 			UsuarioStatusUtils.carregarCombo().then(success).catch(error);
 
@@ -164,8 +163,8 @@
 
 			vm.origemSelecionada = vm.usuarioOrigemList.find(origem => origem.id == (ehFiltro ? vm.filtros.idUsuarioOrigem : vm.modal.model.idUsuarioOrigem));
 			if(ehFiltro) vm.filtros.idOrigemDetalhe = null;
-			carregarComboUsuarioCargo(ehFiltro);
-			carregarComboOrigemDetalhe();
+			carregaComboUsuarioCargo(ehFiltro);
+			carregaComboOrigemDetalhe();
 
 			if(vm.modal) {
 				vm.modal.model.unidadeEscolarList = [];
@@ -174,7 +173,7 @@
 
 		}
 
-		function carregarComboUsuarioCargo(ehFiltro = false) {
+		function carregaComboUsuarioCargo(ehFiltro = false) {
 
 			const idUsuarioOrigem = angular.copy(ehFiltro ? vm.filtros.idUsuarioOrigem : vm.modal.model.idUsuarioOrigem);
 			if(!idUsuarioOrigem) {
@@ -194,7 +193,7 @@
 
 		}
 
-		function carregarComboOrigemDetalhe() {
+		function carregaComboOrigemDetalhe() {
 
 			switch(vm.origemSelecionada?.codigo) {
 				case 'dre'	: DiretoriaRegionalUtils.carregarComboTodos().then(success).catch(error); break;
@@ -216,7 +215,7 @@
 
 		}
 
-		function carregarComboUnidadeEscolar() {
+		function carregaComboUnidadeEscolar() {
 
 			UnidadeEscolarUtils.carregarComboDetalhadoTodos().then(success).catch(error);
 			
@@ -232,7 +231,7 @@
 
 		}
 
-		function carregarComboContrato() {
+		function carregaComboContrato() {
 
 			ContratoUtils.carregarComboTodos().then(success).catch(error);
 			
@@ -248,7 +247,7 @@
 
 		}
 
-		function salvar(formulario) {
+		function salvarUsuario(formulario) {
 
 			if(formulario.$invalid) {
 				return;
@@ -259,13 +258,21 @@
 			if(vm.modal.isEditar) {
 				dataservice.atualizar(vm.modal.model.id, vm.modal.model).then(success).catch(error);
 			} else {
-				dataservice.inserir(vm.modal.model).then(success).catch(error);
+				dataservice.verificaVinculoContrato(vm.modal.model.email).then((response) => {
+					const possuiVinculo = response.data.data.possuiVinculo;
+					if (possuiVinculo) {
+						controller.feed('warning', 'Este usuário já está vinculado a um contrato ativo e não pode ser inserido.');
+						return;
+					}
+				
+					dataservice.inserir(vm.modal.model).then(success).catch(error);
+				}).catch(error);
 			}
 
 			function success(response) {
 				controller.feed('success', 'Registro salvo com sucesso.');
 				tabela.recarregarDados(vm.instancia);
-				fecharModal();
+				fecharModalUsuario();
 			}
 
 			function error(response) {
@@ -274,7 +281,7 @@
 
 		}
 
-		function abrirModal(id, usuario) {
+		function abrirModalUsuario(id, usuario) {
 
 			vm.modal = $uibModal.open({
 				templateUrl: 'src/usuario/usuario/usuario-form.html?' + new Date(),
@@ -288,21 +295,21 @@
 			vm.modal.model.id = id;
 			vm.modal.isEditar = angular.isDefined(usuario);
 			evtChangeUsuarioOrigem();
-			carregarComboUnidadeEscolar();
-			carregarComboContrato();
+			carregaComboUnidadeEscolar();
+			carregaComboContrato();
 
 		}
 
-		function fecharModal() {
+		function fecharModalUsuario() {
 			vm.modal.close();
 			delete vm.modal;
 		}
 
-		function recarregarTabela() {
+		function recarregarTabelaUsuario() {
 			tabela.recarregarDados(vm.instancia);
 		}
 
-		function irParaImportacao() {
+		function irParaImportacaoUsuario() {
 			$rootScope.$evalAsync(() => {
 				$location.path('usuario/importar');
 			});
