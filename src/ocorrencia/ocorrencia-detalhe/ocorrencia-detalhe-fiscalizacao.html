@@ -8,7 +8,10 @@
             ng-if="!usuario.flagFiscal && !vm.ocorrencia.flagEncerrado">
             Ocorrência aberta, aguardando fiscal.
           </div>
-          <div class="alert alert-warning text-center text-bold" ng-if="vm.ocorrencia.flagEncerrado">
+          <div class="alert alert-warning text-center text-bold" ng-if="vm.ocorrencia.flagEncerramentoAutomatico">
+            Ocorrência fechada automaticamente pelo sistema em {{ vm.ocorrencia.dataHoraFinal | date:'dd/MM/yyyy HH:mm:ss'}}.
+          </div>
+          <div class="alert alert-warning text-center text-bold" ng-if="vm.ocorrencia.flagEncerrado && !vm.ocorrencia.flagEncerramentoAutomatico">
             Ocorrência encerrada pelo fiscal em {{ vm.ocorrencia.dataHoraFinal | date:'dd/MM/yyyy HH:mm:ss'}}.
           </div>
           <div class="alert alert-fill-danger text-center text-bold p-3"
