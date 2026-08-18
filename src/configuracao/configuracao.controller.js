@@ -245,7 +245,7 @@
 			}
 
 			function error(response) {
-				console.log(response);
+				controller.feed('error', 'Hove um erro ao salvar a lista de emails para notificações.');
 			}
 		}
 	}

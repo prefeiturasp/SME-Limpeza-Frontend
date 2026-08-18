@@ -44,7 +44,9 @@
 
     vm.irParaImportacao = irParaImportacao;
     vm.evtChangeUsuarioOrigem = evtChangeUsuarioOrigem;
-    
+    vm.salvarUsuario = salvar;
+    vm.fecharModalUsuario = fecharModal;
+
     iniciar();
 
     function iniciar() {
@@ -512,13 +514,15 @@
       dataservice.buscaStatusUePorId(idUe, idStatusUe).then(success).catch(error);
 
       function success(response){
-        vm.statusUe = response.data.data.descricao;
-        switch(vm.statusUe){
-          case 'Ativa': vm.tipoStatus = 'success'; break;
-          case 'Inativa': vm.tipoStatus = 'Warning'; break;
-          case 'Suspensa': vm.tipoStatus = 'primary'; break;
-          case 'Encerrada': vm.tipoStatus = 'danger'; break;
-          default: vm.tipoStatus = 'light text-black';
+        if(response.data.data){
+          vm.statusUe = response.data.data.descricao;
+          switch(vm.statusUe){
+            case 'Ativa': vm.tipoStatus = 'success'; break;
+            case 'Inativa': vm.tipoStatus = 'Warning'; break;
+            case 'Suspensa': vm.tipoStatus = 'primary'; break;
+            case 'Encerrada': vm.tipoStatus = 'danger'; break;
+            default: vm.tipoStatus = 'light text-black';
+          }
         }
       }
 
