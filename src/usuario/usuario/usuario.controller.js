@@ -7,7 +7,7 @@
 	.controller('UsuarioController', UsuarioController);
 	
 	UsuarioController.$inject = ['$rootScope', '$scope', '$location', 'controller', 'UsuarioRest', 'tabela', '$uibModal', 'UsuarioOrigemUtils', 
-		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'UnidadeEscolarUtils', 'PrestadorServicoUtils', 'ContratoUtils', 'moment'];
+		'UsuarioCargoUtils', 'UsuarioStatusUtils', 'DiretoriaRegionalUtils', 'PrestadorServicoUtils', 'ContratoUtils','UnidadeEscolarUtils', 'moment'];
 	
 	function UsuarioController($rootScope, $scope, $location, controller, dataservice, tabela, $uibModal, UsuarioOrigemUtils, 
 		UsuarioCargoUtils, UsuarioStatusUtils, DiretoriaRegionalUtils, PrestadorServicoUtils, ContratoUtils, UnidadeEscolarUtils, moment) {
@@ -297,9 +297,8 @@
 			vm.modal.model.id = id;
 			vm.modal.isEditar = angular.isDefined(usuario);
 			evtChangeUsuarioOrigem();
-			carregaComboUnidadeEscolar();
 			carregaComboContrato();
-
+			carregaComboUnidadeEscolar();
 		}
 
 		function fecharModalUsuario() {
