@@ -15,7 +15,7 @@
 			carregarCombo: carregarCombo,
 			carregarComboDRE: carregarComboDRE,
 			carregarComboTodos: carregarComboTodos,
-			carregarComboDetalhadoTodos: carregarComboDetalhadoTodos,
+			carregarComboDetalhadoTodos: carregarComboDetalhadoTodos
 		};
 
 		return service;
