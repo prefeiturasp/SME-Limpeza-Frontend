@@ -23,6 +23,13 @@
                   <tr class="text-center" ng-if="vm.historicoOcorrenciaList.length == 0">
                     <td class="text-center" colspan="4"> Não há histórico cadastrado </td>
                   </tr>
+                   <tr>
+                    <td class="text-center" colspan="4">Ocorrência cadastrada pelo Fiscal
+                      <span style="font-weight: 700;" >{{ vm.ocorrencia.nomeUsuarioFiscal }}</span>
+                      em: 
+                      <span style="font-weight: 700;" >{{ vm.ocorrencia.dataHoraCadastro | date:'dd/MM/yyyy - HH:mm' }}</span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
