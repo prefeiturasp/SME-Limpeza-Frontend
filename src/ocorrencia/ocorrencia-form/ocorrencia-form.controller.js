@@ -396,6 +396,18 @@
         return false;
       }
 
+      let qtdAusentes = 0;
+
+      vm.model.equipeList.forEach(element => {
+        if(element.quantidadeAusente > 0){
+          qtdAusentes += element.quantidadeAusente;
+        }
+      });
+
+      if (qtdAusentes < 1){
+        return false;
+      }
+
       return true;
 
     }
