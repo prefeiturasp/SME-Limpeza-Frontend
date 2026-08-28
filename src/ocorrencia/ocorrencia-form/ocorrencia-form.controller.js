@@ -396,16 +396,17 @@
         return false;
       }
 
-      let qtdAusentes = 0;
+      if((vm.model.equipeList) && vm.model.equipeList.length > 0){
+        let qtdAusentes = 0;
+        vm.model.equipeList.forEach(element => {
+          if(element.quantidadeAusente > 0){
+            qtdAusentes += element.quantidadeAusente;
+          }
+        });
 
-      vm.model.equipeList.forEach(element => {
-        if(element.quantidadeAusente > 0){
-          qtdAusentes += element.quantidadeAusente;
+        if (qtdAusentes < 1){
+          return false;
         }
-      });
-
-      if (qtdAusentes < 1){
-        return false;
       }
 
       return true;
