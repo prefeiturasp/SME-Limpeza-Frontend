@@ -150,7 +150,7 @@
                     <td class="text-left" ng-bind="e.quantidade"></td>
                     <td class="text-right pr-4">
                       <input type="number" id="presente-{{$index}}" name="presente-{{$index}}"
-                        class="form-control form-control-lg text-right text-bold" ng-model="e.quantidadeAusente" min="0"
+                        class="form-control form-control-lg text-right text-bold" ng-init="e.quantidadeAusente = 0" ng-model="e.quantidadeAusente" min="0"
                         step="1" max="{{e.quantidade}}" pattern="\d*" required>
                     </td>
                   </tr>
