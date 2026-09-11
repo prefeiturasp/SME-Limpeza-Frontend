@@ -37,12 +37,17 @@
       </div>
     </div>
 
-    <div class="card mt-4" ng-if="vm.usuariosImportados.length > 0">
+    <div class="card mt-4" ng-if="vm.usuariosImportados.length > 0 || vm.erroImportacaoHtml" id="tab-lista">
       <div class="card-body p-0">
         <h4 class="card-title mx-4 mt-4 mb-2">Resumo da Importação</h4>
         <p class="card-description mx-4 mt-0">Verifique abaixo o resultado da importação de cada registro do
           arquivo carregado.</p>
-        <table datatable="ng" dt-options="vm.dtOptions" class="table table-striped">
+
+        <div class="mx-4 mt-3 alert alert-danger" ng-if="vm.erroImportacaoHtml">
+          <div ng-bind-html="vm.erroImportacaoHtml"></div>
+        </div>
+
+        <table datatable="ng" dt-options="vm.dtOptions" class="table table-striped" ng-if="vm.usuariosImportados.length > 0">
           <thead>
             <tr>
               <th>Linha</th>
@@ -63,13 +68,13 @@
         </table>
 
         <div class="mt-4 d-flex justify-content-end">
-            <button class="btn btn-light mr-2" ng-click="vm.usuariosImportados = []">
+            <button class="btn btn-light mr-2" ng-click="vm.usuariosImportados = []; vm.erroImportacaoHtml = null; vm.podeConfirmar = true">
                 Cancelar
             </button>
-            <!-- Botão de Confirmação -->
             <button class="btn btn-success" 
                     ng-click="vm.confirmarImportacao()" 
-                    ng-disabled="vm.carregando">
+                    ng-disabled="vm.carregando"
+                    ng-if="vm.podeConfirmar">
                 <i class="icon-check"></i> Confirmar e Salvar Alterações
             </button>
         </div>
