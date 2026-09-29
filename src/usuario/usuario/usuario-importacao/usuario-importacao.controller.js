@@ -6,21 +6,22 @@
     .module('usuario.usuario-importacao')
     .controller('UsuarioImportacao', UsuarioImportacao);
 
-  UsuarioImportacao.$inject = ['$rootScope', '$scope', 'controller', 'UsuarioRest', 'BotaoUploadArquivoUtils', '$uibModal', 'DTOptionsBuilder', 'datatables', '$sce'];
+  UsuarioImportacao.$inject = ['$rootScope', '$scope', 'controller', 'UsuarioRest', 'BotaoUploadArquivoUtils', 'DTOptionsBuilder', 'datatables', '$sce'];
 
-  function UsuarioImportacao($rootScope, $scope, controller, dataservice, BotaoUploadArquivoUtils, $uibModal, DTOptionsBuilder, datatables, $sce) {
+  function UsuarioImportacao($rootScope, $scope, controller, dataservice, BotaoUploadArquivoUtils, DTOptionsBuilder, datatables, $sce) {
     /* jshint validthis: true */
 
     let vm = this;
 
     vm.usuariosImportados = [];
+    vm.erroImportacaoHtml = null;
+    vm.podeConfirmar = true;
 
     iniciar();
 
     function iniciar() {
       vm.uploadUtils = new BotaoUploadArquivoUtils(dataservice.urlImportacao);
       vm.uploader = vm.uploadUtils.uploader;
-
 
       vm.dtOptions = DTOptionsBuilder.newOptions()
         .withLanguage(datatables.ptbr)
@@ -36,80 +37,80 @@
     });
 
     async function processarResultadoImportacao(response) {
+      console.log('processarResultadoImportacao', response);
 
-      // Recupera erro de bloqueio salvo pela factory
+      vm.erroImportacaoHtml = null;
+      vm.podeConfirmar = true;
+
       let erroBloqueio = localStorage.getItem('erroImportacaoBloqueada');
       if (erroBloqueio) {
-        exibirModalErroImportacao(erroBloqueio);
-        localStorage.removeItem('erroImportacaoBloqueada');
+        exibirErroImportacao(erroBloqueio);
         vm.usuariosImportados = [];
+        vm.podeConfirmar = false;
+        localStorage.removeItem('erroImportacaoBloqueada');
         return;
       }
 
-      if (!response.status) {
+      if (response && response.msg && response.msg.includes('Importação bloqueada:')) {
+        exibirErroImportacao(response.msg);
+        vm.usuariosImportados = response.data || [];
+        vm.podeConfirmar = false;
+        return;
+      }
+
+      if (!response || !response.status) {
         controller.feed('error', 'Houve um erro ao processar a importação.');
         return;
       }
 
       controller.feed('success', 'Oba! A importação foi concluída com sucesso.');
-      vm.usuariosImportados = response.data;
+      vm.usuariosImportados = response.data || [];
 
+      const existeFalha = vm.usuariosImportados.some(usuario => usuario.classeResultado === 'danger');
+      if (existeFalha) {
+        vm.podeConfirmar = false;
+      }
     }
 
-    function exibirModalErroImportacao(conteudoHtml) {
-      $uibModal.open({
-        template: `
-          <div class="modal-header bg-danger text-white">
-            <h4 class="modal-title"><i class="icon-ban mr-2"></i> IMPORTAÇÃO BLOQUEADA</h4>
-            <button type="button" class="close text-white" ng-click="$dismiss()">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-warning mb-3">
-              Existem entidades ativas que ficariam sem usuários associados. 
-              A importação não pode prosseguir sem contemplar esses registros.
-            </div>
-            <div ng-bind-html="vm.corpo"></div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" ng-click="$close()">Fechar</button>
-          </div>
-        `,
-        controller: function() {
-          this.corpo = $sce.trustAsHtml(conteudoHtml);
-        },
-        controllerAs: 'vm',
-        size: 'lg'
-      });
+    function exibirErroImportacao(conteudoHtml) {
+      vm.erroImportacaoHtml = $sce.trustAsHtml(conteudoHtml);
     }
 
-    // 2. Função acionada pelo botão de Confirmação
     vm.confirmarImportacao = function() {
-        vm.carregando = true;
+      if (!vm.podeConfirmar) {
+        return;
+      }
 
-        // Enviamos a lista de volta no corpo da requisição (JSON)
-        let dados = {
-            usuarios: vm.usuariosImportados,
-            confirmar: true
-        };
+      vm.carregando = true;
 
-        dataservice.importar(dados).then(function(res) {
-            controller.feed('success', 'Importação concluída com sucesso!');
-            vm.usuariosImportados = []; // Limpa a tela após o sucesso
-        }).catch(function(err) {
-            let msg = (err.data && err.data.msg) ? err.data.msg : null;
-            
-            if (msg && msg.includes('Importação bloqueada:')) {
-              exibirModalErroImportacao(msg);
-              return;
-            }
+      let dados = {
+        usuarios: vm.usuariosImportados,
+        confirmar: true
+      };
 
-            controller.feedMessage(err);
-        }).finally(function() {
-            vm.carregando = false;
+      dataservice.importar(dados)
+        .then(function(res) {
+          controller.feed('success', 'Importação concluída com sucesso!');
+          vm.usuariosImportados = [];
+          vm.erroImportacaoHtml = null;
+          vm.podeConfirmar = true;
+        })
+        .catch(function(err) {
+          let msg = (err.data && err.data.msg) ? err.data.msg : null;
+
+          if (msg && msg.includes('Importação bloqueada:')) {
+            exibirErroImportacao(msg);
+            vm.usuariosImportados = [];
+            vm.podeConfirmar = false;
+            return;
+          }
+
+          controller.feedMessage(err);
+        })
+        .finally(function() {
+          vm.carregando = false;
         });
     };
-
-
   }
 
 })();
