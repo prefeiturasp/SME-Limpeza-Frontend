@@ -15,7 +15,7 @@
 
     vm.usuariosImportados = [];
     vm.erroImportacaoHtml = null;
-    vm.podeConfirmar = true;
+    vm.podeConfirmar = false;
 
     iniciar();
 
@@ -37,8 +37,6 @@
     });
 
     async function processarResultadoImportacao(response) {
-      console.log('processarResultadoImportacao', response);
-
       vm.erroImportacaoHtml = null;
       vm.podeConfirmar = true;
 
@@ -63,7 +61,7 @@
         return;
       }
 
-      controller.feed('success', 'Oba! A importação foi concluída com sucesso.');
+      controller.feed('success', 'Detalhes da Importação concluída com sucesso.');
       vm.usuariosImportados = response.data || [];
 
       const existeFalha = vm.usuariosImportados.some(usuario => usuario.classeResultado === 'danger');
