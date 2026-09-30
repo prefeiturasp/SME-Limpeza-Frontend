@@ -1,10 +1,10 @@
-FROM node:16-bullseye as builder
+FROM node:16-bookworm as builder
 RUN mkdir -p /opt/services/front/src
 WORKDIR /opt/services/front/src
 COPY . ./
 RUN npm install
 
-FROM httpd:bullseye
+FROM httpd:bookworm
 
 ENV TZ=America/Sao_Paulo
 
