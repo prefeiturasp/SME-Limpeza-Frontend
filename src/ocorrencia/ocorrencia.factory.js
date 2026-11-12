@@ -13,6 +13,7 @@
     let service = {
       buscarPrestadoresComReincidencia: buscarPrestadoresComReincidencia,
       buscarUltimos: buscarUltimos,
+      buscaHistoricoOcorrencia: buscaHistoricoOcorrencia
     };
 
     return service;
@@ -43,6 +44,19 @@
         return utils.criarRetornoPromise(false, []);
       }
 
+    }
+
+    function buscaHistoricoOcorrencia(idOcorrencia) {
+
+      return dataservice.buscaHistoricoOcorrencia(idOcorrencia).then(success).catch(error);
+
+      function success(response) {
+        return utils.criarRetornoPromise(true, utils.ler(response, 'data'));
+      }
+
+      function error(response) {
+        return utils.criarRetornoPromise(false, []);
+      }
     }
 
   }
