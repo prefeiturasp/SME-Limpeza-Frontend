@@ -1,0 +1,32 @@
+<div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <h4 class="card-title ml-4 mt-4">Histórico de Criação, Reabertura e Encerramento de Ocorrência</h4>
+            <div class="tb-responsive mt-4">
+              <table class="table">
+                <thead>
+                  <tr class="bg-light text-center">
+                    <th class="text-left">Data/Hora</th>
+                    <th class="text-left">Status Antigo</th>
+                    <th class="text-left">Status Novo</th>
+                    <th class="text-left">Usuário Responsável</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" ng-if="vm.historicoOcorrenciaList.length > 0" ng-repeat="historico in vm.historicoOcorrenciaList">
+                    <td class="text-left" ng-bind="historico.dataHora | date:'dd/MM/yyyy - HH:mm:ss'"></td>
+                    <td class="text-left" ng-bind="historico.statusAntigo"></td>
+                    <td class="text-left" ng-bind="historico.statusNovo"></td>
+                    <td class="text-left" ng-bind="historico.usuario"></td>
+                  </tr>
+                  <tr class="text-center" ng-if="vm.historicoOcorrenciaList.length == 0">
+                    <td class="text-center" colspan="4"> Não há histórico cadastrado </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
